@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="English Trainer">
+  <meta name="theme-color" content="#1a1a2e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>English Trainer - 12 Semanas</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header>
+    <h1 data-action="showDashboard" tabindex="0" role="button" aria-label="Volver al dashboard">English <span>Trainer</span></h1>
+    <nav class="main-nav" aria-label="Navegacion principal">
+      <button class="nav-tab active" id="tab-plan" data-action="navigateTo" data-page="plan">Plan</button>
+      <button class="nav-tab" id="tab-flashcards" data-action="navigateTo" data-page="flashcards">Flashcards</button>
+      <button class="nav-tab" id="tab-translator" data-action="navigateTo" data-page="translator">Traductor</button>
+    </nav>
+    <div class="header-right">
+      <div class="speed-control">
+        <label for="speed">Vel:</label>
+        <input type="range" id="speed" min="0.3" max="1.5" step="0.1" value="0.8" aria-label="Velocidad de voz">
+        <span id="speedVal" aria-live="polite">0.8x</span>
+      </div>
+      <label for="voiceSelect" class="sr-only">Seleccionar voz en ingles</label>
+      <select id="voiceSelect" aria-label="Seleccionar voz en ingles"><option>Voces...</option></select>
+      <button id="btnStop" data-action="stopSpeech" aria-label="Detener reproduccion de voz">Parar</button>
+      <button id="btnReset" data-action="resetProgress" aria-label="Reiniciar todo el progreso">Reiniciar</button>
+      <button id="btnExport" data-action="exportProgress" aria-label="Exportar progreso" title="Exportar progreso">Exportar</button>
+    </div>
+  </header>
+
+  <div class="progress-bar-container" id="progressContainer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="84">
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar"></div>
+      <div class="progress-text" id="progressText">0 / 84 dias</div>
+    </div>
+  </div>
+
+  <main id="main" role="main"></main>
+
+  <!-- Scripts: loaded in dependency order -->
+  <script src="js/files-data.js"></script>
+  <script src="js/vocab-data.js"></script>
+  <script src="js/plan-data.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/tts.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/flashcards.js"></script>
+  <script src="js/translator.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
