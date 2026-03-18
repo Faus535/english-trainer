@@ -345,7 +345,10 @@ function toggleFileViewer(actId) {
   viewer.innerHTML = `
     <div class="file-viewer-header">
       <span>${safeFilePath}</span>
-      <button class="file-viewer-close" data-action="toggleFileViewer" data-act-id="${actId}" aria-label="Cerrar visor de archivo">&times;</button>
+      <div class="file-viewer-actions">
+        <button class="file-viewer-play" data-action="playAllMd" data-viewer-id="fv-${actId}" aria-label="Reproducir todo el contenido">&#9654; Leer todo</button>
+        <button class="file-viewer-close" data-action="toggleFileViewer" data-act-id="${actId}" aria-label="Cerrar visor de archivo">&times;</button>
+      </div>
     </div>
     <div class="file-viewer-content">
       <div class="md-content">${renderMd(content)}</div>

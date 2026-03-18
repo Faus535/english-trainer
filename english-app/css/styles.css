@@ -882,6 +882,29 @@ main {
   font-size: 0.82rem;
 }
 
+.file-viewer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-viewer-play {
+  background: rgba(78, 204, 163, 0.15);
+  border: 1px solid var(--green);
+  color: var(--green);
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), transform var(--transition);
+  white-space: nowrap;
+}
+
+.file-viewer-play:hover {
+  background: rgba(78, 204, 163, 0.3);
+  transform: scale(1.05);
+}
+
 .file-viewer-close {
   background: none;
   border: none;
@@ -892,6 +915,14 @@ main {
 }
 
 .file-viewer-close:hover { color: var(--accent); }
+
+/* Highlight currently-playing element during "Leer todo" */
+.md-playing {
+  background: rgba(78, 204, 163, 0.12);
+  border-left: 3px solid var(--green);
+  padding-left: 8px;
+  transition: background 0.3s ease;
+}
 
 /* Sticky complete button */
 .day-complete-sticky {

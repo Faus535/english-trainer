@@ -148,17 +148,99 @@ function playNext() {
     playQueue = [];
     playQueueIndex = 0;
     document.getElementById('btnStop').classList.remove('visible');
+    // Clear any active md-highlight
+    document.querySelectorAll('.md-playing').forEach(el => el.classList.remove('md-playing'));
     return;
   }
 
   const item = playQueue[playQueueIndex];
-  item.btn.classList.add('playing');
+  if (item.btn) item.btn.classList.add('playing');
+  if (item.el) {
+    // Highlight current element and scroll into view
+    document.querySelectorAll('.md-playing').forEach(el => el.classList.remove('md-playing'));
+    item.el.classList.add('md-playing');
+    item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
   speak(item.text, () => {
-    item.btn.classList.remove('playing');
+    if (item.btn) item.btn.classList.remove('playing');
+    if (item.el) item.el.classList.remove('md-playing');
     playQueueIndex++;
     if (playQueueIndex < playQueue.length) {
       setTimeout(playNext, 300);
     }
   });
+}
+
+/**
+ * Extracts readable text chunks from a rendered .md-content container
+ * and queues them for sequential TTS playback.
+ */
+function playAllMd(viewerEl) {
+  stopSpeech();
+  playQueue = [];
+
+  const content = viewerEl.querySelector('.md-content');
+  if (!content) return;
+
+  // Walk through top-level elements and extract speakable text
+  content.querySelectorAll('h1, h2, h3, h4, p, blockquote, li, td').forEach(el => {
+    // For table cells, only read those with a play button (English columns)
+    if (el.tagName === 'TD') {
+      const btn = el.querySelector('.play-btn');
+      if (btn) {
+        playQueue.push({ text: btn.dataset.text, el, btn });
+      }
+      return;
+    }
+
+    const text = cleanForSpeech(el.textContent);
+    if (text && text.length > 1) {
+      // Split long text into chunks (~200 chars at sentence boundaries)
+      const chunks = splitIntoChunks(text, 200);
+      chunks.forEach(chunk => {
+        playQueue.push({ text: chunk, el });
+      });
+    }
+  });
+
+  if (!playQueue.length) return;
+  playQueueIndex = 0;
+  playNext();
+}
+
+/**
+ * Splits text into chunks at sentence boundaries, respecting maxLen.
+ */
+function splitIntoChunks(text, maxLen) {
+  if (text.length <= maxLen) return [text];
+
+  const chunks = [];
+  let remaining = text;
+
+  while (remaining.length > 0) {
+    if (remaining.length <= maxLen) {
+      chunks.push(remaining);
+      break;
+    }
+
+    // Find last sentence boundary within maxLen
+    let cut = -1;
+    const boundaries = ['. ', '! ', '? ', '; ', ', '];
+    for (const sep of boundaries) {
+      const idx = remaining.lastIndexOf(sep, maxLen);
+      if (idx > cut) cut = idx + sep.length;
+    }
+
+    // Fallback: split at last space
+    if (cut <= 0) {
+      cut = remaining.lastIndexOf(' ', maxLen);
+      if (cut <= 0) cut = maxLen;
+    }
+
+    chunks.push(remaining.slice(0, cut).trim());
+    remaining = remaining.slice(cut).trim();
+  }
+
+  return chunks;
 }

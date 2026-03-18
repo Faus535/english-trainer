@@ -162,6 +162,9 @@ function setupEventDelegation() {
       case 'playAllTable':
         playAllTable(document.getElementById(target.dataset.tableId));
         break;
+      case 'playAllMd':
+        playAllMd(document.getElementById(target.dataset.viewerId));
+        break;
     }
   });
 
