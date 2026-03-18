@@ -34,37 +34,108 @@ function updateProgress() {
 
 // ===== Dashboard =====
 
+// Determine which week contains the next uncompleted day
+function getCurrentWeekNumber() {
+  const nextDay = getNextDay();
+  const entry = DAY_MAP[nextDay];
+  return entry ? entry.week.number : 1;
+}
+
+// Expand/collapse state
+let expandedWeeks = loadState('expandedWeeks', {});
+
+function toggleWeek(weekNum) {
+  if (expandedWeeks[weekNum]) {
+    delete expandedWeeks[weekNum];
+  } else {
+    expandedWeeks[weekNum] = true;
+  }
+  saveState('expandedWeeks', expandedWeeks);
+  render();
+}
+
 function renderDashboard() {
   const main = document.getElementById('main');
   const nextDay = getNextDay();
+  const currentWeek = getCurrentWeekNumber();
+
+  // Auto-expand current week if nothing is explicitly expanded
+  const hasExplicit = Object.keys(expandedWeeks).length > 0;
+  if (!hasExplicit) {
+    expandedWeeks[currentWeek] = true;
+  }
+
   let h = '<div class="dashboard">';
 
-  // Intro
-  h += '<div class="dashboard-intro">';
-  h += '<h2>De Leer al Oido en 12 Semanas</h2>';
-  h += '<p>Entiendo 80-90% leyendo, pero me pierdo al escuchar.</p>';
+  // Gamification bar
+  h += renderGamificationHeader();
+
+  // Widgets: Sound of the Day + Phrase Roulette
+  h += '<div class="dashboard-widgets">';
+  h += renderSoundOfTheDay();
+  h += renderPhraseRoulette();
   h += '</div>';
 
-  // Golden rules
-  h += '<div class="golden-rules"><h3>Reglas de Oro</h3><ol>';
-  h += '<li><strong>Nunca subtitulos en espa\u00f1ol</strong> - Solo ingles o sin subtitulos</li>';
-  h += '<li><strong>No traducir mentalmente</strong> - Escucha el significado</li>';
-  h += '<li><strong>Repetir > avanzar</strong> - 1 frase 10 veces > 10 frases 1 vez</li>';
-  h += '<li><strong>Consistencia</strong> - 20 min/dia > 2h el sabado</li>';
-  h += '<li><strong>Nivel correcto</strong> - Entiende el 60-70% de lo que escuchas</li>';
-  h += '</ol></div>';
+  // Block labels
+  const BLOCKS = {
+    1: { name: 'A', label: 'Foundations', range: '1-4' },
+    5: { name: 'B', label: 'Problem Sounds', range: '5-8' },
+    9: { name: 'C', label: 'Flow & Grammar', range: '9-12' },
+    13: { name: 'D', label: 'Immersion', range: '13-16' },
+  };
 
-  // Weeks
+  // Weeks as accordion
   PLAN.forEach(week => {
     const weekDone = week.days.filter(d => completedDays[d.day]).length;
+    const weekTotal = week.days.length;
+    const weekPct = Math.round((weekDone / weekTotal) * 100);
+    const isExpanded = !!expandedWeeks[week.number];
+    const isCurrent = week.number === currentWeek;
+    const isComplete = weekDone === weekTotal;
 
-    h += '<div class="week-card">';
-    h += `<div class="week-header">`;
-    h += `<h3>Semana ${week.number} - ${escapeHtml(week.title)}</h3>`;
-    h += `<span class="week-progress">${weekDone}/${week.days.length}</span>`;
-    h += '</div>';
-    h += '<div class="week-body">';
+    // Block separator
+    const block = BLOCKS[week.number];
+    if (block) {
+      h += `<div class="block-separator">`;
+      h += `<span class="block-badge">Block ${block.name}</span>`;
+      h += `<span class="block-label">${escapeHtml(block.label)}</span>`;
+      h += `<span class="block-range">Weeks ${block.range}</span>`;
+      h += `</div>`;
+    }
 
+    // Week card
+    let weekCls = 'week-card accordion';
+    if (isExpanded) weekCls += ' expanded';
+    if (isCurrent) weekCls += ' current-week';
+    if (isComplete) weekCls += ' complete-week';
+
+    h += `<div class="${weekCls}">`;
+
+    // Week header (clickable)
+    h += `<div class="week-header" data-action="toggleWeek" data-week="${week.number}" role="button" tabindex="0" aria-expanded="${isExpanded}" aria-label="Semana ${week.number}: ${escapeHtml(week.title)}">`;
+    h += `<div class="week-header-left">`;
+    h += `<span class="week-chevron" aria-hidden="true">${isExpanded ? '&#9660;' : '&#9654;'}</span>`;
+    h += `<div class="week-header-info">`;
+    h += `<h3>Semana ${week.number}</h3>`;
+    h += `<span class="week-title">${escapeHtml(week.title)}</span>`;
+    h += `</div>`;
+    h += `</div>`;
+    h += `<div class="week-header-right">`;
+    h += `<span class="week-progress-text">${weekDone}/${weekTotal}</span>`;
+    h += `<div class="week-progress-bar"><div class="week-progress-fill" style="width:${weekPct}%"></div></div>`;
+    h += `</div>`;
+    h += `</div>`;
+
+    // Week body (collapsible)
+    h += `<div class="week-body accordion-body" ${isExpanded ? '' : 'style="display:none"'}>`;
+
+    // Week description
+    if (week.desc) {
+      h += `<div class="week-desc">${escapeHtml(week.desc)}</div>`;
+    }
+
+    // Day tiles grid
+    h += '<div class="days-grid">';
     week.days.forEach(day => {
       const done = !!completedDays[day.day];
       const isNext = day.day === nextDay;
@@ -74,14 +145,23 @@ function renderDashboard() {
       if (day.rest) cls += ' rest';
 
       h += `<div class="${cls}" data-action="openDay" data-day="${day.day}" role="button" tabindex="0" aria-label="Dia ${day.day}: ${escapeHtml(day.label)}${done ? ' (completado)' : ''}">`;
-      h += `<div class="day-number">${day.day}</div>`;
+      h += `<div class="day-tile-top">`;
+      h += `<span class="day-number">#${day.day}</span>`;
+      h += `<span class="day-check" aria-hidden="true">${done ? '&#10003;' : day.rest ? '&#9740;' : '&#9675;'}</span>`;
+      h += `</div>`;
       h += `<div class="day-label">${escapeHtml(day.label)}</div>`;
       h += `<div class="day-duration">${escapeHtml(day.duration)}</div>`;
-      h += `<div class="day-check" aria-hidden="true">${done ? '&#10003;' : '&#9675;'}</div>`;
+      // Show first activity as preview
+      if (day.activities && day.activities[0]) {
+        const preview = day.activities[0].desc;
+        h += `<div class="day-preview">${escapeHtml(preview.length > 40 ? preview.slice(0, 37) + '...' : preview)}</div>`;
+      }
       h += '</div>';
     });
+    h += '</div>'; // days-grid
 
-    h += '</div></div>';
+    h += '</div>'; // week-body
+    h += '</div>'; // week-card
   });
 
   // Milestones
@@ -98,11 +178,8 @@ function renderDashboard() {
   h += '</div></div>';
 
   // Motivation
-  h += '<div class="motivation-box">';
-  h += '<p>En <strong>4 semanas</strong> notaras la diferencia. ';
-  h += 'En <strong>8 semanas</strong> sera obvia. ';
-  h += 'En <strong>12 semanas</strong> sera otra vida.</p>';
-  h += '</div>';
+  const motiv = MOTIVATIONS[new Date().getDate() % MOTIVATIONS.length];
+  h += `<div class="motivation-box"><p>${escapeHtml(motiv)}</p></div>`;
 
   h += '</div>';
   main.innerHTML = h;
@@ -123,39 +200,33 @@ function renderDayView(dayNum) {
 
   // Navigation
   h += '<div class="day-nav">';
-  h += `<button ${dayNum <= 1 ? 'disabled' : ''} data-action="openDay" data-day="${dayNum - 1}" aria-label="Ir al dia ${dayNum - 1}">&#8592; Dia ${dayNum - 1}</button>`;
+  h += `<button ${dayNum <= 1 ? 'disabled' : ''} data-action="openDay" data-day="${dayNum - 1}" aria-label="Ir al dia ${dayNum - 1}">&#8592;</button>`;
   h += '<div class="day-nav-title">';
   h += `<h2>Dia ${dayNum}</h2>`;
-  h += `<div class="day-subtitle">Semana ${weekData.number} - ${escapeHtml(weekData.title)}</div>`;
+  h += `<div class="day-subtitle">Semana ${weekData.number} &middot; ${escapeHtml(weekData.title)}</div>`;
   h += '</div>';
-  h += `<button ${dayNum >= TOTAL_DAYS ? 'disabled' : ''} data-action="openDay" data-day="${dayNum + 1}" aria-label="Ir al dia ${dayNum + 1}">Dia ${dayNum + 1} &#8594;</button>`;
+  h += `<button ${dayNum >= TOTAL_DAYS ? 'disabled' : ''} data-action="openDay" data-day="${dayNum + 1}" aria-label="Ir al dia ${dayNum + 1}">&#8594;</button>`;
   h += '</div>';
 
-  // Week description
-  if (weekData.desc) {
-    h += `<div class="info-box" style="margin-bottom:16px">`;
-    h += `<p style="color:var(--accent);font-style:italic">${escapeHtml(weekData.desc)}</p>`;
-    h += '</div>';
-  }
-
-  // Day content
-  h += '<div class="day-content">';
-  h += '<div class="day-content-header">';
-  h += `<span style="color:var(--text);font-weight:600">${escapeHtml(dayData.label)}</span>`;
+  // Day header card
+  h += '<div class="day-header-card">';
+  h += '<div class="day-header-top">';
+  h += `<span class="day-header-label">${escapeHtml(dayData.label)}</span>`;
   h += `<span class="duration-badge">${escapeHtml(dayData.duration)}</span>`;
   h += '</div>';
+  if (weekData.desc) {
+    h += `<p class="day-header-desc">${escapeHtml(weekData.desc)}</p>`;
+  }
+  // Activity count
+  const actCount = dayData.activities.length;
+  h += `<div class="day-header-meta">${actCount} ${actCount === 1 ? 'actividad' : 'actividades'}</div>`;
+  h += '</div>';
 
-  h += '<div class="activity-list">';
+  // Activity cards
+  h += '<div class="activity-cards">';
   dayData.activities.forEach((act, ai) => {
     h += renderActivity(act, dayNum, ai, dayData.rest);
   });
-  h += '</div>';
-
-  // Complete button
-  h += '<div class="day-complete-section">';
-  h += `<button class="btn-complete ${isDone ? 'completed' : ''}" data-action="toggleDay" data-day="${dayNum}">`;
-  h += isDone ? '&#10003; Dia completado' : 'Marcar dia como completado';
-  h += '</button></div>';
   h += '</div>';
 
   // Series recommendations (weeks 1-4)
@@ -171,18 +242,44 @@ function renderDayView(dayNum) {
   const motiv = MOTIVATIONS[dayNum % MOTIVATIONS.length];
   h += `<div class="motivation-box"><p>${escapeHtml(motiv)}</p></div>`;
 
+  // Sticky complete button
+  h += '<div class="day-complete-sticky">';
+  h += `<button class="btn-complete ${isDone ? 'completed' : ''}" data-action="toggleDay" data-day="${dayNum}">`;
+  h += isDone ? '&#10003; Dia completado' : 'Marcar dia como completado';
+  h += '</button></div>';
+
   h += '</div>';
   main.innerHTML = h;
   window.scrollTo(0, 0);
 }
 
+// Activity type icons
+function getActivityIcon(act) {
+  if (act.dictation !== undefined) return '&#127911;'; // headphones
+  if (act.shadowing !== undefined) return '&#127908;'; // microphone
+  if (act.file) return '&#128214;'; // open book
+  if (act.rest) return '&#9749;'; // coffee
+  return '&#9654;'; // play
+}
+
 function renderActivity(act, dayNum, actIndex, isRest) {
   const actId = `d${dayNum}-a${actIndex}`;
-  const cls = isRest ? 'activity-item rest-activity' : 'activity-item';
+  let cls = 'activity-card';
+  if (isRest) cls += ' rest-activity';
+  if (act.dictation !== undefined) cls += ' type-dictation';
+  if (act.shadowing !== undefined) cls += ' type-shadowing';
+  if (act.file) cls += ' type-reading';
+
   let h = `<div class="${cls}">`;
 
-  h += `<span class="activity-time">${escapeHtml(act.time)}</span>`;
-  h += `<div class="activity-desc">${escapeHtml(act.desc)}</div>`;
+  // Card header
+  h += '<div class="act-card-header">';
+  h += `<span class="act-icon" aria-hidden="true">${getActivityIcon(act)}</span>`;
+  h += `<div class="act-card-info">`;
+  h += `<div class="act-card-desc">${escapeHtml(act.desc)}</div>`;
+  h += `<span class="act-card-time">${escapeHtml(act.time)}</span>`;
+  h += `</div>`;
+  h += '</div>';
 
   // Dictation component
   if (act.dictation !== undefined) {
@@ -197,10 +294,11 @@ function renderActivity(act, dayNum, actIndex, isRest) {
   // Clickable file button
   if (act.file) {
     const safeFile = escapeHtml(act.file);
+    const fileLabel = escapeHtml(act.desc || act.file);
     h += `<button class="activity-file-btn" id="fb-${actId}" data-file="${safeFile}" data-action="toggleFileViewer" data-act-id="${actId}">`;
-    h += '<span class="file-icon" aria-hidden="true">&#9654;</span>';
-    h += `<span>${safeFile}</span>`;
-    h += '<span class="file-status">click para ver</span>';
+    h += '<span class="file-icon" aria-hidden="true">&#128196;</span>';
+    h += `<span>${fileLabel}</span>`;
+    h += '<span class="file-status">ver contenido</span>';
     h += '</button>';
     h += `<div class="file-viewer" id="fv-${actId}"></div>`;
   }

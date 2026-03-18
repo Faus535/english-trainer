@@ -15,10 +15,10 @@ function shouldPlayColumn(header) {
 
 function formatInline(text) {
   return text
+    .replace(/(\/[^/<>]+\/)/g, '<span class="ipa">$1</span>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/(\/[^/]+\/)/g, '<span class="ipa">$1</span>')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a class="md-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<span class="md-link">$1</span>');
 }

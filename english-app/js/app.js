@@ -42,17 +42,22 @@ function navigateTo(page) {
   currentPage = page;
 
   // Update tab styles
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bottom-tab').forEach(t => t.classList.remove('active'));
   const tab = document.getElementById('tab-' + page);
   if (tab) tab.classList.add('active');
 
+  // Show/hide progress bar (only on plan page)
+  const progressEl = document.getElementById('progressContainer');
+  if (progressEl) progressEl.style.display = page === 'plan' ? '' : 'none';
+
   if (page === 'plan') {
-    document.getElementById('progressContainer').style.display = '';
     render();
   } else if (page === 'flashcards') {
     renderFlashcardsView();
   } else if (page === 'translator') {
     renderTranslatorView();
+  } else if (page === 'achievements') {
+    renderAchievementsView();
   }
 }
 
@@ -86,6 +91,9 @@ function setupEventDelegation() {
         break;
 
       // Dashboard actions
+      case 'toggleWeek':
+        toggleWeek(parseInt(target.dataset.week));
+        break;
       case 'openDay':
         openDay(parseInt(target.dataset.day));
         break;
@@ -96,9 +104,23 @@ function setupEventDelegation() {
         toggleFileViewer(target.dataset.actId);
         break;
 
+      // Gamification actions
+      case 'revealPhrase':
+        revealPhrase();
+        render();
+        break;
+      case 'newPhrase':
+        getRandomPhrase();
+        render();
+        break;
+
       // Flashcard actions
       case 'speakWord':
-        speakWord();
+        if (target.dataset.word) {
+          speak(target.dataset.word);
+        } else {
+          speakWord();
+        }
         break;
       case 'speakExample':
         speakExample();

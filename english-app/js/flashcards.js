@@ -20,6 +20,8 @@ function nextFlashcard() {
   flashcardHistory.push(word);
   flashcardIndex = flashcardHistory.length - 1;
   translationVisible = false;
+  trackFlashcard();
+  recordActivity();
   renderFlashcard(word);
 }
 

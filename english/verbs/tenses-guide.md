@@ -236,6 +236,41 @@ before, after, already, by the time, when, until, as soon as, never ... before, 
 
 ---
 
+## Past Perfect Continuous
+
+**Nombre en espanol:** Pasado Perfecto Continuo / Pluscuamperfecto Continuo
+
+### Estructura
+
+| Forma | Estructura | Ejemplo |
+|-------|-----------|---------|
+| Afirmativa | Subject + had + been + verb-ing | I had been working. / She had been waiting. |
+| Negativa | Subject + hadn't + been + verb-ing | I hadn't been working. / She hadn't been waiting. |
+| Pregunta | Had + subject + been + verb-ing? | Had you been working? / Had she been waiting? |
+
+### Cuando se usa
+
+- **Duracion de una actividad antes de otra accion pasada:** I had been waiting for 2 hours when the bus finally came.
+- **Causa visible de algo en el pasado:** She was tired because she had been running.
+- **Actividad continua interrumpida:** They had been living in Paris for 5 years before they moved.
+- **Enfatizar que la accion no habia terminado:** He had been studying all night (and he was still studying / or stopped).
+
+### Ejemplos
+
+1. She had been crying, so her eyes were red. (Habia estado llorando, asi que tenia los ojos rojos.)
+2. We had been driving for 6 hours when we stopped for gas. (Habiamos estado conduciendo 6 horas cuando paramos a repostar.)
+3. He had been working at the company for 10 years before he got promoted. (Habia estado trabajando en la empresa 10 anos antes de que le ascendieran.)
+4. The ground was wet because it had been raining all morning. (El suelo estaba mojado porque habia estado lloviendo toda la manana.)
+5. Had you been waiting long before I arrived? (¿Habias estado esperando mucho antes de que llegara?)
+
+### Signal words (palabras clave)
+
+for, since, all day/morning/week, how long, before, when, by the time
+
+> **Diferencia con Past Perfect:** "I had written 3 emails" (3 emails terminados — resultado). "I had been writing emails" (estuve escribiendo — enfasis en la duracion/actividad).
+
+---
+
 ## Future Simple (will)
 
 **Nombre en espanol:** Futuro Simple

@@ -24,7 +24,41 @@ El ingles tiene muchas mas vocales que el espanol (que solo tiene 5). Esta es la
 | /ʊ/ | Entre "u" y "o" | put /pʊt/ | Di "u" relajada, sin redondear mucho los labios |
 | /ə/ | La **schwa** - sonido neutro | about /əˈbaʊt/ | El sonido mas comun del ingles. Como una "a" super debil |
 
-> **Nota sobre la schwa /ə/:** Es el sonido mas importante del ingles. Aparece en casi todas las palabras de mas de una silaba en las silabas no acentuadas. Dominarlo hara que tu ingles suene mucho mas natural.
+### La Schwa /ə/ — El sonido mas importante del ingles
+
+La schwa es el sonido mas frecuente del ingles. Aparece en **todas las silabas no acentuadas** de palabras de mas de una silaba. Si no la dominas, tu ingles siempre sonara "robotico" porque pronunciaras cada vocal con su valor completo, cuando los nativos las relajan a schwa.
+
+**Como suena:** Una vocal super debil, corta, relajada. No es "a", no es "e", no es "o" — es un gruñido neutro brevísimo.
+
+| Palabra | IPA | Donde esta la schwa | Truco |
+|---------|-----|---------------------|-------|
+| about | /əˈbaʊt/ | **a**bout → /ə/ | La "a" inicial se relaja completamente |
+| banana | /bəˈnæn.ə/ | **ba**na**na** → /ə/ en 1a y 3a silaba | Solo la 2a silaba es fuerte |
+| problem | /ˈprɒb.ləm/ | probl**e**m → /ə/ | La "e" final desaparece casi |
+| today | /təˈdeɪ/ | **to**day → /ə/ | La "o" se convierte en schwa |
+| open | /ˈoʊ.pən/ | op**e**n → /ə/ | La "e" se relaja |
+| support | /səˈpɔːrt/ | **su**pport → /ə/ | La "u" se convierte en schwa |
+| camera | /ˈkæm.ər.ə/ | cam**e**r**a** → dos schwas | Solo la 1a silaba es fuerte |
+| chocolate | /ˈtʃɒk.lət/ | chocol**a**te → /ə/ | La "a" casi no se oye |
+| comfortable | /ˈkʌmf.tər.bəl/ | com**for**ta**ble** → schwas | 3 silabas con schwa |
+| photograph | /ˈfoʊ.tə.ɡræf/ | pho**to**graph → /ə/ | La "o" central se relaja |
+
+**Schwa en palabras funcionales (las mas comunes del ingles):**
+
+| Palabra | Forma fuerte | Forma debil (con schwa) | Cuando se usa la debil |
+|---------|-------------|------------------------|----------------------|
+| the | /ðiː/ | /ðə/ | Casi siempre |
+| a | /eɪ/ | /ə/ | Casi siempre |
+| to | /tuː/ | /tə/ | Cuando no es el final de frase |
+| of | /ɒv/ | /əv/ | Casi siempre |
+| for | /fɔːr/ | /fər/ | Cuando no es enfatico |
+| and | /ænd/ | /ənd/ o /ən/ | En habla rapida |
+| can | /kæn/ | /kən/ | Cuando no es enfatico |
+| was | /wɒz/ | /wəz/ | Casi siempre |
+| are | /ɑːr/ | /ər/ | Casi siempre |
+| from | /frɒm/ | /frəm/ | Casi siempre |
+
+> **Regla de oro:** Si una silaba NO lleva el acento principal de la palabra, su vocal probablemente se pronuncia como schwa /ə/. Esto aplica al 90% de los casos.
 
 ### Vocales largas
 
@@ -47,9 +81,9 @@ El ingles tiene muchas mas vocales que el espanol (que solo tiene 5). Esta es la
 | /ɔɪ/ | Como "oi" | boy /bɔɪ/ | Igual que "oi" en "hoy" |
 | /aʊ/ | Como "au" | how /haʊ/ | Igual que "au" en "causa" |
 | /oʊ/ | Como "ou" | go /ɡoʊ/ | Di "o" y desliza hacia "u" |
-| /ɪə/ | Como "ia" suave | here /hɪər/ | "i" deslizando a schwa |
-| /eə/ | Como "ea" | there /ðeər/ | "e" deslizando a schwa |
-| /ʊə/ | Como "ua" suave | tour /tʊər/ | "u" deslizando a schwa |
+| /ɪə/ | Como "ia" suave | here /hɪər/, beer /bɪər/, near /nɪər/ | "i" deslizando a schwa |
+| /eə/ | Como "ea" | there /ðeər/, care /keər/, fair /feər/ | "e" deslizando a schwa |
+| /ʊə/ | Como "ua" suave | tour /tʊər/, sure /ʃʊər/, pure /pjʊər/ | "u" deslizando a schwa |
 
 ---
 
@@ -57,78 +91,174 @@ El ingles tiene muchas mas vocales que el espanol (que solo tiene 5). Esta es la
 
 ### /θ/ - "th" sorda (think, bath)
 
-- Pon la lengua entre los dientes y sopla aire
-- **NO es /t/**, **NO es /s/**, **NO es /f/**
-- Practica: **think** /θɪŋk/, **three** /θriː/, **both** /boʊθ/
+Pon la lengua entre los dientes y sopla aire. **NO es /t/**, **NO es /s/**, **NO es /f/**.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| think | /θɪŋk/ | I think it's true |
+| three | /θriː/ | Three things to do |
+| both | /boʊθ/ | Both of them came |
+| thank | /θæŋk/ | Thank you very much |
+| through | /θruː/ | Walk through the door |
+| math | /mæθ/ | I love math class |
 
 ### /ð/ - "th" sonora (this, the)
 
-- Igual posicion que /θ/ pero con vibracion de las cuerdas vocales
-- **NO es /d/**
-- Practica: **this** /ðɪs/, **the** /ðə/, **mother** /ˈmʌð.ər/
+Igual posicion que /θ/ pero con vibracion de las cuerdas vocales. **NO es /d/**.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| this | /ðɪs/ | This is my house |
+| the | /ðə/ | The cat is sleeping |
+| mother | /ˈmʌð.ər/ | My mother called me |
+| brother | /ˈbrʌð.ər/ | My brother is tall |
+| weather | /ˈweð.ər/ | The weather is nice |
+| together | /təˈɡeð.ər/ | Let's go together |
 
 ### /v/ - (very, give)
 
-- Los dientes superiores tocan el labio inferior, y vibra
-- **NO es /b/** - este es el error clasico del hispanohablante
-- Practica: **very** /ˈver.i/, **have** /hæv/, **love** /lʌv/
+Los dientes superiores tocan el labio inferior y vibra. **NO es /b/** — este es el error clasico del hispanohablante.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| very | /ˈver.i/ | It's very cold today |
+| have | /hæv/ | I have a question |
+| love | /lʌv/ | I love this song |
+| give | /ɡɪv/ | Give me a minute |
+| every | /ˈev.ri/ | Every day is different |
+| never | /ˈnev.ər/ | I never said that |
 
 ### /b/ vs /v/
 
 Esta distincion no existe en espanol moderno, pero es fundamental en ingles:
+- **/b/**: los dos labios se juntan
+- **/v/**: dientes superiores en labio inferior
 
-- **/b/**: los dos labios se juntan → **ban** /bæn/
-- **/v/**: dientes superiores en labio inferior → **van** /væn/
-- **berry** /ˈber.i/ vs **very** /ˈver.i/
+| /b/ | /v/ | Truco |
+|-----|-----|-------|
+| ban /bæn/ (prohibir) | van /væn/ (furgoneta) | Muerdete el labio para /v/ |
+| berry /ˈber.i/ (baya) | very /ˈver.i/ (muy) | |
+| boat /boʊt/ (barco) | vote /voʊt/ (votar) | |
 
 ### /h/ - (have, hello)
 
-- Aspiracion suave, como cuando empanas un cristal con tu aliento
-- **NO es la "j" espanola** (que es mucho mas fuerte y gutural)
-- Practica: **have** /hæv/, **hello** /heˈloʊ/, **behind** /bɪˈhaɪnd/
+Aspiracion suave, como cuando empañas un cristal. **NO es la "j" espanola** (mucho mas fuerte y gutural).
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| have | /hæv/ | I have to go now |
+| hello | /heˈloʊ/ | Hello, how are you? |
+| behind | /bɪˈhaɪnd/ | Look behind you |
+| happy | /ˈhæp.i/ | I'm happy today |
+| house | /haʊs/ | This is my house |
+| heart | /hɑːrt/ | Follow your heart |
 
 ### /ʃ/ - "sh" (she, fish)
 
-- Como decir "shhh" para pedir silencio
-- Practica: **she** /ʃiː/, **fish** /fɪʃ/, **machine** /məˈʃiːn/
+Como decir "shhh" para pedir silencio.
 
-### /ʒ/ - (vision, pleasure)
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| she | /ʃiː/ | She is my friend |
+| fish | /fɪʃ/ | I like fish and chips |
+| machine | /məˈʃiːn/ | The machine is broken |
+| nation | /ˈneɪ.ʃən/ | A great nation |
+| ocean | /ˈoʊ.ʃən/ | The ocean is blue |
+| sure | /ʃʊər/ | I'm sure about it |
+
+### /ʒ/ - (vision, pleasure, measure)
 
 - La misma posicion que /ʃ/ pero con vibracion de cuerdas vocales
-- Practica: **vision** /ˈvɪʒ.ən/, **pleasure** /ˈpleʒ.ər/
+- Es raro en ingles — aparece sobre todo en medio de palabra, casi nunca al inicio
+
+| Palabra | IPA | Contexto |
+|---------|-----|----------|
+| vision | /ˈvɪʒ.ən/ | I have a clear vision |
+| pleasure | /ˈpleʒ.ər/ | It's a pleasure to meet you |
+| measure | /ˈmeʒ.ər/ | Measure the distance |
+| treasure | /ˈtreʒ.ər/ | The hidden treasure |
+| usual | /ˈjuː.ʒu.əl/ | The usual order |
+| decision | /dɪˈsɪʒ.ən/ | A hard decision |
+| television | /ˈtel.ɪ.vɪʒ.ən/ | Watching television |
+| garage | /ɡəˈrɑːʒ/ | Park in the garage |
 
 ### /dʒ/ - "j" (job, bridge)
 
-- Como "ch" pero anadiendo vibracion de cuerdas vocales
-- Practica: **job** /dʒɒb/, **bridge** /brɪdʒ/, **change** /tʃeɪndʒ/
+Como "ch" pero anadiendo vibracion de cuerdas vocales.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| job | /dʒɒb/ | I love my job |
+| bridge | /brɪdʒ/ | Cross the bridge |
+| change | /tʃeɪndʒ/ | Time to change |
+| judge | /dʒʌdʒ/ | The judge decided |
+| orange | /ˈɒr.ɪndʒ/ | An orange juice |
+| age | /eɪdʒ/ | What's your age? |
 
 ### /tʃ/ - "ch" (church, match)
 
-- Igual que la "ch" en espanol
-- Practica: **church** /tʃɜːrtʃ/, **match** /mætʃ/
+Igual que la "ch" en espanol.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| church | /tʃɜːrtʃ/ | The old church |
+| match | /mætʃ/ | A football match |
+| teach | /tiːtʃ/ | I teach English |
+| watch | /wɒtʃ/ | Watch this video |
+| kitchen | /ˈkɪtʃ.ɪn/ | I'm in the kitchen |
+| children | /ˈtʃɪl.drən/ | The children are playing |
 
 ### /ŋ/ - "ng" (sing, thinking)
 
-- La "n" nasal que se produce en la parte posterior de la boca
-- La lengua toca el paladar blando (donde se produce la "g")
-- Practica: **sing** /sɪŋ/, **thinking** /ˈθɪŋ.kɪŋ/, **long** /lɒŋ/
+La "n" nasal en la parte posterior de la boca. La lengua toca el paladar blando.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| sing | /sɪŋ/ | I love to sing |
+| thinking | /ˈθɪŋ.kɪŋ/ | I'm thinking about it |
+| long | /lɒŋ/ | A long day at work |
+| morning | /ˈmɔːr.nɪŋ/ | Good morning everyone |
+| young | /jʌŋ/ | She looks young |
+| king | /kɪŋ/ | The king is here |
 
 ### /r/ - (red, car)
 
-- **NO toques el paladar con la lengua** (completamente diferente a la "r" espanola)
-- Curva la lengua hacia atras sin que toque nada dentro de la boca
-- Practica: **red** /red/, **car** /kɑːr/, **right** /raɪt/
+**NO toques el paladar con la lengua** — curva la lengua hacia atras sin que toque nada.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| red | /red/ | The red car is mine |
+| car | /kɑːr/ | I need a new car |
+| right | /raɪt/ | Turn right here |
+| really | /ˈriː.əl.i/ | I'm really tired |
+| world | /wɜːrld/ | Around the world |
+| every | /ˈev.ri/ | Every morning I run |
 
 ### /w/ - (water, with)
 
-- Redondea los labios como para decir "u" y luego abre rapidamente
-- **NO es "gu"** - no hay contacto de la lengua con nada
-- Practica: **water** /ˈwɔː.tər/, **with** /wɪð/, **woman** /ˈwʊm.ən/
+Redondea los labios como para decir "u" y abre rapidamente. **NO es "gu"** — no hay contacto de la lengua.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| water | /ˈwɔː.tər/ | I need some water |
+| with | /wɪð/ | Come with me |
+| woman | /ˈwʊm.ən/ | A brave woman |
+| work | /wɜːrk/ | I work from home |
+| want | /wɒnt/ | I want to learn |
+| week | /wiːk/ | See you next week |
 
 ### /j/ - (yes, year)
 
-- Como la "y" de "yo" en espanol
-- Practica: **yes** /jes/, **year** /jɪər/, **you** /juː/
+Como la "y" de "yo" en espanol.
+
+| Palabra | IPA | Frase de practica |
+|---------|-----|-------------------|
+| yes | /jes/ | Yes, I agree |
+| year | /jɪər/ | A new year begins |
+| you | /juː/ | Thank you so much |
+| young | /jʌŋ/ | He's still young |
+| yesterday | /ˈjes.tər.deɪ/ | I saw her yesterday |
+| yellow | /ˈjel.oʊ/ | The yellow sun |
 
 ---
 

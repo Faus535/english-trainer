@@ -1,7 +1,7 @@
 {
-  "name": "English Trainer - 12 Semanas",
+  "name": "English Trainer - 16 Semanas",
   "short_name": "English",
-  "description": "Plan de 12 semanas para aprender ingles escuchando",
+  "description": "Plan de 16 semanas para aprender ingles: pronunciacion, gramatica y listening",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",

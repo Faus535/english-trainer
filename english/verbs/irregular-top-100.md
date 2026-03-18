@@ -105,6 +105,65 @@ Los verbos irregulares no siguen el patron regular de anadir **-ed**. Hay que me
 | 99 | strike /straɪk/ | struck /strʌk/ | struck /strʌk/ | golpear | Lightning **struck** the old tree in the yard. /ˈlaɪt.nɪŋ strʌk ði oʊld triː ɪn ðə jɑːrd/ |
 | 100 | sink /sɪŋk/ | sank /sæŋk/ | sunk /sʌŋk/ | hundir | The boat **sank** during the storm. /ðə boʊt sæŋk ˈdjʊər.ɪŋ ðə stɔːrm/ |
 
+---
+
+## Verbos 101-150: Los Siguientes Mas Importantes
+
+| # | Base Form (IPA) | Past Simple (IPA) | Past Participle (IPA) | Spanish | Example with IPA |
+|---|-----------------|--------------------|-----------------------|---------|------------------|
+| 101 | dig /dɪɡ/ | dug /dʌɡ/ | dug /dʌɡ/ | cavar | They **dug** a hole in the garden. /ðeɪ dʌɡ ə hoʊl ɪn ðə ˈɡɑːr.dən/ |
+| 102 | feed /fiːd/ | fed /fed/ | fed /fed/ | alimentar | She **fed** the baby at six o'clock. /ʃiː fed ðə ˈbeɪ.bi ət sɪks əˈklɒk/ |
+| 103 | forgive /fərˈɡɪv/ | forgave /fərˈɡeɪv/ | forgiven /fərˈɡɪv.ən/ | perdonar | I **forgave** him for what he did. /aɪ fərˈɡeɪv hɪm fər wɒt hiː dɪd/ |
+| 104 | freeze /friːz/ | froze /froʊz/ | frozen /ˈfroʊ.zən/ | congelar | The lake **froze** during the winter. /ðə leɪk froʊz ˈdjʊər.ɪŋ ðə ˈwɪn.tər/ |
+| 105 | grind /ɡraɪnd/ | ground /ɡraʊnd/ | ground /ɡraʊnd/ | moler | She **ground** the coffee beans fresh. /ʃiː ɡraʊnd ðə ˈkɒf.i biːnz freʃ/ |
+| 106 | hang /hæŋ/ | hung /hʌŋ/ | hung /hʌŋ/ | colgar | He **hung** the picture on the wall. /hiː hʌŋ ðə ˈpɪk.tʃər ɒn ðə wɔːl/ |
+| 107 | kneel /niːl/ | knelt /nelt/ | knelt /nelt/ | arrodillarse | She **knelt** down to tie her shoe. /ʃiː nelt daʊn tə taɪ hər ʃuː/ |
+| 108 | lay /leɪ/ | laid /leɪd/ | laid /leɪd/ | poner/colocar | He **laid** the book on the table. /hiː leɪd ðə bʊk ɒn ðə ˈteɪ.bəl/ |
+| 109 | lean /liːn/ | leant /lent/ | leant /lent/ | apoyarse | She **leant** against the wall. /ʃiː lent əˈɡenst ðə wɔːl/ |
+| 110 | leap /liːp/ | leapt /lept/ | leapt /lept/ | saltar | The cat **leapt** onto the table. /ðə kæt lept ˈɒn.tə ðə ˈteɪ.bəl/ |
+| 111 | lie /laɪ/ | lay /leɪ/ | lain /leɪn/ | yacer/tumbarse | She **lay** on the grass all afternoon. /ʃiː leɪ ɒn ðə ɡræs ɔːl ˌæf.tərˈnuːn/ |
+| 112 | light /laɪt/ | lit /lɪt/ | lit /lɪt/ | encender | He **lit** a candle in the dark. /hiː lɪt ə ˈkæn.dəl ɪn ðə dɑːrk/ |
+| 113 | mistake /mɪˈsteɪk/ | mistook /mɪˈstʊk/ | mistaken /mɪˈsteɪ.kən/ | confundir | I **mistook** him for his brother. /aɪ mɪˈstʊk hɪm fər hɪz ˈbrʌð.ər/ |
+| 114 | overcome /ˌoʊ.vərˈkʌm/ | overcame /ˌoʊ.vərˈkeɪm/ | overcome /ˌoʊ.vərˈkʌm/ | superar | She **overcame** her fear of flying. /ʃiː ˌoʊ.vərˈkeɪm hər fɪər əv ˈflaɪ.ɪŋ/ |
+| 115 | redo /ˌriːˈduː/ | redid /ˌriːˈdɪd/ | redone /ˌriːˈdʌn/ | rehacer | I **redid** the entire report. /aɪ ˌriːˈdɪd ði ɪnˈtaɪər rɪˈpɔːrt/ |
+| 116 | seek /siːk/ | sought /sɔːt/ | sought /sɔːt/ | buscar | He **sought** advice from his mentor. /hiː sɔːt ədˈvaɪs frəm hɪz ˈmen.tɔːr/ |
+| 117 | shake /ʃeɪk/ | shook /ʃʊk/ | shaken /ˈʃeɪ.kən/ | sacudir | The earthquake **shook** the building. /ði ˈɜːrθ.kweɪk ʃʊk ðə ˈbɪl.dɪŋ/ |
+| 118 | shine /ʃaɪn/ | shone /ʃɒn/ | shone /ʃɒn/ | brillar | The sun **shone** all day long. /ðə sʌn ʃɒn ɔːl deɪ lɒŋ/ |
+| 119 | shrink /ʃrɪŋk/ | shrank /ʃræŋk/ | shrunk /ʃrʌŋk/ | encoger | My sweater **shrank** in the wash. /maɪ ˈswet.ər ʃræŋk ɪn ðə wɒʃ/ |
+| 120 | slide /slaɪd/ | slid /slɪd/ | slid /slɪd/ | deslizar | The kids **slid** down the hill. /ðə kɪdz slɪd daʊn ðə hɪl/ |
+| 121 | sow /soʊ/ | sowed /soʊd/ | sown /soʊn/ | sembrar | They **sowed** seeds in the spring. /ðeɪ soʊd siːdz ɪn ðə sprɪŋ/ |
+| 122 | spin /spɪn/ | spun /spʌn/ | spun /spʌn/ | girar | The wheel **spun** out of control. /ðə wiːl spʌn aʊt əv kənˈtroʊl/ |
+| 123 | spit /spɪt/ | spat /spæt/ | spat /spæt/ | escupir | The baby **spat** out the food. /ðə ˈbeɪ.bi spæt aʊt ðə fuːd/ |
+| 124 | spring /sprɪŋ/ | sprang /spræŋ/ | sprung /sprʌŋ/ | saltar | The dog **sprang** over the fence. /ðə dɒɡ spræŋ ˈoʊ.vər ðə fens/ |
+| 125 | sting /stɪŋ/ | stung /stʌŋ/ | stung /stʌŋ/ | picar | A bee **stung** me on the arm. /ə biː stʌŋ miː ɒn ði ɑːrm/ |
+| 126 | stink /stɪŋk/ | stank /stæŋk/ | stunk /stʌŋk/ | apestar | The fish **stank** after being in the sun. /ðə fɪʃ stæŋk ˈæf.tər ˈbiː.ɪŋ ɪn ðə sʌn/ |
+| 127 | stride /straɪd/ | strode /stroʊd/ | stridden /ˈstrɪd.ən/ | caminar a zancadas | He **strode** into the room confidently. /hiː stroʊd ˈɪn.tə ðə ruːm ˈkɒn.fɪ.dənt.li/ |
+| 128 | strive /straɪv/ | strove /stroʊv/ | striven /ˈstrɪv.ən/ | esforzarse | She **strove** to be the best in her class. /ʃiː stroʊv tə biː ðə best ɪn hər klæs/ |
+| 129 | swear /swer/ | swore /swɔːr/ | sworn /swɔːrn/ | jurar | — (already in top 100 as #90) |
+| 130 | sweep /swiːp/ | swept /swept/ | swept /swept/ | barrer | She **swept** the floor before dinner. /ʃiː swept ðə flɔːr bɪˈfɔːr ˈdɪn.ər/ |
+| 131 | swing /swɪŋ/ | swung /swʌŋ/ | swung /swʌŋ/ | balancear | The monkey **swung** from tree to tree. /ðə ˈmʌŋ.ki swʌŋ frəm triː tə triː/ |
+| 132 | tear /ter/ | tore /tɔːr/ | torn /tɔːrn/ | rasgar | I accidentally **tore** the page. /aɪ ˌæk.sɪˈden.təl.i tɔːr ðə peɪdʒ/ |
+| 133 | tread /tred/ | trod /trɒd/ | trodden /ˈtrɒd.ən/ | pisar | Be careful, don't tread on the flowers. She **trod** on my foot. /ʃiː trɒd ɒn maɪ fʊt/ |
+| 134 | undergo /ˌʌn.dərˈɡoʊ/ | underwent /ˌʌn.dərˈwent/ | undergone /ˌʌn.dərˈɡɒn/ | someterse a | He **underwent** surgery last month. /hiː ˌʌn.dərˈwent ˈsɜːr.dʒər.i lɑːst mʌnθ/ |
+| 135 | undertake /ˌʌn.dərˈteɪk/ | undertook /ˌʌn.dərˈtʊk/ | undertaken /ˌʌn.dərˈteɪ.kən/ | emprender | They **undertook** a major renovation. /ðeɪ ˌʌn.dərˈtʊk ə ˈmeɪ.dʒər ˌren.əˈveɪ.ʃən/ |
+| 136 | upset /ʌpˈset/ | upset /ʌpˈset/ | upset /ʌpˈset/ | disgustar | The news **upset** everyone at the office. /ðə njuːz ʌpˈset ˈev.ri.wʌn ət ði ˈɒf.ɪs/ |
+| 137 | weave /wiːv/ | wove /woʊv/ | woven /ˈwoʊ.vən/ | tejer | She **wove** a beautiful scarf. /ʃiː woʊv ə ˈbjuː.tɪ.fəl skɑːrf/ |
+| 138 | weep /wiːp/ | wept /wept/ | wept /wept/ | llorar | She **wept** with joy at the news. /ʃiː wept wɪð dʒɔɪ ət ðə njuːz/ |
+| 139 | wind /waɪnd/ | wound /waʊnd/ | wound /waʊnd/ | enrollar/dar cuerda | He **wound** the clock every morning. /hiː waʊnd ðə klɒk ˈev.ri ˈmɔːr.nɪŋ/ |
+| 140 | withdraw /wɪðˈdrɔː/ | withdrew /wɪðˈdruː/ | withdrawn /wɪðˈdrɔːn/ | retirar | She **withdrew** money from the ATM. /ʃiː wɪðˈdruː ˈmʌn.i frəm ði ˌeɪ.tiːˈem/ |
+| 141 | wring /rɪŋ/ | wrung /rʌŋ/ | wrung /rʌŋ/ | retorcer | She **wrung** out the wet towel. /ʃiː rʌŋ aʊt ðə wet ˈtaʊ.əl/ |
+| 142 | broadcast /ˈbrɔːd.kæst/ | broadcast /ˈbrɔːd.kæst/ | broadcast /ˈbrɔːd.kæst/ | transmitir | The game was **broadcast** live on TV. /ðə ɡeɪm wəz ˈbrɔːd.kæst laɪv ɒn ˌtiːˈviː/ |
+| 143 | cling /klɪŋ/ | clung /klʌŋ/ | clung /klʌŋ/ | aferrarse | The child **clung** to her mother. /ðə tʃaɪld klʌŋ tə hər ˈmʌð.ər/ |
+| 144 | creep /kriːp/ | crept /krept/ | crept /krept/ | arrastrarse | The cat **crept** towards the mouse. /ðə kæt krept tərˈwɔːrdz ðə maʊs/ |
+| 145 | flee /fliː/ | fled /fled/ | fled /fled/ | huir | They **fled** the country during the war. /ðeɪ fled ðə ˈkʌn.tri ˈdjʊər.ɪŋ ðə wɔːr/ |
+| 146 | fling /flɪŋ/ | flung /flʌŋ/ | flung /flʌŋ/ | lanzar | She **flung** her bag on the sofa. /ʃiː flʌŋ hər bæɡ ɒn ðə ˈsoʊ.fə/ |
+| 147 | forbid /fərˈbɪd/ | forbade /fərˈbæd/ | forbidden /fərˈbɪd.ən/ | prohibir | The school **forbade** mobile phones. /ðə skuːl fərˈbæd ˈmoʊ.baɪl foʊnz/ |
+| 148 | overtake /ˌoʊ.vərˈteɪk/ | overtook /ˌoʊ.vərˈtʊk/ | overtaken /ˌoʊ.vərˈteɪ.kən/ | adelantar | The car **overtook** the truck on the highway. /ðə kɑːr ˌoʊ.vərˈtʊk ðə trʌk ɒn ðə ˈhaɪ.weɪ/ |
+| 149 | sling /slɪŋ/ | slung /slʌŋ/ | slung /slʌŋ/ | colgar/lanzar | He **slung** his backpack over his shoulder. /hiː slʌŋ hɪz ˈbæk.pæk ˈoʊ.vər hɪz ˈʃoʊl.dər/ |
+| 150 | withstand /wɪðˈstænd/ | withstood /wɪðˈstʊd/ | withstood /wɪðˈstʊd/ | resistir | The bridge **withstood** the earthquake. /ðə brɪdʒ wɪðˈstʊd ði ˈɜːrθ.kweɪk/ |
+
+---
+
 ## Patrones Comunes
 
 Aunque los verbos irregulares no siguen las reglas regulares, muchos comparten patrones similares que facilitan su memorizacion.

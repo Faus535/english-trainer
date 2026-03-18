@@ -3,7 +3,7 @@
  */
 
 const STORAGE_PREFIX = 'english_plan_';
-const TOTAL_DAYS = 84;
+const TOTAL_DAYS = 112;
 
 let completedDays = loadState('completedDays', {});
 let completedMilestones = loadState('completedMilestones', {});
@@ -27,6 +27,10 @@ function toggleDay(dayNum) {
     delete completedDays[dayNum];
   } else {
     completedDays[dayNum] = true;
+    recordActivity();
+    showXPFloat('+' + XP_PER_DAY + ' XP');
+    const newAch = checkNewAchievements();
+    newAch.forEach(a => showAchievementToast(a));
   }
   saveState('completedDays', completedDays);
   render();
@@ -37,6 +41,9 @@ function toggleMilestone(idx) {
     delete completedMilestones[idx];
   } else {
     completedMilestones[idx] = true;
+    recordActivity();
+    const newAch = checkNewAchievements();
+    newAch.forEach(a => showAchievementToast(a));
   }
   saveState('completedMilestones', completedMilestones);
   render();

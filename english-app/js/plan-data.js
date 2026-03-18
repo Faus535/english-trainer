@@ -1,11 +1,9 @@
 /**
- * Plan data - 12-week structured learning plan.
+ * Plan data - 16-week structured learning plan.
+ * 4 blocks: Foundations → Problem Sounds → Flow & Grammar → Immersion
+ * Each day has a self-contained trainer file with all content inline.
  */
 
-/**
- * Dictation videos - one per dictation day, embedded directly.
- * Each entry: { id: YouTube video ID, title: description, channel: source }
- */
 const DICTATION_VIDEOS = [
   { id: 'oTPZWpQ9pbA', title: 'Cultural Differences',         channel: 'BBC 6 Minute English' },
   { id: 'Tcf1dbiWKsk', title: 'How Resilient Are You?',       channel: 'BBC 6 Minute English' },
@@ -24,10 +22,6 @@ const DICTATION_VIDEOS = [
   { id: 'vJlu2jDYiCo', title: 'Is It a Good Question?',       channel: 'All Ears English' },
 ];
 
-/**
- * Shadowing videos - one per shadowing day.
- * Each entry: { id: YouTube video ID, title: description, channel: source }
- */
 const SHADOWING_VIDEOS = [
   { id: 'spQYjkZub3U', title: 'How to Pronounce JEWELLERY',           channel: 'English with Lucy' },
   { id: 'q7SAt9h4sd0', title: 'What Makes American English Sound American', channel: "Rachel's English" },
@@ -42,20 +36,20 @@ const SHADOWING_VIDEOS = [
 ];
 
 const MILESTONES = [
-  { text: 'Se que son las reduced forms y weak forms', week: '1' },
-  { text: 'Puedo decodificar frases en IPA', week: '1-2' },
-  { text: 'Primera sesion de dictation completada', week: '2' },
-  { text: 'Entiendo por que "gonna/wanna" no son slang sino fonetica', week: '2' },
-  { text: 'Primera sesion de shadowing completada', week: '3' },
-  { text: 'Puedo ver 5 min de serie sin subtitulos sin perderme', week: '3-4' },
-  { text: 'Distingo thirteen de thirty al oido', week: '3-4' },
-  { text: 'Reconozco fillers y no me confunden', week: '4' },
-  { text: 'Puedo hacer shadowing de un TED Talk', week: '4-5' },
-  { text: 'Veo episodios con sub ingles y entiendo 80%+', week: '5-6' },
-  { text: 'Veo episodios sin subtitulos y sigo la trama', week: '7-8' },
-  { text: 'Entiendo podcasts a velocidad normal', week: '8-9' },
-  { text: 'Primera conversacion real en ingles', week: '9' },
-  { text: 'Peliculas sin subtitulos con 80%+ comprension', week: '11-12' },
+  { text: 'Detecto la schwa en palabras cotidianas', week: '1' },
+  { text: 'Distingo vocales cortas de largas (ship vs sheep)', week: '1-2' },
+  { text: 'Puedo conjugar en Past Simple (regular e irregular)', week: '2-3' },
+  { text: 'Distingo /b/ de /v/ y /θ/ de /t/ al oido', week: '5-6' },
+  { text: 'Uso Present Perfect en contexto', week: '5' },
+  { text: 'Entiendo por que "gonna/wanna" son fonetica, no slang', week: '7' },
+  { text: 'Puedo formar oraciones en pasiva', week: '9' },
+  { text: 'Entiendo Reported Speech en conversaciones', week: '10' },
+  { text: 'Veo 5 min de serie sin subtitulos y sigo la trama', week: '8' },
+  { text: 'Uso Relative Clauses al hablar', week: '11' },
+  { text: 'Entiendo podcasts a velocidad normal', week: '12' },
+  { text: 'Primera conversacion real en ingles', week: '13' },
+  { text: 'Distingo acentos americano vs britanico', week: '14' },
+  { text: 'Peliculas sin subtitulos con 80%+ comprension', week: '15-16' },
 ];
 
 const MOTIVATIONS = [
@@ -66,291 +60,539 @@ const MOTIVATIONS = [
   'Cada frase que repites crea una conexion neuronal nueva.',
   'Consistencia > intensidad. 20 min diarios > 2h el sabado.',
   'Ya sabes ingles. Solo tienes que enseñarle a tu oido lo que tus ojos ya saben.',
+  'Los errores son tus mejores maestros. Cada error corregido es un avance.',
+  'No necesitas un acento perfecto. Necesitas que te entiendan.',
+  'La gramatica no es aburrida si la usas para decir cosas que te importan.',
 ];
+
+// Helper: pad day number to 3 digits
+function dayFile(n) { return 'trainer/day-' + String(n).padStart(3, '0') + '.md'; }
 
 function buildPlan() {
   const weeks = [];
 
-  // ===== WEEK 1 =====
+  // =========================================================================
+  // BLOCK A — FOUNDATIONS (Weeks 1-4)
+  // =========================================================================
+
   weeks.push({
     number: 1,
-    title: 'Descubrir por que no entiendes',
-    desc: 'El objetivo esta semana NO es entender todo. Es descubrir que sonidos te estan engañando.',
+    title: 'La Schwa y los sonidos invisibles',
+    desc: 'El sonido mas comun del ingles no tiene letra propia. Aprende a detectarlo y tu comprension mejorara de golpe.',
     days: [
       { day: 1, label: 'Dia 1', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Seccion "El problema fundamental"', file: 'listening/rhythm-and-stress.md', details: ['Comprende la diferencia syllable-timed (español) vs stress-timed (ingles)', 'Aprende que son content words vs function words'] },
-        { time: '10 min', desc: 'Seccion "Contracciones avanzadas"', file: 'listening/reduced-forms.md', details: ['gonna, wanna, gotta, hafta, shoulda, coulda, woulda', 'Pronuncia cada una en voz alta 3 veces'] },
-        { time: '5 min', desc: 'Serie/pelicula en ingles CON subtitulos en ingles', details: ['No intentes entender todo', 'Solo observa cuantas palabras "desaparecen" al hablar vs lo que lees en subtitulos'], tip: 'Empieza con Friends o The Office - son el gimnasio de listening perfecto' },
+        { time: '25 min', desc: 'La Schwa /ə/ + Top 20 palabras + Caza la Schwa', file: dayFile(1) },
       ]},
       { day: 2, label: 'Dia 2', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Seccion "Weak Forms" (la clave oculta)', file: 'listening/reduced-forms.md', details: ['Esto es lo MAS importante: "to" suena /tə/, "the" suena /ðə/, "and" suena /ən/', 'Practica las 10 primeras frases de ejemplo en voz alta'] },
-        { time: '10 min', desc: 'Seccion "Stress de oracion"', file: 'listening/rhythm-and-stress.md', details: ['Entiende que "DOGS CHASE CATS" y "The DOGS should have been CHASING all the CATS" duran lo MISMO'] },
-        { time: '5 min', desc: 'Misma serie de ayer', details: ['Ahora fijate en las function words: ¿las oyes o desaparecen?'] },
+        { time: '25 min', desc: 'Schwa en funcionales + Present Simple + Serie', file: dayFile(2) },
       ]},
       { day: 3, label: 'Dia 3', duration: '25 min', activities: [
-        { time: '15 min', desc: 'Nivel 1 - frases de 2-4 palabras', file: 'listening/connected-speech-drills.md', details: ['Haz las primeras 20 frases: lee la forma escrita, luego la pronunciacion IPA, di la frase como la diria un nativo'] },
-        { time: '5 min', desc: 'Repasa las weak forms de ayer', details: ['Tapa la columna de pronunciacion e intenta recordarla'] },
-        { time: '5 min', desc: 'Serie - tecnica de pausa', details: ['Pausa en una frase que no entiendas. Rebobina. Escuchala 5 veces. Lee el subtitulo. Escuchala 5 veces mas'] },
+        { time: '25 min', desc: 'Drills de Schwa + Negativa/Preguntas + Vocabulario', file: dayFile(3) },
       ]},
       { day: 4, label: 'Dia 4', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Nivel 1, frases 21-53', file: 'listening/connected-speech-drills.md', details: ['Misma tecnica: leer → pronunciar → repetir'] },
-        { time: '10 min', desc: 'Seccion "Consonantes dificiles para hispanohablantes"', file: 'pronunciation/ipa-guide.md', details: ['Enfocate en /θ/ vs /ð/ (th), /v/ vs /b/, /ʃ/ vs /tʃ/', 'Practica los pares minimos en voz alta'] },
-        { time: '5 min', desc: 'Serie - escena de 1 minuto', details: ['Escuchala 3 veces sin subtitulos. Luego con subtitulos. ¿Que palabras te faltaban?'] },
+        { time: '25 min', desc: 'Vocales cortas + Pronunciacion de -s', file: dayFile(4) },
       ]},
       { day: 5, label: 'Dia 5', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Pares /b/ vs /v/ y /ɪ/ vs /iː/', file: 'listening/minimal-pairs-drills.md', details: ['Lee cada par en voz alta exagerando la diferencia'] },
-        { time: '10 min', desc: 'Seccion "Fusiones"', file: 'listening/reduced-forms.md', details: ['gimme, lemme, didja, whatcha, whaddya', 'Pronuncia cada una. Usa la frase de ejemplo'] },
-        { time: '5 min', desc: 'YouTube: "English listening test B1"', details: ['Haz uno para medir tu nivel real de escucha'] },
+        { time: '25 min', desc: 'Pares minimos /ɪ/ vs /iː/ + Frases esenciales', file: dayFile(5) },
       ]},
       { day: 6, label: 'Dia 6', duration: '30 min', activities: [
-        { time: '10 min', desc: 'Repaso de la semana', details: ['Relee tus apuntes de reduced forms y weak forms'] },
-        { time: '10 min', desc: 'Seccion "Decodificacion"', file: 'listening/connected-speech-drills.md', details: ['Intenta descifrar 10 transcripciones IPA sin mirar la respuesta'] },
-        { time: '10 min', desc: 'Serie con sub ingles (10 minutos)', details: ['Anota 5 frases que no entendieras al oido'] },
+        { time: '20 min', desc: 'Repaso semanal + Serie', file: dayFile(6) },
+        { time: '10 min', desc: 'Dictation: Cultural Differences', dictation: 0 },
       ]},
       { day: 7, label: 'Dia 7', duration: '10 min', rest: true, activities: [
-        { time: '10 min', desc: 'Descanso activo - Musica en ingles', file: 'listening/songs.md', details: ['Elige una cancion', 'Intenta seguir la letra sin leerla. Luego leela'] },
+        { time: '10 min', desc: 'Descanso activo — Musica en ingles', file: dayFile(7) },
       ]},
     ],
   });
 
-  // ===== WEEK 2 =====
   weeks.push({
     number: 2,
-    title: 'Entrenar el oido con dictation',
-    desc: 'Ahora ya sabes POR QUE no entiendes. Esta semana empiezas a ENTRENAR el oido.',
+    title: 'Vocales cortas + Pasado regular',
+    desc: 'Las vocales que no existen en español son tu mayor enemigo. Y el pasado regular tiene un truco: la -ed tiene 3 sonidos.',
     days: [
       { day: 8, label: 'Dia 8', duration: '25 min', activities: [
-        { time: '15 min', desc: 'Primera sesion de dictation', dictation: 0 },
-        { time: '5 min', desc: 'Repaso reduced forms semana 1', details: ['Tapar pronunciacion, intentar recordar'] },
-        { time: '5 min', desc: 'Serie - escena de 1 min', details: ['3 veces sin sub, luego con sub'] },
+        { time: '25 min', desc: 'Pares /æ/ vs /ʌ/ + Past Simple regular', file: dayFile(8) },
       ]},
       { day: 9, label: 'Dia 9', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Dictation', dictation: 3 },
-        { time: '10 min', desc: 'Secciones "Falling" y "Rising"', file: 'listening/intonation.md', details: ['La entonacion cambia el significado', 'Practica: di "Really" con entonacion de pregunta, sorpresa e incredulidad'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '25 min', desc: 'Pronunciacion de -ed + Pares /æ/ vs /e/', file: dayFile(9) },
       ]},
       { day: 10, label: 'Dia 10', duration: '25 min', activities: [
-        { time: '15 min', desc: 'Dictation (2 fragmentos de 30 seg)', dictation: 1 },
-        { time: '5 min', desc: 'Grupo 1, primeras 15 frases', file: 'listening/hardest-phrases.md', details: ['Lee la version escrita → lee como suena → repite en voz alta'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '25 min', desc: 'Pares /ɒ/ vs /ʌ/ + Verbos regulares + Viaje', file: dayFile(10) },
       ]},
       { day: 11, label: 'Dia 11', duration: '25 min', activities: [
-        { time: '15 min', desc: 'Dictation', dictation: 7 },
-        { time: '5 min', desc: 'Seccion "Fillers"', file: 'listening/fillers-and-markers.md', details: ['Aprende a ignorar: uh, um, like, you know, I mean, basically'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '15 min', desc: 'Pares minimos en frases + Serie', file: dayFile(11) },
+        { time: '10 min', desc: 'Dictation: How Resilient Are You?', dictation: 1 },
       ]},
       { day: 12, label: 'Dia 12', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Dictation', dictation: 6 },
-        { time: '10 min', desc: 'Nivel 2 - frases de 5-8 palabras', file: 'listening/connected-speech-drills.md', details: ['Primeras 15 frases'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '25 min', desc: 'Frases -ed en contexto + Preposiciones de tiempo', file: dayFile(12) },
       ]},
       { day: 13, label: 'Dia 13', duration: '30 min', activities: [
-        { time: '10 min', desc: 'Dictation (sube la dificultad)', dictation: 9 },
-        { time: '10 min', desc: 'Grupo 2 (linking masivo)', file: 'listening/hardest-phrases.md', details: ['Primeras 15 frases'] },
-        { time: '10 min', desc: 'Serie: 5 min SIN sub + 5 min con sub' },
+        { time: '30 min', desc: 'Repaso: Vocales cortas + Past Simple + Serie', file: dayFile(13) },
       ]},
-      { day: 14, label: 'Dia 14', duration: '15 min', rest: true, activities: [
-        { time: '15 min', desc: 'Descanso activo - Podcast de fondo', details: ['Pon un podcast mientras haces otra cosa', 'No te esfuerces en entender todo'], tip: '"All Ears English" o "6 Minute English" de BBC' },
+      { day: 14, label: 'Dia 14', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso activo — Podcast de fondo', file: dayFile(14) },
       ]},
     ],
   });
 
-  // ===== WEEK 3 =====
   weeks.push({
     number: 3,
-    title: 'Introducir shadowing',
-    desc: 'Shadowing = repetir lo que oyes EN TIEMPO REAL. El ejercicio mas potente para listening.',
+    title: 'Vocales largas + Irregulares',
+    desc: 'Las vocales largas cambian significados (ship/sheep). Y los verbos irregulares... hay que memorizarlos, pero con truco.',
     days: [
       { day: 15, label: 'Dia 15', duration: '25 min', activities: [
-        { time: '15 min', desc: 'Primera sesion de shadowing', shadowing: 0 },
-        { time: '5 min', desc: 'Seccion "Fall-Rise"', file: 'listening/intonation.md', details: ['Duda, reserva, "pero" no dicho'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '25 min', desc: 'Vocales largas + Top 20 irregulares + Viaje', file: dayFile(15) },
       ]},
       { day: 16, label: 'Dia 16', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 1 },
-        { time: '10 min', desc: 'Dictation (nuevo material)', dictation: 8 },
-        { time: '5 min', desc: 'Serie' },
+        { time: '20 min', desc: 'Pares /ɪ/ vs /iː/ avanzado + Irregulares 20-40', file: dayFile(16) },
+        { time: '5 min', desc: 'Dictation: You Think You\'re Invisible?', dictation: 2 },
       ]},
       { day: 17, label: 'Dia 17', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 2 },
-        { time: '10 min', desc: 'Grupo 3 (sonidos que no existen en español)', file: 'listening/hardest-phrases.md', details: ['Enfocate en frases con /θ/, /ð/, /v/'] },
-        { time: '5 min', desc: 'Serie - intenta 5 min sin subtitulos' },
+        { time: '25 min', desc: 'Pares /ʊ/ vs /uː/ + Irregulares 40-60 + Serie', file: dayFile(17) },
       ]},
       { day: 18, label: 'Dia 18', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing (sube la dificultad)', shadowing: 4 },
-        { time: '10 min', desc: 'Nivel 2, frases 16-30', file: 'listening/connected-speech-drills.md' },
-        { time: '5 min', desc: 'Serie' },
+        { time: '25 min', desc: 'Diptongos + Irregulares 60-80 + Viaje', file: dayFile(18) },
       ]},
       { day: 19, label: 'Dia 19', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 3 },
-        { time: '10 min', desc: 'Secciones "Teen vs Ten" y "Numeros grandes"', file: 'listening/numbers-spoken.md', details: ['Practica: thirteen vs thirty, fourteen vs forty'] },
-        { time: '5 min', desc: 'Serie' },
+        { time: '20 min', desc: 'Diptongos debiles + Irregulares 80-100', file: dayFile(19) },
+        { time: '5 min', desc: 'Shadowing: How to Pronounce JEWELLERY', shadowing: 0 },
       ]},
       { day: 20, label: 'Dia 20', duration: '30 min', activities: [
-        { time: '10 min', desc: 'Shadowing (serie real)', shadowing: 5 },
-        { time: '10 min', desc: 'Grupo 4 (homofonos)', file: 'listening/hardest-phrases.md' },
-        { time: '10 min', desc: 'Serie: 5 sin sub + 5 con sub' },
+        { time: '20 min', desc: 'Repaso: Vocales + Irregulares + Serie sin sub', file: dayFile(20) },
+        { time: '10 min', desc: 'Dictation: Business English', dictation: 3 },
       ]},
-      { day: 21, label: 'Dia 21', duration: '20 min', rest: true, activities: [
-        { time: '20 min', desc: 'Descanso activo - YouTube que te interese', details: ['Algo que te guste DE VERDAD (tech, gaming, cocina) en ingles', 'No estudies. Solo disfruta. Si entiendes el 50%, vas bien'] },
+      { day: 21, label: 'Dia 21', duration: '15 min', rest: true, activities: [
+        { time: '15 min', desc: 'Descanso activo — YouTube que te interese', file: dayFile(21) },
       ]},
     ],
   });
 
-  // ===== WEEK 4 =====
   weeks.push({
     number: 4,
-    title: 'Subir intensidad',
-    desc: 'Ya tienes las herramientas. Sube el ritmo y empieza a quitar subtitulos.',
+    title: 'Semana de repaso y celebracion',
+    desc: 'Consolida todo lo aprendido. Dictation, quiz de vocabulario, reto con cancion. ¡Ya llevas 1 mes!',
     days: [
-      { day: 22, label: 'Lunes', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 8 },
-        { time: '10 min', desc: 'Nivel 3 - dialogos reales', file: 'listening/connected-speech-drills.md', details: ['Primeras 10 situaciones'] },
-        { time: '5 min', desc: 'Serie sin subtitulos' },
+      { day: 22, label: 'Dia 22', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Gran repaso de vocales + Past vs Present', file: dayFile(22) },
       ]},
-      { day: 23, label: 'Martes', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Dictation', dictation: 13 },
-        { time: '10 min', desc: 'Grupo 5 (expresiones idiomaticas)', file: 'listening/hardest-phrases.md' },
-        { time: '5 min', desc: 'Serie sin subtitulos' },
+      { day: 23, label: 'Dia 23', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Connected speech nivel 1', file: dayFile(23) },
+        { time: '10 min', desc: 'Dictation intensivo: Life Without Music', dictation: 4 },
       ]},
-      { day: 24, label: 'Miercoles', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 6 },
-        { time: '10 min', desc: 'Seccion "American English"', file: 'listening/accents.md', details: ['Flapping (better = /beɾər/) y R rhotico'] },
-        { time: '5 min', desc: 'Serie' },
+      { day: 24, label: 'Dia 24', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Reto: Cancion + Irregulares dificiles + Serie', file: dayFile(24) },
       ]},
-      { day: 25, label: 'Jueves', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Dictation', dictation: 4 },
-        { time: '10 min', desc: 'Primeras 3 secciones', file: 'listening/slang-modern.md', details: ['ghost, flex, vibe, lowkey, bet, cap - las oiras en series'] },
-        { time: '5 min', desc: 'Serie' },
+      { day: 25, label: 'Dia 25', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Reduced forms + Frases del dia a dia', file: dayFile(25) },
+        { time: '10 min', desc: 'Shadowing: American English Sound', shadowing: 1 },
       ]},
-      { day: 26, label: 'Viernes', duration: '25 min', activities: [
-        { time: '10 min', desc: 'Shadowing', shadowing: 7 },
-        { time: '10 min', desc: 'Repaso: las 20 reduced forms que peor recuerdes' },
-        { time: '5 min', desc: 'Serie' },
+      { day: 26, label: 'Dia 26', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Estructura SVO + Flashcards', file: dayFile(26) },
+        { time: '10 min', desc: 'Dictation: The Impact of Plastic', dictation: 5 },
       ]},
-      { day: 27, label: 'Sabado', duration: '30 min', activities: [
-        { time: '15 min', desc: 'Episodio ya visto en español, ahora en ingles sin sub' },
-        { time: '15 min', desc: 'Anota 10 frases que no entendieras', details: ['Analiza POR QUE: ¿reduced form? ¿linking? ¿acento?'] },
+      { day: 27, label: 'Dia 27', duration: '30 min', activities: [
+        { time: '30 min', desc: 'TEST de medio camino + Celebracion', file: dayFile(27) },
       ]},
-      { day: 28, label: 'Domingo', duration: '10 min', rest: true, activities: [
-        { time: '10 min', desc: 'Descanso activo - Musica o podcast de fondo' },
+      { day: 28, label: 'Dia 28', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso total — Musica de fondo', file: dayFile(28) },
       ]},
     ],
   });
 
-  // ===== WEEKS 5-8: Pattern =====
-  const week5to8Template = [
-    { label: 'Lunes', duration: '25 min', activities: [
-      { time: '10 min', desc: 'Shadowing', shadowing: 9 },
-      { time: '10 min', desc: 'Reduced forms nuevas o repaso' },
-      { time: '5 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Martes', duration: '25 min', activities: [
-      { time: '10 min', desc: 'Dictation', dictation: 14 },
-      { time: '10 min', desc: '10 frases nuevas', file: 'listening/hardest-phrases.md' },
-      { time: '5 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Miercoles', duration: '25 min', activities: [
-      { time: '10 min', desc: 'Shadowing', shadowing: 5 },
-      { time: '10 min', desc: 'Repaso', file: 'listening/connected-speech-drills.md' },
-      { time: '5 min', desc: 'YouTube en ingles' },
-    ]},
-    { label: 'Jueves', duration: '25 min', activities: [
-      { time: '10 min', desc: 'Dictation', dictation: 12 },
-      { time: '10 min', desc: 'Entonacion o acentos', file: 'listening/intonation.md' },
-      { time: '5 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Viernes', duration: '30 min', activities: [
-      { time: '10 min', desc: 'Shadowing', shadowing: 4 },
-      { time: '10 min', desc: 'Par nuevo', file: 'listening/minimal-pairs-drills.md' },
-      { time: '10 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Sabado', duration: '25 min', activities: [
-      { time: '20 min', desc: 'Episodio completo sin subtitulos' },
-      { time: '5 min', desc: 'Analizar 10 frases no entendidas' },
-    ]},
-    { label: 'Domingo', duration: '10 min', rest: true, activities: [
-      { time: '10 min', desc: 'Descanso: podcast/musica de fondo' },
-    ]},
-  ];
+  // =========================================================================
+  // BLOCK B — PROBLEM SOUNDS (Weeks 5-8)
+  // =========================================================================
 
-  const weekProgression = [
-    'Series con sub ingles (pausar cuando no entiendas)',
-    'Series sin sub (solo si te pierdes)',
-    'Podcasts a velocidad normal',
-    'Noticias en directo (CNN, BBC) - lo mas dificil',
-  ];
+  weeks.push({
+    number: 5,
+    title: '/v/ vs /b/ + Present Perfect',
+    desc: 'El error #1 del hispanohablante: "berry" y "very" NO suenan igual. Y el Present Perfect es tu nueva herramienta temporal.',
+    days: [
+      { day: 29, label: 'Dia 29', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Consonantes /v/ y /b/ + Present Perfect', file: dayFile(29) },
+      ]},
+      { day: 30, label: 'Dia 30', duration: '25 min', activities: [
+        { time: '25 min', desc: '/b/ vs /v/ completo + Present Perfect practica', file: dayFile(30) },
+      ]},
+      { day: 31, label: 'Dia 31', duration: '25 min', activities: [
+        { time: '20 min', desc: '/w/ vs /v/ + Present Perfect vs Past Simple', file: dayFile(31) },
+        { time: '5 min', desc: 'Dictation: Lucy Visits Madrid', dictation: 6 },
+      ]},
+      { day: 32, label: 'Dia 32', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Phrasal verbs de trabajo + Serie', file: dayFile(32) },
+        { time: '10 min', desc: 'Shadowing: How Do You Pronounce OFTEN?', shadowing: 2 },
+      ]},
+      { day: 33, label: 'Dia 33', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Repaso /v/ /b/ /w/ + Vocabulario 200-500', file: dayFile(33) },
+      ]},
+      { day: 34, label: 'Dia 34', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Present Perfect errores + Serie sin sub', file: dayFile(34) },
+        { time: '10 min', desc: 'Dictation: 10 Must-Know Words', dictation: 7 },
+      ]},
+      { day: 35, label: 'Dia 35', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Cancion con foco en /v/', file: dayFile(35) },
+      ]},
+    ],
+  });
 
-  for (let w = 5; w <= 8; w++) {
-    const days = [];
-    const baseDay = 28 + (w - 5) * 7;
-    week5to8Template.forEach((template, i) => {
-      days.push({
-        ...template,
-        day: baseDay + i + 1,
-        activities: template.activities.map(a => ({ ...a })),
-      });
-    });
-    weeks.push({
-      number: w,
-      title: 'Repeticion + exposicion real',
-      desc: weekProgression[w - 5],
-      days,
-    });
-  }
+  weeks.push({
+    number: 6,
+    title: 'El sonido "th" + el Futuro',
+    desc: '"Thank you" no es "tank you". Y para hablar del futuro tienes 3 opciones: will, going to, y present continuous.',
+    days: [
+      { day: 36, label: 'Dia 36', duration: '25 min', activities: [
+        { time: '25 min', desc: '/θ/ sorda + Futuro con will + Pares /θ/ vs /t/', file: dayFile(36) },
+      ]},
+      { day: 37, label: 'Dia 37', duration: '25 min', activities: [
+        { time: '25 min', desc: '/θ/ vs /t/ completo + Going to + Idioms', file: dayFile(37) },
+      ]},
+      { day: 38, label: 'Dia 38', duration: '25 min', activities: [
+        { time: '20 min', desc: '/ð/ sonora + /ð/ vs /d/', file: dayFile(38) },
+        { time: '5 min', desc: 'Dictation: Think in English', dictation: 8 },
+      ]},
+      { day: 39, label: 'Dia 39', duration: '25 min', activities: [
+        { time: '15 min', desc: 'will vs going to practica + Vocabulario', file: dayFile(39) },
+        { time: '10 min', desc: 'Shadowing: Modern Family', shadowing: 3 },
+      ]},
+      { day: 40, label: 'Dia 40', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Connected speech + Modales basicos', file: dayFile(40) },
+      ]},
+      { day: 41, label: 'Dia 41', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Repaso th + futuro + Serie sin sub', file: dayFile(41) },
+        { time: '10 min', desc: 'Dictation: How to Speak English Well', dictation: 9 },
+      ]},
+      { day: 42, label: 'Dia 42', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Podcast "6 Minute English"', file: dayFile(42) },
+      ]},
+    ],
+  });
 
-  // ===== WEEKS 9-12: Immersion =====
-  const week9to12Template = [
-    { label: 'Lunes', duration: '30 min', activities: [
-      { time: '15 min', desc: 'Shadowing avanzado', shadowing: 8 },
-      { time: '15 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Martes', duration: '30 min', activities: [
-      { time: '30 min', desc: 'Podcast sin pausas (comprension continua)' },
-    ]},
-    { label: 'Miercoles', duration: '30 min', activities: [
-      { time: '15 min', desc: 'Conversacion real (Tandem, HelloTalk, Discord)' },
-      { time: '15 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Jueves', duration: '30 min', activities: [
-      { time: '30 min', desc: 'Pelicula/documental sin subtitulos' },
-    ]},
-    { label: 'Viernes', duration: '30 min', activities: [
-      { time: '15 min', desc: 'Shadowing avanzado', shadowing: 7 },
-      { time: '15 min', desc: 'Serie sin subtitulos' },
-    ]},
-    { label: 'Sabado', duration: '90+ min', activities: [
-      { time: '90 min', desc: 'Pelicula completa sin subtitulos' },
-    ]},
-    { label: 'Domingo', duration: '10 min', rest: true, activities: [
-      { time: '10 min', desc: 'Descanso: musica, podcast de fondo' },
-    ]},
-  ];
+  weeks.push({
+    number: 7,
+    title: 'sh/ch/vision + Condicionales',
+    desc: 'share ≠ chair, y "vision" tiene un sonido que ni existe en español. Ademas: if + present = will (First Conditional).',
+    days: [
+      { day: 43, label: 'Dia 43', duration: '25 min', activities: [
+        { time: '25 min', desc: '/ʃ/ vs /tʃ/ + Condicionales + Reduced forms', file: dayFile(43) },
+      ]},
+      { day: 44, label: 'Dia 44', duration: '25 min', activities: [
+        { time: '20 min', desc: '/ʒ/ + Second Conditional', file: dayFile(44) },
+        { time: '5 min', desc: 'Shadowing: 10 Ways to Have a Better Conversation', shadowing: 4 },
+      ]},
+      { day: 45, label: 'Dia 45', duration: '25 min', activities: [
+        { time: '20 min', desc: 'Connected speech nivel 2 + Phrasal verbs', file: dayFile(45) },
+        { time: '5 min', desc: 'Dictation: Cloud Idioms', dictation: 10 },
+      ]},
+      { day: 46, label: 'Dia 46', duration: '25 min', activities: [
+        { time: '25 min', desc: '/s/ vs /z/ + Condicionales practica + Vocab', file: dayFile(46) },
+      ]},
+      { day: 47, label: 'Dia 47', duration: '25 min', activities: [
+        { time: '25 min', desc: '/r/ vs /l/ + Conectores basicos + Serie', file: dayFile(47) },
+      ]},
+      { day: 48, label: 'Dia 48', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Repaso consonantes + Serie sin sub', file: dayFile(48) },
+        { time: '10 min', desc: 'Shadowing: Improve Your Pronunciation', shadowing: 5 },
+      ]},
+      { day: 49, label: 'Dia 49', duration: '15 min', rest: true, activities: [
+        { time: '15 min', desc: 'Descanso — Pelicula con sub ingles', file: dayFile(49) },
+      ]},
+    ],
+  });
 
-  const weekMilestones = [
-    'Entiendes 70-80% sin subtitulos',
-    'Conversacion casual sin perderte',
-    'Comprension fluida',
-    'Entiendes 85%+ a velocidad normal',
-  ];
+  weeks.push({
+    number: 8,
+    title: 'Repaso Block B + Reto',
+    desc: 'Mitad del camino. Dictation con pelicula real, repaso de phrasal verbs, y carrera de pares minimos.',
+    days: [
+      { day: 50, label: 'Dia 50', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Repaso pares minimos', file: dayFile(50) },
+        { time: '10 min', desc: 'Dictation: 8 Secrets of Success', dictation: 11 },
+      ]},
+      { day: 51, label: 'Dia 51', duration: '25 min', activities: [
+        { time: '20 min', desc: 'Phrasal verbs reto + Irregulares 101-125', file: dayFile(51) },
+        { time: '5 min', desc: 'Shadowing: Fruit & Vegetables', shadowing: 6 },
+      ]},
+      { day: 52, label: 'Dia 52', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Entonacion + Numeros hablados + Serie', file: dayFile(52) },
+      ]},
+      { day: 53, label: 'Dia 53', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Past Continuous + Idioms', file: dayFile(53) },
+        { time: '10 min', desc: 'Dictation: Snow Sports Conversation', dictation: 12 },
+      ]},
+      { day: 54, label: 'Dia 54', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Connected speech avanzado + Flashcards', file: dayFile(54) },
+        { time: '10 min', desc: 'Shadowing: Tech Brands', shadowing: 7 },
+      ]},
+      { day: 55, label: 'Dia 55', duration: '30 min', activities: [
+        { time: '30 min', desc: 'TEST mitad de camino + Celebracion', file: dayFile(55) },
+      ]},
+      { day: 56, label: 'Dia 56', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — YouTube sobre tu hobby', file: dayFile(56) },
+      ]},
+    ],
+  });
 
-  for (let w = 9; w <= 12; w++) {
-    const days = [];
-    const baseDay = 56 + (w - 9) * 7;
-    week9to12Template.forEach((template, i) => {
-      days.push({
-        ...template,
-        day: baseDay + i + 1,
-        activities: template.activities.map(a => ({ ...a })),
-      });
-    });
-    weeks.push({
-      number: w,
-      title: 'Inmersion + Conversacion',
-      desc: weekMilestones[w - 9],
-      days,
-    });
-  }
+  // =========================================================================
+  // BLOCK C — FLOW & GRAMMAR (Weeks 9-12)
+  // =========================================================================
+
+  weeks.push({
+    number: 9,
+    title: 'Reduced forms + Voz Pasiva',
+    desc: 'Los nativos no dicen "I am going to" — dicen "I\'m gonna". Y la voz pasiva aparece en CADA noticia.',
+    days: [
+      { day: 57, label: 'Lunes', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Reduced forms + Passive Voice', file: dayFile(57) },
+      ]},
+      { day: 58, label: 'Martes', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Passive Voice practica', file: dayFile(58) },
+        { time: '10 min', desc: 'Dictation', dictation: 10 },
+      ]},
+      { day: 59, label: 'Miercoles', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Passive Voice errores', file: dayFile(59) },
+        { time: '10 min', desc: 'Shadowing: How to Speak So People Want to Listen', shadowing: 8 },
+      ]},
+      { day: 60, label: 'Jueves', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Pronunciacion avanzada + Phrasal verbs', file: dayFile(60) },
+      ]},
+      { day: 61, label: 'Viernes', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Hardest phrases', file: dayFile(61) },
+        { time: '10 min', desc: 'Dictation', dictation: 11 },
+      ]},
+      { day: 62, label: 'Sabado', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Repaso semanal', file: dayFile(62) },
+      ]},
+      { day: 63, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Musica o podcast', file: dayFile(63) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 10,
+    title: 'Linking y Elision + Reported Speech',
+    desc: 'Las palabras se "pegan" entre si y algunas consonantes desaparecen. Y "She said she was tired" es Reported Speech.',
+    days: [
+      { day: 64, label: 'Lunes', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Linking, Elision + Reported Speech', file: dayFile(64) },
+      ]},
+      { day: 65, label: 'Martes', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Reported Speech practica', file: dayFile(65) },
+        { time: '10 min', desc: 'Dictation', dictation: 11 },
+      ]},
+      { day: 66, label: 'Miercoles', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Reported Speech errores', file: dayFile(66) },
+        { time: '10 min', desc: 'Shadowing: Pronunciation Tips L Sound', shadowing: 9 },
+      ]},
+      { day: 67, label: 'Jueves', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Asimilacion + Phrasal verbs viajes', file: dayFile(67) },
+      ]},
+      { day: 68, label: 'Viernes', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Hardest phrases: modal + have', file: dayFile(68) },
+        { time: '10 min', desc: 'Dictation', dictation: 12 },
+      ]},
+      { day: 69, label: 'Sabado', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Repaso semanal', file: dayFile(69) },
+      ]},
+      { day: 70, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Musica o podcast', file: dayFile(70) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 11,
+    title: 'Stress y Ritmo + Relative Clauses',
+    desc: 'El ingles es stress-timed: las silabas acentuadas van a ritmo fijo. Y "the man who called" usa Relative Clauses.',
+    days: [
+      { day: 71, label: 'Lunes', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Stress-timing + Relative Clauses', file: dayFile(71) },
+      ]},
+      { day: 72, label: 'Martes', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Relative Clauses practica', file: dayFile(72) },
+        { time: '10 min', desc: 'Dictation', dictation: 12 },
+      ]},
+      { day: 73, label: 'Miercoles', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Relative Clauses errores + Vocab', file: dayFile(73) },
+        { time: '10 min', desc: 'Shadowing', shadowing: 2 },
+      ]},
+      { day: 74, label: 'Jueves', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Sentence stress + Irregulares repaso', file: dayFile(74) },
+      ]},
+      { day: 75, label: 'Viernes', duration: '30 min', activities: [
+        { time: '20 min', desc: 'Hardest phrases + Serie', file: dayFile(75) },
+        { time: '10 min', desc: 'Dictation', dictation: 13 },
+      ]},
+      { day: 76, label: 'Sabado', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Repaso semanal', file: dayFile(76) },
+      ]},
+      { day: 77, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Musica o podcast', file: dayFile(77) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 12,
+    title: 'Repaso Block C + Test',
+    desc: 'Full test de comprension, gramatica y pronunciacion. Revisa los acentos americano vs britanico.',
+    days: [
+      { day: 78, label: 'Lunes', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Acentos: American vs British', file: dayFile(78) },
+        { time: '10 min', desc: 'Shadowing avanzado', shadowing: 8 },
+      ]},
+      { day: 79, label: 'Martes', duration: '25 min', activities: [
+        { time: '10 min', desc: 'Repaso gramatica Block C', file: dayFile(79) },
+        { time: '15 min', desc: 'Dictation avanzado', dictation: 13 },
+      ]},
+      { day: 80, label: 'Miercoles', duration: '25 min', activities: [
+        { time: '25 min', desc: 'Indirect Questions + Hardest phrases', file: dayFile(80) },
+      ]},
+      { day: 81, label: 'Jueves', duration: '25 min', activities: [
+        { time: '15 min', desc: 'Used to / Would + Vocabulario', file: dayFile(81) },
+        { time: '10 min', desc: 'Shadowing', shadowing: 9 },
+      ]},
+      { day: 82, label: 'Viernes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'FULL TEST Block C', file: dayFile(82) },
+      ]},
+      { day: 83, label: 'Sabado', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Episodio completo sin subtitulos', file: dayFile(83) },
+      ]},
+      { day: 84, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Podcast favorito', file: dayFile(84) },
+      ]},
+    ],
+  });
+
+  // =========================================================================
+  // BLOCK D — IMMERSION (Weeks 13-16)
+  // =========================================================================
+
+  weeks.push({
+    number: 13,
+    title: 'Present Perfect Continuous + Conversacion',
+    desc: 'I have been working all day. Tu primer objetivo: hablar con alguien en ingles esta semana.',
+    days: [
+      { day: 85, label: 'Lunes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Fillers + Present Perfect Continuous + Serie', file: dayFile(85) },
+      ]},
+      { day: 86, label: 'Martes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'PPC practica', file: dayFile(86) },
+        { time: '15 min', desc: 'Shadowing avanzado', shadowing: 4 },
+      ]},
+      { day: 87, label: 'Miercoles', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Primera conversacion real + Serie', file: dayFile(87) },
+      ]},
+      { day: 88, label: 'Jueves', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Vocabulario 500-1000', file: dayFile(88) },
+        { time: '15 min', desc: 'Dictation', dictation: 0 },
+      ]},
+      { day: 89, label: 'Viernes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Serie sin subtitulos', file: dayFile(89) },
+        { time: '15 min', desc: 'Shadowing', shadowing: 5 },
+      ]},
+      { day: 90, label: 'Sabado', duration: '90 min', activities: [
+        { time: '90 min', desc: 'Pelicula sin subtitulos', file: dayFile(90) },
+      ]},
+      { day: 91, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Musica o podcast', file: dayFile(91) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 14,
+    title: 'Intonation + Indirect Questions',
+    desc: 'La entonacion cambia significados: "Really?" (sorpresa) vs "Really." (aburrimiento).',
+    days: [
+      { day: 92, label: 'Lunes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Patrones de entonacion + Indirect Questions', file: dayFile(92) },
+      ]},
+      { day: 93, label: 'Martes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Indirect Questions practica', file: dayFile(93) },
+        { time: '15 min', desc: 'Shadowing', shadowing: 5 },
+      ]},
+      { day: 94, label: 'Miercoles', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Conversacion + Serie sin sub', file: dayFile(94) },
+      ]},
+      { day: 95, label: 'Jueves', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Vocabulario 500-1000', file: dayFile(95) },
+        { time: '15 min', desc: 'Dictation', dictation: 1 },
+      ]},
+      { day: 96, label: 'Viernes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Serie sin subtitulos', file: dayFile(96) },
+        { time: '15 min', desc: 'Shadowing', shadowing: 6 },
+      ]},
+      { day: 97, label: 'Sabado', duration: '90 min', activities: [
+        { time: '90 min', desc: 'Pelicula sin subtitulos', file: dayFile(97) },
+      ]},
+      { day: 98, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Podcast en ingles', file: dayFile(98) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 15,
+    title: 'Slang moderno + Used to/Would',
+    desc: 'ghost, flex, vibe, lowkey — el ingles real de 2024-2026. Y "I used to live in Madrid" para hablar del pasado.',
+    days: [
+      { day: 99, label: 'Lunes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Slang moderno + Used to / Would', file: dayFile(99) },
+      ]},
+      { day: 100, label: 'Martes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Used to / Would practica', file: dayFile(100) },
+        { time: '15 min', desc: 'Shadowing', shadowing: 6 },
+      ]},
+      { day: 101, label: 'Miercoles', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Conversacion + Serie sin sub', file: dayFile(101) },
+      ]},
+      { day: 102, label: 'Jueves', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Vocabulario 500-1000', file: dayFile(102) },
+        { time: '15 min', desc: 'Dictation', dictation: 2 },
+      ]},
+      { day: 103, label: 'Viernes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Serie sin subtitulos', file: dayFile(103) },
+        { time: '15 min', desc: 'Shadowing', shadowing: 7 },
+      ]},
+      { day: 104, label: 'Sabado', duration: '90 min', activities: [
+        { time: '90 min', desc: 'Pelicula sin subtitulos', file: dayFile(104) },
+      ]},
+      { day: 105, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'Descanso — Musica o podcast', file: dayFile(105) },
+      ]},
+    ],
+  });
+
+  weeks.push({
+    number: 16,
+    title: 'Test Final + Celebracion',
+    desc: '16 semanas. Pelicula completa sin subtitulos. ¿Cuanto entiendes? ¡Celebra tu progreso!',
+    days: [
+      { day: 106, label: 'Lunes', duration: '30 min', activities: [
+        { time: '15 min', desc: 'Estrategias de listening', file: dayFile(106) },
+        { time: '15 min', desc: 'Shadowing avanzado — TED Talk', shadowing: 8 },
+      ]},
+      { day: 107, label: 'Martes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Podcast completo sin pausas', file: dayFile(107) },
+      ]},
+      { day: 108, label: 'Miercoles', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Conversacion real + Gramatica debil', file: dayFile(108) },
+      ]},
+      { day: 109, label: 'Jueves', duration: '30 min', activities: [
+        { time: '30 min', desc: 'FULL TEST FINAL', file: dayFile(109) },
+      ]},
+      { day: 110, label: 'Viernes', duration: '30 min', activities: [
+        { time: '30 min', desc: 'Recursos para seguir aprendiendo', file: dayFile(110) },
+      ]},
+      { day: 111, label: 'Sabado', duration: '120 min', activities: [
+        { time: '120 min', desc: 'PELICULA COMPLETA SIN SUBTITULOS', file: dayFile(111) },
+      ]},
+      { day: 112, label: 'Domingo', duration: '10 min', rest: true, activities: [
+        { time: '10 min', desc: 'CELEBRACION — 112 dias, lo conseguiste', file: dayFile(112) },
+      ]},
+    ],
+  });
 
   return weeks;
 }

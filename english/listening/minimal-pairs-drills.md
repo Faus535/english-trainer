@@ -190,6 +190,74 @@ Otra confusion comun. El español solo tiene /e/, asi que tendemos a usar esa pa
 
 ---
 
+### /ə/ vs vocal completa — La Schwa (el sonido invisible)
+
+La schwa /ə/ es el sonido mas frecuente del ingles, pero no tiene letra propia. Aparece en TODAS las silabas no acentuadas. Si pronuncias cada vocal con su valor completo, suenas robotico.
+
+- **/ə/** = vocal neutra, super corta, relajada. Como un gruñido breve.
+- El truco es que la misma letra se pronuncia diferente segun lleve acento o no.
+
+| Forma con vocal completa | Forma con schwa /ə/ | Donde cambia |
+|--------------------------|---------------------|--------------|
+| photograph /ˈfoʊ.tə.ɡræf/ | photographer /fəˈtɒɡ.rə.fər/ | La "o" de "pho" pasa a schwa |
+| present /ˈprez.ənt/ (regalo) | present /prɪˈzent/ (presentar) | La silaba sin acento se relaja |
+| record /ˈrek.ɔːrd/ (disco) | record /rɪˈkɔːrd/ (grabar) | La 1a silaba se relaja |
+| object /ˈɒb.dʒekt/ (objeto) | object /əbˈdʒekt/ (objetar) | La "o" pasa a schwa |
+| permit /ˈpɜː.mɪt/ (permiso) | permit /pərˈmɪt/ (permitir) | La 1a silaba se relaja |
+| import /ˈɪm.pɔːrt/ (importacion) | import /ɪmˈpɔːrt/ (importar) | Acento cambia el significado |
+
+**Frases para detectar la schwa:**
+
+| Frase | Schwas ocultas |
+|-------|---------------|
+| I want to go to the cinema | /aɪ wɒnt tə ɡoʊ tə ðə ˈsɪn.ə.mə/ — "to", "the", "ci-ne-ma" todas con /ə/ |
+| A banana and a camera | /ə bəˈnæn.ə ənd ə ˈkæm.ər.ə/ — 6 schwas en una sola frase |
+| The doctor was comfortable | /ðə ˈdɒk.tər wəz ˈkʌmf.tər.bəl/ — "the", "-tor", "was", "-ter-", "-ble" |
+| Support the police officer | /səˈpɔːrt ðə pəˈliːs ˈɒf.ɪ.sər/ — "su-", "the", "po-", "-cer" |
+| I can open the problem | /aɪ kən ˈoʊ.pən ðə ˈprɒb.ləm/ — "can", "-pen", "the", "-lem" |
+
+> **Ejercicio:** Lee cada frase en voz alta. Primero pronuncia TODAS las vocales completas (sonara robotico). Despues, relaja las silabas no acentuadas a schwa. Nota la diferencia — la segunda version suena natural.
+
+---
+
+### /ɪə/ vs /eə/ vs /ʊə/ — Los diptongos debiles
+
+Estos tres diptongos terminan en schwa. Son los menos practicados pero aparecen en palabras muy comunes.
+
+| /ɪə/ (here) | /eə/ (there) | /ʊə/ (tour) |
+|--------------|--------------|--------------|
+| here /hɪər/ (aqui) | there /ðeər/ (alli) | tour /tʊər/ (tour) |
+| beer /bɪər/ (cerveza) | care /keər/ (cuidar) | sure /ʃʊər/ (seguro) |
+| near /nɪər/ (cerca) | fair /feər/ (justo) | pure /pjʊər/ (puro) |
+| fear /fɪər/ (miedo) | share /ʃeər/ (compartir) | cure /kjʊər/ (cura) |
+| clear /klɪər/ (claro) | wear /weər/ (llevar puesto) | poor /pʊər/ (pobre) |
+| year /jɪər/ (año) | pair /peər/ (par) | moor /mʊər/ (paramo) |
+| deer /dɪər/ (ciervo) | bear /beər/ (oso) | lure /lʊər/ (señuelo) |
+| appear /əˈpɪər/ (aparecer) | aware /əˈweər/ (consciente) | endure /ɪnˈdjʊər/ (aguantar) |
+
+**Pares minimos entre diptongos:**
+
+| /ɪə/ | /eə/ | Diferencia |
+|------|------|------------|
+| here /hɪər/ (aqui) | hair /heər/ (pelo) | /ɪ/ inicial vs /e/ inicial |
+| beer /bɪər/ (cerveza) | bear /beər/ (oso) | /ɪ/ vs /e/ |
+| deer /dɪər/ (ciervo) | dare /deər/ (atreverse) | /ɪ/ vs /e/ |
+| fear /fɪər/ (miedo) | fair /feər/ (justo) | /ɪ/ vs /e/ |
+| peer /pɪər/ (par/igual) | pair /peər/ (par/pareja) | /ɪ/ vs /e/ |
+| tear /tɪər/ (lagrima) | tear /teər/ (rasgar) | Misma palabra, 2 significados |
+
+**Frases de practica:**
+
+| Frase | Diptongo clave |
+|-------|---------------|
+| I fear it's not fair | /ɪə/ fear vs /eə/ fair |
+| The deer wouldn't dare | /ɪə/ deer vs /eə/ dare |
+| I'm sure the tour is pure | /ʊə/ sure, tour, pure |
+| She appeared aware of the bear near here | /ɪə/ appeared, near, here + /eə/ aware, bear |
+| The poor cure didn't endure | /ʊə/ poor, cure, endure |
+
+---
+
 ## Grupo 2: Consonantes problematicas
 
 ---
@@ -425,6 +493,37 @@ En español no tenemos /w/ como fonema independiente (solo en diptongos). Muchos
 3. "She wore a veil and let out a wail." /ʃiː wɔːr ə veɪl ænd let aʊt ə weɪl/ - Llevo un velo y solto un lamento.
 4. "This verse is worse." /ðɪs vɜːrs ɪz wɜːrs/ - Este verso es peor.
 5. "Be wary, they vary." /biː ˈweə.ri ðeɪ ˈveə.ri/ - Se cauteloso, varian.
+
+---
+
+### /ʃ/ vs /ʒ/ (ship vs vision)
+
+La unica diferencia es la vibracion: /ʃ/ es sorda (sin vibrar), /ʒ/ es sonora (vibra). Pon la mano en la garganta para sentirlo.
+
+- **/ʃ/** = aire continuo sin vibracion. "Shhh" para pedir silencio.
+- **/ʒ/** = aire continuo CON vibracion. Como un "shhh" con zumbido.
+
+| /ʃ/ (sorda) | /ʒ/ (sonora) |
+|-------------|-------------|
+| Alaskan /əˈlæs.kən/ | Asian /ˈeɪ.ʒən/ |
+| dilution /dɪˈluː.ʃən/ (dilucion) | delusion /dɪˈluː.ʒən/ (ilusion falsa) |
+| glacier /ˈɡlæs.i.ər/ | glazier /ˈɡleɪ.ʒər/ (vidriero) |
+| mesher (no comun) | measure /ˈmeʒ.ər/ (medir) |
+| nation /ˈneɪ.ʃən/ (nacion) | —  |
+| pressure /ˈpreʃ.ər/ (presion) | pleasure /ˈpleʒ.ər/ (placer) |
+| assure /əˈʃʊər/ (asegurar) | azure /ˈæʒ.ər/ (azul celeste) |
+
+**Nota:** /ʒ/ es poco comun en ingles. Aparece casi siempre en medio de palabra (-sion, -sure, -sual). Los pares minimos exactos son raros, pero la distincion importa.
+
+**Frases de practica:**
+
+| Frase | Sonido clave |
+|-------|-------------|
+| She shared with pleasure | /ʃ/ shared + /ʒ/ pleasure |
+| The nation's television | /ʃ/ nation + /ʒ/ television |
+| I'm sure about the measure | /ʃ/ sure + /ʒ/ measure |
+| It's unusual to rush a decision | /ʒ/ unusual, decision + /ʃ/ rush |
+| The treasure was in the ocean | /ʒ/ treasure + /ʃ/ ocean |
 
 ---
 

@@ -240,3 +240,67 @@ Estan organizados por verbo base para facilitar la memorizacion.
 | throw away /θroʊ əˈweɪ/ | tirar | Don't **throw away** that box, I might need it later. /doʊnt θroʊ əˈweɪ ðæt bɒks aɪ maɪt niːd ɪt ˈleɪ.tər/ |
 | carry on /ˈkær.i ɒn/ | continuar | Sorry for the interruption, please **carry on** with your presentation. /ˈsɒr.i fɔːr ðə ˌɪn.təˈrʌp.ʃən pliːz ˈkær.i ɒn wɪð jɔːr ˌprez.ənˈteɪ.ʃən/ |
 | carry out /ˈkær.i aʊt/ | llevar a cabo | The team successfully **carried out** the experiment. /ðə tiːm səkˈses.fəl.i ˈkær.id aʊt ðə ɪkˈsper.ɪ.mənt/ |
+
+---
+
+## Phrasal Verbs por Tema
+
+### Trabajo y Oficina
+
+| Phrasal Verb | Spanish | Example |
+|---|---|---|
+| clock in /klɒk ɪn/ | fichar (entrada) | I **clock in** at 9 AM every morning. |
+| clock out /klɒk aʊt/ | fichar (salida) | Don't forget to **clock out** before you leave. |
+| hand in /hænd ɪn/ | entregar | Please **hand in** your report by Friday. |
+| lay off /leɪ ɒf/ | despedir | The company **laid off** 200 workers last month. |
+| take over /teɪk ˈoʊ.vər/ | hacerse cargo | She will **take over** the department next month. |
+| step down /step daʊn/ | dimitir | The CEO decided to **step down** after the scandal. |
+| burn out /bɜːrn aʊt/ | quemarse (agotamiento) | I'm completely **burned out** from working overtime. |
+| knuckle down /ˈnʌk.əl daʊn/ | ponerse serio | We need to **knuckle down** and finish this project. |
+| slack off /slæk ɒf/ | holgazanear | Stop **slacking off** and get back to work. |
+| call off /kɔːl ɒf/ | cancelar | They **called off** the meeting due to the storm. |
+
+### Relaciones y Vida Social
+
+| Phrasal Verb | Spanish | Example |
+|---|---|---|
+| ask out /ɑːsk aʊt/ | invitar a salir | He finally **asked her out** on a date. |
+| break up /breɪk ʌp/ | romper (relacion) | They **broke up** after five years together. |
+| make up /meɪk ʌp/ | reconciliarse | We had a fight but we **made up** the next day. |
+| fall out /fɔːl aʊt/ | pelearse | She **fell out** with her best friend over money. |
+| cheer up /tʃɪər ʌp/ | animar | I bought her flowers to **cheer her up**. |
+| let down /let daʊn/ | decepcionar | Don't **let me down**, I'm counting on you. |
+| look after /lʊk ˈɑːf.tər/ | cuidar | Can you **look after** my cat while I'm away? |
+| put up with /pʊt ʌp wɪð/ | aguantar | I can't **put up with** his attitude anymore. |
+| get along /ɡet əˈlɒŋ/ | llevarse bien | My kids **get along** really well with each other. |
+| grow apart /ɡroʊ əˈpɑːrt/ | distanciarse | Over the years, they slowly **grew apart**. |
+
+### Vida Diaria y Casa
+
+| Phrasal Verb | Spanish | Example |
+|---|---|---|
+| wake up /weɪk ʌp/ | despertarse | I **wake up** at 7 AM on weekdays. |
+| tidy up /ˈtaɪ.di ʌp/ | ordenar | Let's **tidy up** the living room before guests arrive. |
+| throw away /θroʊ əˈweɪ/ | tirar a la basura | **Throw away** the old newspapers, please. |
+| plug in /plʌɡ ɪn/ | enchufar | **Plug in** your phone, the battery is almost dead. |
+| switch off /swɪtʃ ɒf/ | apagar | **Switch off** the lights when you leave the room. |
+| drop off /drɒp ɒf/ | dejar (a alguien) | I'll **drop you off** at the station on my way to work. |
+| pick up /pɪk ʌp/ | recoger | Can you **pick up** the kids from school today? |
+| sort out /sɔːrt aʊt/ | resolver/organizar | I need to **sort out** my wardrobe this weekend. |
+| run out of /rʌn aʊt ɒv/ | quedarse sin | We've **run out of** coffee again. |
+| do up /duː ʌp/ | renovar | They're **doing up** the old house by the river. |
+
+### Viajes y Transporte
+
+| Phrasal Verb | Spanish | Example |
+|---|---|---|
+| check in /tʃek ɪn/ | registrarse | We need to **check in** two hours before the flight. |
+| check out /tʃek aʊt/ | dejar el hotel | We have to **check out** by 11 AM. |
+| set off /set ɒf/ | salir de viaje | We **set off** early to avoid traffic. |
+| get on /ɡet ɒn/ | subir (transporte) | We **got on** the wrong bus by mistake. |
+| get off /ɡet ɒf/ | bajar (transporte) | **Get off** at the next stop, the museum is there. |
+| pick up /pɪk ʌp/ | recoger (del aeropuerto) | My friend will **pick me up** at the airport. |
+| hold up /hoʊld ʌp/ | retrasar | Our flight was **held up** because of fog. |
+| stop over /stɒp ˈoʊ.vər/ | hacer escala | We **stopped over** in Dubai on the way to Tokyo. |
+| see off /siː ɒf/ | despedir (en aeropuerto) | My family came to **see me off** at the airport. |
+| pull over /pʊl ˈoʊ.vər/ | detenerse (coche) | The police asked him to **pull over**. |
