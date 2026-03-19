@@ -172,6 +172,12 @@ function setupEventDelegation() {
       case 'playTestAudio':
         playTestAudio(parseInt(target.dataset.q));
         break;
+      case 'submitPronunciation':
+        submitPronunciationAnswer(parseInt(target.dataset.option));
+        break;
+      case 'playPronunciationAudio':
+        playPronunciationAudio(parseInt(target.dataset.q));
+        break;
       case 'finishTest':
         showDashboard();
         break;

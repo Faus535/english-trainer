@@ -39,10 +39,14 @@ const TEST_GRAMMAR = [
   { sentence: 'She ___ to school every day.', options: ['go', 'goes', 'going', 'gone'], answer: 1, level: 'a1' },
   // A1 - Past simple
   { sentence: 'I ___ a movie yesterday.', options: ['watch', 'watching', 'watched', 'watches'], answer: 2, level: 'a1' },
+  // A1 - Articles
+  { sentence: 'I saw ___ elephant at the zoo.', options: ['a', 'an', 'the', '-'], answer: 1, level: 'a1' },
   // A2 - Comparatives
   { sentence: 'London is ___ than Madrid.', options: ['big', 'bigger', 'biggest', 'more big'], answer: 1, level: 'a2' },
   // A2 - Present continuous
   { sentence: 'They ___ lunch right now.', options: ['have', 'has', 'are having', 'having'], answer: 2, level: 'a2' },
+  // A2 - Present perfect + just
+  { sentence: 'I have ___ finished my homework.', options: ['yet', 'already', 'just', 'since'], answer: 2, level: 'a2' },
   // B1 - Present perfect
   { sentence: 'I ___ to London three times.', options: ['have been', 'was', 'have gone', 'went'], answer: 0, level: 'b1' },
   // B1 - Second conditional
@@ -53,31 +57,67 @@ const TEST_GRAMMAR = [
   { sentence: 'If she ___ harder, she would have passed.', options: ['studied', 'had studied', 'has studied', 'studies'], answer: 1, level: 'b2' },
   // B2 - Reported speech
   { sentence: 'He said he ___ the answer.', options: ['knows', 'knew', 'has known', 'is knowing'], answer: 1, level: 'b2' },
+  // B2 - Participle clause
+  { sentence: '___ the work, she went home.', options: ['Finished', 'Having finished', 'To finish', 'She finished'], answer: 1, level: 'b2' },
   // C1 - Inversion
   { sentence: '___ had I arrived than the meeting started.', options: ['No sooner', 'Hardly', 'Barely', 'Scarcely'], answer: 0, level: 'c1' },
+  // C1 - Subjunctive
+  { sentence: 'I suggest that he ___ the report before Friday.', options: ['submits', 'submit', 'submitted', 'will submit'], answer: 1, level: 'c1' },
+  // C1 - Nominalization
+  { sentence: 'The ___ of the new policy caused widespread debate.', options: ['implement', 'implementing', 'implementation', 'implemented'], answer: 2, level: 'c1' },
 ];
 
 const TEST_LISTENING = [
   // A1 - Clear, slow
   { text: 'I would like a glass of water, please.', level: 'a1', speed: 0.8 },
+  // A1 - Simple question
+  { text: 'Can you help me find the station?', level: 'a1', speed: 0.8 },
   // A2 - Normal speed
   { text: 'What time does the train leave tomorrow morning?', level: 'a2', speed: 0.9 },
+  // A2 - Present perfect
+  { text: "I've been waiting here for about twenty minutes.", level: 'a2', speed: 0.9 },
   // B1 - Reduced forms
   { text: "I'm gonna go to the store. Do you wanna come?", level: 'b1', speed: 1.0 },
   // B1 - Connected speech
   { text: "She should have told him about it earlier.", level: 'b1', speed: 1.0 },
   // B2 - Fast, natural
   { text: "I wouldn't have bothered if I'd known it was gonna be cancelled.", level: 'b2', speed: 1.1 },
+  // B2 - Complex natural
+  { text: "The thing is, he's not exactly what you'd call reliable, is he?", level: 'b2', speed: 1.1 },
+  // C1 - Formal complex
+  { text: "Had I known about the redundancies, I wouldn't have taken the position in the first place.", level: 'c1', speed: 1.2 },
+  // C1 - Fast colloquial
+  { text: "She reckons they'll have sorted it out by the time we get there, but I wouldn't count on it.", level: 'c1', speed: 1.2 },
+];
+
+const TEST_PRONUNCIATION = [
+  // A1 - /θ/ recognition
+  { word: 'think', options: ['think', 'tink', 'sink'], answer: 0, level: 'a1' },
+  // A1 - /v/ vs /b/
+  { word: 'very', options: ['very', 'berry', 'ferry'], answer: 0, level: 'a1' },
+  // A2 - /ɪ/ vs /iː/
+  { word: 'ship', options: ['ship', 'sheep', 'chip'], answer: 0, level: 'a2' },
+  // A2 - /æ/ vs /ʌ/
+  { word: 'cat', options: ['cat', 'cut', 'cart'], answer: 0, level: 'a2' },
+  // B1 - Elision recognition
+  { word: 'comfortable', options: ['3 silabas', '4 silabas', '2 silabas'], answer: 0, level: 'b1', special: 'syllables' },
+  // B1 - Reduced forms
+  { word: "I'm gonna go", options: ['3 palabras', '4 palabras', '5 palabras'], answer: 0, level: 'b1', special: 'words' },
+  // B2 - Stress recognition
+  { word: 'I SAID Tuesday, not Thursday', options: ['I', 'SAID', 'Tuesday'], answer: 2, level: 'b2', special: 'stress' },
+  // B2 - Linking recognition
+  { word: "turn it off", options: ['3 palabras', '2 palabras', '4 palabras'], answer: 0, level: 'b2', special: 'words' },
 ];
 
 // ===== Test State =====
 
 let testState = {
-  phase: 'intro', // 'intro', 'vocabulary', 'grammar', 'listening', 'results'
+  phase: 'intro', // 'intro', 'vocabulary', 'grammar', 'listening', 'pronunciation', 'results'
   currentQuestion: 0,
   vocabAnswers: [],
   grammarAnswers: [],
   listeningAnswers: [],
+  pronunciationAnswers: [],
   vocabInput: ''
 };
 
@@ -90,6 +130,7 @@ function startTest() {
     vocabAnswers: [],
     grammarAnswers: [],
     listeningAnswers: [],
+    pronunciationAnswers: [],
     vocabInput: ''
   };
   renderTest();
@@ -145,6 +186,20 @@ function submitListeningAnswer(input) {
   testState.currentQuestion++;
 
   if (testState.currentQuestion >= TEST_LISTENING.length) {
+    testState.phase = 'pronunciation';
+    testState.currentQuestion = 0;
+  }
+  renderTest();
+}
+
+function submitPronunciationAnswer(optionIndex) {
+  const q = TEST_PRONUNCIATION[testState.currentQuestion];
+  const correct = optionIndex === q.answer;
+
+  testState.pronunciationAnswers.push({ level: q.level, correct });
+  testState.currentQuestion++;
+
+  if (testState.currentQuestion >= TEST_PRONUNCIATION.length) {
     testState.phase = 'results';
     calculateResults();
   }
@@ -169,9 +224,8 @@ function calculateResults() {
   const phraseIdx = Math.min(vocIdx, gramIdx);
   profile.levels.phrases = CEFR_LEVELS[phraseIdx];
 
-  // Pronunciation: same as listening (both are audio skills)
-  const lisIdx = getLevelIndex(profile.levels.listening);
-  profile.levels.pronunciation = CEFR_LEVELS[Math.max(0, lisIdx)];
+  // Pronunciation: now tested independently
+  profile.levels.pronunciation = calculateLevel(testState.pronunciationAnswers);
 
   profile.testCompleted = true;
   saveProfile(profile);
@@ -216,6 +270,9 @@ function renderTest() {
     case 'listening':
       main.innerHTML = renderTestListening();
       break;
+    case 'pronunciation':
+      main.innerHTML = renderTestPronunciation();
+      break;
     case 'results':
       main.innerHTML = renderTestResults();
       break;
@@ -228,7 +285,7 @@ function renderTestIntro() {
       <div class="test-welcome">
         <h2>Bienvenido a English Trainer</h2>
         <p>Antes de empezar, necesitamos saber tu nivel para crear un plan personalizado.</p>
-        <p>Son 3 mini-tests rapidos (5 minutos en total):</p>
+        <p>Son 4 mini-tests rapidos (~13 minutos en total):</p>
         <div class="test-steps-preview">
           <div class="test-step-item">
             <span class="test-step-num">1</span>
@@ -241,14 +298,21 @@ function renderTestIntro() {
             <span class="test-step-num">2</span>
             <div>
               <strong>Gramatica</strong>
-              <span>Elige la opcion correcta en 10 frases</span>
+              <span>Elige la opcion correcta en 15 frases</span>
             </div>
           </div>
           <div class="test-step-item">
             <span class="test-step-num">3</span>
             <div>
               <strong>Listening</strong>
-              <span>Escucha y escribe lo que oyes</span>
+              <span>Escucha y escribe lo que oyes (10 frases)</span>
+            </div>
+          </div>
+          <div class="test-step-item">
+            <span class="test-step-num">4</span>
+            <div>
+              <strong>Pronunciacion</strong>
+              <span>Escucha e identifica sonidos (8 preguntas)</span>
             </div>
           </div>
         </div>
@@ -344,6 +408,54 @@ function renderTestListening() {
     </div>`;
 }
 
+function renderTestPronunciation() {
+  const q = TEST_PRONUNCIATION[testState.currentQuestion];
+  const progress = testState.currentQuestion + 1;
+  const total = TEST_PRONUNCIATION.length;
+
+  let optionsHtml = '';
+  q.options.forEach((opt, i) => {
+    optionsHtml += `<button class="test-option test-option-pron" data-action="submitPronunciation" data-option="${i}">${escapeHtml(opt)}</button>`;
+  });
+
+  let instruction = 'Escucha la palabra y elige la correcta:';
+  if (q.special === 'syllables') instruction = 'Escucha la palabra. ¿Cuantas silabas tiene?';
+  if (q.special === 'words') instruction = 'Escucha la frase. ¿Cuantas palabras hay?';
+  if (q.special === 'stress') instruction = 'Escucha la frase. ¿Que palabra esta enfatizada?';
+
+  return `
+    <div class="test-page">
+      <div class="test-header">
+        <span class="test-phase-badge test-phase-pronunciation">Pronunciacion</span>
+        <span class="test-progress">${progress} / ${total}</span>
+      </div>
+      <div class="test-progress-bar">
+        <div class="test-progress-fill" style="width:${(progress / total) * 100}%"></div>
+      </div>
+      <div class="test-question-card">
+        <p class="test-instruction">${instruction}</p>
+        <button class="btn-test-play" data-action="playPronunciationAudio" data-q="${testState.currentQuestion}">
+          &#9654; Reproducir
+        </button>
+        <button class="btn-test-play btn-test-replay" data-action="playPronunciationAudio" data-q="${testState.currentQuestion}">
+          &#128260; Repetir
+        </button>
+        <div class="test-options">${optionsHtml}</div>
+      </div>
+    </div>`;
+}
+
+function playPronunciationAudio(questionIndex) {
+  const q = TEST_PRONUNCIATION[questionIndex];
+  if (q && typeof speak === 'function') {
+    const originalRate = speechRate;
+    speechRate = 0.9;
+    speak(q.word, () => {
+      speechRate = originalRate;
+    });
+  }
+}
+
 function renderTestResults() {
   const profile = getProfile();
   const levels = profile.levels;
@@ -419,9 +531,9 @@ function estimateSessions(levels) {
   // Estimate based on listening level (the bottleneck)
   const lisIdx = getLevelIndex(levels.listening);
   const remaining = CEFR_LEVELS.length - 1 - lisIdx; // levels to C1
-  // ~12-15 sessions per level for listening
-  const estimate = remaining * 13;
-  return `${estimate - 5}–${estimate + 5}`;
+  // ~15-18 sessions per level for listening (more content now)
+  const estimate = remaining * 16;
+  return `${estimate - 8}–${estimate + 8}`;
 }
 
 function playTestAudio(questionIndex) {

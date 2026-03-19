@@ -10,7 +10,7 @@ const MODULES = {
   listening: {
     name: 'Listening',
     icon: '&#127911;',
-    weight: 0.4, // 40% of session
+    weight: 0.35, // 35% of session
     color: 'var(--accent)',
     levels: {
       a1: {
@@ -78,7 +78,7 @@ const MODULES = {
         ]
       },
       c1: {
-        totalUnits: 8,
+        totalUnits: 12,
         units: [
           { id: 'l-c1-01', title: 'Acentos fuertes', desc: 'Peaky Blinders, The Wire, Trainspotting', type: 'accents' },
           { id: 'l-c1-02', title: 'Conversacion real', desc: 'Practica con nativos (apps/Discord)', type: 'conversation' },
@@ -88,6 +88,10 @@ const MODULES = {
           { id: 'l-c1-06', title: 'Podcasts especializados', desc: 'Temas profundos a velocidad nativa', type: 'immersion' },
           { id: 'l-c1-07', title: 'Comprension total', desc: 'Cualquier material sin esfuerzo', type: 'immersion' },
           { id: 'l-c1-08', title: 'Evaluacion final C1', desc: 'Test comprehensivo de listening', type: 'review' },
+          { id: 'l-c1-09', title: 'Debates entre nativos', desc: 'Multiples hablantes, interrupciones, turn-taking', type: 'immersion' },
+          { id: 'l-c1-10', title: 'Peliculas con argot regional', desc: 'Cockney, Southern, Australian slang', type: 'immersion' },
+          { id: 'l-c1-11', title: 'Llamadas telefonicas reales', desc: 'Audio comprimido, numeros, confirmacion', type: 'immersion' },
+          { id: 'l-c1-12', title: 'Presentaciones tecnicas rapidas', desc: 'TED talk a 160-180 wpm', type: 'immersion' },
         ]
       }
     }
@@ -96,14 +100,14 @@ const MODULES = {
   vocabulary: {
     name: 'Vocabulario',
     icon: '&#128218;',
-    weight: 0.2,
+    weight: 0.15,
     color: 'var(--green)',
     levels: {
       a1: { totalUnits: 8, units: generateVocabUnits('a1', 8, 'Top 100-300', 'Palabras mas frecuentes') },
       a2: { totalUnits: 10, units: generateVocabUnits('a2', 10, 'Top 300-800', 'Vocabulario cotidiano activo') },
       b1: { totalUnits: 10, units: generateVocabUnits('b1', 10, 'Top 800-1500', 'Vocabulario intermedio + phrasal verbs') },
       b2: { totalUnits: 8, units: generateVocabUnits('b2', 8, 'Top 1500-2500', 'Vocabulario avanzado + collocations') },
-      c1: { totalUnits: 6, units: generateVocabUnits('c1', 6, 'Top 2500-3000+', 'Vocabulario academico y especializado') },
+      c1: { totalUnits: 10, units: generateVocabUnits('c1', 10, 'Top 2500-3000+', 'Vocabulario academico y especializado') },
     }
   },
 
@@ -168,7 +172,7 @@ const MODULES = {
         ]
       },
       c1: {
-        totalUnits: 6,
+        totalUnits: 8,
         units: [
           { id: 'g-c1-01', title: 'Nuance & register', desc: 'Formal vs informal: misma idea, diferente tono', type: 'production' },
           { id: 'g-c1-02', title: 'Hedging & softening', desc: 'It might be, could perhaps, tend to', type: 'production' },
@@ -176,6 +180,8 @@ const MODULES = {
           { id: 'g-c1-04', title: 'Ellipsis & substitution', desc: 'Natural omissions in speech', type: 'production' },
           { id: 'g-c1-05', title: 'Error-free production', desc: 'Eliminar errores fossilizados', type: 'review' },
           { id: 'g-c1-06', title: 'Evaluacion final C1', desc: 'Produccion libre compleja', type: 'review' },
+          { id: 'g-c1-07', title: 'Emphasis structures', desc: 'do/does + verb, clefts, fronting avanzado', type: 'production' },
+          { id: 'g-c1-08', title: 'Coherencia textual', desc: 'Reference, substitution, ellipsis, theme/rheme', type: 'production' },
         ]
       }
     }
@@ -191,21 +197,21 @@ const MODULES = {
       a2: { totalUnits: 8, units: generatePhraseUnits('a2', ['Small talk', 'En el trabajo (email)', 'En el aeropuerto', 'Al telefono', 'Dar opiniones', 'Pedir y ofrecer ayuda', 'Quedar con amigos', 'Repaso A2']) },
       b1: { totalUnits: 8, units: generatePhraseUnits('b1', ['Argumentar y debatir', 'Expresar acuerdo/desacuerdo', 'Idioms del dia a dia', 'Reuniones de trabajo', 'Phrasal verbs esenciales', 'Expresar emociones', 'Negociar', 'Repaso B1']) },
       b2: { totalUnits: 6, units: generatePhraseUnits('b2', ['Humor y sarcasmo', 'Expresiones de series', 'Jerga profesional', 'Debate formal', 'Matices y sutilezas', 'Repaso B2']) },
-      c1: { totalUnits: 4, units: generatePhraseUnits('c1', ['Registro academico', 'Expresiones nativas', 'Retorica y persuasion', 'Evaluacion final C1']) },
+      c1: { totalUnits: 6, units: generatePhraseUnits('c1', ['Registro academico', 'Expresiones nativas', 'Retorica y persuasion', 'Evaluacion final C1', 'Humor sutil profesional', 'Diplomacia y confrontacion indirecta']) },
     }
   },
 
   pronunciation: {
     name: 'Pronunciacion',
     icon: '&#127908;',
-    weight: 0.1,
+    weight: 0.20,
     color: 'var(--purple)',
     levels: {
-      a1: { totalUnits: 6, units: generatePronUnits('a1', ['/θ/ vs /ð/ (th sounds)', '/v/ vs /b/', 'Vocales cortas vs largas', '/ɪ/ vs /iː/ (ship vs sheep)', '/h/ aspirada', 'Repaso A1']) },
-      a2: { totalUnits: 6, units: generatePronUnits('a2', ['/ʃ/ vs /tʃ/ (she vs cheese)', '/r/ americana vs britanica', 'Diptongos', '/æ/ vs /ʌ/ (cat vs cut)', 'Stress de palabras', 'Repaso A2']) },
-      b1: { totalUnits: 6, units: generatePronUnits('b1', ['Ritmo stress-timed', 'Intonation patterns', 'Linking sounds', 'Flapping (better = /beɾər/)', 'Schwas en frases completas', 'Repaso B1']) },
-      b2: { totalUnits: 4, units: generatePronUnits('b2', ['Reduccion natural', 'Entonacion emocional', 'Acentos y adaptacion', 'Repaso B2']) },
-      c1: { totalUnits: 4, units: generatePronUnits('c1', ['Comunicacion clara y natural', 'Tono y registro vocal', 'Fluidez sin acento marcado', 'Evaluacion final C1']) },
+      a1: { totalUnits: 10, units: generatePronUnits('a1', ['/θ/ vs /ð/ (th sounds)', '/v/ vs /b/', 'Vocales cortas vs largas', '/ɪ/ vs /iː/ (ship vs sheep)', '/h/ aspirada', 'Repaso A1', 'Terminaciones -ed: /t/, /d/, /ɪd/', 'Letras mudas', '/dʒ/ vs /j/ (judge vs yes)', '/s/ vs /z/ (bus vs buzz)']) },
+      a2: { totalUnits: 10, units: generatePronUnits('a2', ['/ʃ/ vs /tʃ/ (she vs cheese)', '/r/ americana vs britanica', 'Diptongos', '/æ/ vs /ʌ/ (cat vs cut)', 'Stress de palabras', 'Repaso A2', '/l/ clara vs oscura', 'Diptongos: /ɪə/, /eə/, /ʊə/', 'Clusters consonanticos finales', 'Pares minimos: consolidacion']) },
+      b1: { totalUnits: 8, units: generatePronUnits('b1', ['Ritmo stress-timed', 'Intonation patterns', 'Linking sounds', 'Flapping (better = /beɾər/)', 'Schwas en frases completas', 'Repaso B1', 'Producir elision natural', 'Producir asimilacion']) },
+      b2: { totalUnits: 6, units: generatePronUnits('b2', ['Reduccion natural', 'Entonacion emocional', 'Acentos y adaptacion', 'Repaso B2', 'Aspiracion y voiced/voiceless', 'Repaso B2 extendido: 44 fonemas']) },
+      c1: { totalUnits: 7, units: generatePronUnits('c1', ['Comunicacion clara y natural', 'Tono y registro vocal', 'Fluidez sin acento marcado', 'Evaluacion final C1', 'Dominio completo: 44 fonemas', 'Auto-correccion en tiempo real', 'Presentaciones publicas']) },
     }
   }
 };

@@ -2151,6 +2151,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
 .test-phase-grammar { background: var(--accent2); }
 .test-phase-listening { background: var(--accent); }
+.test-phase-pronunciation { background: var(--purple); }
 
 .test-progress {
   color: var(--text2);
@@ -2735,6 +2736,7 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
 /* Listening block */
 .listening-block { border-left: 3px solid var(--accent); }
+.pronunciation-block { border-left: 3px solid var(--purple); }
 
 /* Practice block */
 .practice-block { border-left: 3px solid var(--green); }
@@ -2806,6 +2808,34 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
 .btn-session-next:hover, .btn-session-complete:hover { transform: scale(1.02); }
 .btn-session-complete { box-shadow: 0 4px 16px rgba(78,204,163,0.3); }
 
+.btn-session-abandon {
+  display: inline-block;
+  margin-top: 8px;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.btn-session-abandon:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Test pronunciation options */
+.test-option-pron { min-width: 120px; text-align: center; }
+
+/* Audio modules highlight */
+.modules-audio { border: 1px solid rgba(168,85,247,0.15); border-radius: var(--radius); padding: 8px; background: rgba(168,85,247,0.03); }
+
+/* Warmup review items */
+.warmup-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+.warmup-icon { font-size: 1.2rem; }
+
 /* Mobile adjustments */
 @media (max-width: 500px) {
   .modules-grid { grid-template-columns: 1fr 1fr; }
@@ -2856,6 +2886,8 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
 .light-theme .btn-session-complete { color: #fff; }
 .light-theme .btn-start-test { color: #fff; }
 .light-theme .btn-start-learning { color: #fff; }
+.light-theme .modules-audio { background: rgba(168,85,247,0.05); border-color: rgba(168,85,247,0.12); }
+.light-theme .btn-session-abandon { border-color: var(--muted); color: var(--muted); }
 
 /* System preference auto-apply (no manual class set) */
 @media (prefers-color-scheme: light) {

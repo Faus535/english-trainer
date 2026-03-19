@@ -72,8 +72,14 @@ const ACHIEVEMENTS = [
   { id: 'listening_b1',     icon: 'B',  name: 'Listening B1',         desc: 'Alcanza nivel B1 en Listening',       check: () => getLevelIndex(getModuleLevel('listening')) >= 2 },
   { id: 'listening_b2',     icon: 'C',  name: 'Listening B2',         desc: 'Alcanza nivel B2 en Listening',       check: () => getLevelIndex(getModuleLevel('listening')) >= 3 },
   { id: 'listening_c1',     icon: 'G',  name: 'Listening C1',         desc: 'Alcanza nivel C1 en Listening',       check: () => getLevelIndex(getModuleLevel('listening')) >= 4 },
+  { id: 'pron_a2',           icon: 'P',  name: 'Pronunciacion A2',     desc: 'Alcanza A2 en Pronunciacion',         check: () => getLevelIndex(getModuleLevel('pronunciation')) >= 1 },
+  { id: 'pron_b1',           icon: 'P',  name: 'Pronunciacion B1',     desc: 'Alcanza B1 en Pronunciacion',         check: () => getLevelIndex(getModuleLevel('pronunciation')) >= 2 },
+  { id: 'pron_b2',           icon: 'P',  name: 'Pronunciacion B2',     desc: 'Alcanza B2 en Pronunciacion',         check: () => getLevelIndex(getModuleLevel('pronunciation')) >= 3 },
   { id: 'all_b1',           icon: 'M',  name: 'B1 Global',            desc: 'Todos los modulos en B1+',            check: () => MODULE_NAMES.every(m => getLevelIndex(getModuleLevel(m)) >= 2) },
+  { id: 'all_b2',           icon: 'M',  name: 'B2 Global',            desc: 'Todos los modulos en B2+',            check: () => MODULE_NAMES.every(m => getLevelIndex(getModuleLevel(m)) >= 3) },
   { id: 'graduate',         icon: 'G',  name: 'Graduado C1',          desc: 'Todos los modulos en C1',             check: () => MODULE_NAMES.every(m => getLevelIndex(getModuleLevel(m)) >= 4) },
+  { id: 'review_7',         icon: 'R',  name: 'Repaso constante',     desc: '7 sesiones con repaso espaciado',     check: () => getTotalSessions() >= 7 },
+  { id: 'sessions_100',     icon: 'C',  name: 'Centenario',           desc: 'Completa 100 sesiones',               check: () => getTotalSessions() >= 100 },
 ];
 
 function getUnlockedAchievements() {

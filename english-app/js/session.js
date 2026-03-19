@@ -1,41 +1,51 @@
 /**
  * Session generator - builds daily sessions from modules.
- * Listening is ALWAYS present (40%). Secondary module rotates.
- * Structure: warm-up (3 min) + listening (8 min) + secondary (5 min) + practice (4 min)
+ * Listening (35%) and Pronunciation (20%) are ALWAYS present.
+ * Secondary module rotates: vocabulary, grammar, phrases.
+ * Every 5th session is an integrator (cross-module themed session).
+ * Structure: warm-up (3 min) + listening (7 min) + pronunciation (4 min) + secondary (4 min) + practice (3 min)
  */
 
-// Secondary module rotation order
-const SECONDARY_ROTATION = ['vocabulary', 'grammar', 'phrases', 'pronunciation'];
+// Secondary module rotation order (pronunciation removed — now fixed)
+const SECONDARY_ROTATION = ['vocabulary', 'grammar', 'phrases'];
 
 // ===== Session Generation =====
 
 function generateSession(mode) {
-  // mode: 'full' (20 min), 'short' (13 min), 'extended' (30 min)
+  // mode: 'full' (21 min), 'short' (14 min), 'extended' (31 min)
   mode = mode || 'full';
 
   const sessionNum = getTotalSessions() + 1;
   const weekSession = getSessionsThisWeek(); // 0-based
 
+  // Check for integrator session (every 5th session, after the first)
+  const isIntegrator = sessionNum > 1 && sessionNum % 5 === 0 && typeof INTEGRATOR_SESSIONS !== 'undefined';
+
   // Listening: always present
   const listeningUnit = getNextUnit('listening');
 
-  // Secondary: rotates based on session number
+  // Pronunciation: always present (new!)
+  const pronunciationUnit = getNextUnit('pronunciation');
+
+  // Secondary: rotates based on session number (vocab → grammar → phrases)
   const secondaryIdx = weekSession % SECONDARY_ROTATION.length;
   const secondaryModule = SECONDARY_ROTATION[secondaryIdx];
   const secondaryUnit = getNextUnit(secondaryModule);
 
-  // Warm-up: recent items from last completed units
+  // Warm-up: spaced repetition review or intro
   const warmupItems = buildWarmup();
 
   const session = {
     id: `session-${Date.now()}`,
     number: sessionNum,
     mode: mode,
+    isIntegrator: isIntegrator,
     listening: listeningUnit,
+    pronunciation: pronunciationUnit,
     secondary: secondaryUnit,
     secondaryModule: secondaryModule,
     warmup: warmupItems,
-    duration: mode === 'short' ? 13 : mode === 'extended' ? 30 : 20,
+    duration: mode === 'short' ? 14 : mode === 'extended' ? 31 : 21,
     blocks: []
   };
 
@@ -43,24 +53,27 @@ function generateSession(mode) {
   if (mode === 'short') {
     session.blocks = [
       { type: 'warmup', duration: 2, label: 'Repaso rapido' },
-      { type: 'listening', duration: 8, label: 'Listening', unit: listeningUnit },
-      { type: 'practice', duration: 3, label: 'Practica' },
+      { type: 'listening', duration: 7, label: 'Listening', unit: listeningUnit },
+      { type: 'pronunciation', duration: 3, label: 'Pronunciacion', unit: pronunciationUnit },
+      { type: 'practice', duration: 2, label: 'Practica' },
     ];
   } else if (mode === 'extended') {
     session.blocks = [
-      { type: 'warmup', duration: 3, label: 'Repaso' },
-      { type: 'listening', duration: 10, label: 'Listening', unit: listeningUnit },
-      { type: 'secondary', duration: 7, label: getModuleLabel(secondaryModule), unit: secondaryUnit },
-      { type: 'practice', duration: 5, label: 'Practica activa' },
+      { type: 'warmup', duration: 3, label: 'Repaso espaciado' },
+      { type: 'listening', duration: 9, label: 'Listening', unit: listeningUnit },
+      { type: 'pronunciation', duration: 5, label: 'Pronunciacion', unit: pronunciationUnit },
+      { type: 'secondary', duration: 5, label: getModuleLabel(secondaryModule), unit: secondaryUnit },
+      { type: 'practice', duration: 4, label: 'Practica activa' },
       { type: 'bonus', duration: 5, label: 'Bonus: contenido real' },
     ];
   } else {
     // Full session (default)
     session.blocks = [
-      { type: 'warmup', duration: 3, label: 'Repaso' },
-      { type: 'listening', duration: 8, label: 'Listening', unit: listeningUnit },
-      { type: 'secondary', duration: 5, label: getModuleLabel(secondaryModule), unit: secondaryUnit },
-      { type: 'practice', duration: 4, label: 'Practica activa' },
+      { type: 'warmup', duration: 3, label: 'Repaso espaciado' },
+      { type: 'listening', duration: 7, label: 'Listening', unit: listeningUnit },
+      { type: 'pronunciation', duration: 4, label: 'Pronunciacion', unit: pronunciationUnit },
+      { type: 'secondary', duration: 4, label: getModuleLabel(secondaryModule), unit: secondaryUnit },
+      { type: 'practice', duration: 3, label: 'Practica activa' },
     ];
   }
 
@@ -70,21 +83,44 @@ function generateSession(mode) {
 function buildWarmup() {
   const items = [];
 
-  // Get recent vocabulary from completed units
-  const vocabProgress = getModuleProgress('vocabulary');
-  if (vocabProgress.completedUnits.length > 0) {
-    items.push({ type: 'vocabulary', desc: 'Repaso de vocabulario reciente', count: 5 });
-  }
+  // Check spaced repetition queue first
+  const reviewUnits = getUnitsForReview(3);
+  if (reviewUnits.length > 0) {
+    for (const review of reviewUnits) {
+      const mod = MODULES[review.module];
+      const icon = mod ? mod.icon : '&#128218;';
+      items.push({
+        type: 'review',
+        module: review.module,
+        unitId: review.unitId,
+        desc: `Repaso: ${review.module} (intervalo ${review.interval}d)`,
+        icon: icon,
+        count: 1
+      });
+    }
+  } else {
+    // Fallback: get recent vocabulary from completed units
+    const vocabProgress = getModuleProgress('vocabulary');
+    if (vocabProgress.completedUnits.length > 0) {
+      items.push({ type: 'vocabulary', desc: 'Repaso de vocabulario reciente', icon: '&#128218;', count: 5 });
+    }
 
-  // Get recent listening review
-  const listeningProgress = getModuleProgress('listening');
-  if (listeningProgress.completedUnits.length > 0) {
-    items.push({ type: 'listening', desc: 'Repaso de frases de listening', count: 3 });
+    // Get recent listening review
+    const listeningProgress = getModuleProgress('listening');
+    if (listeningProgress.completedUnits.length > 0) {
+      items.push({ type: 'listening', desc: 'Repaso de frases de listening', icon: '&#127911;', count: 3 });
+    }
+
+    // Pronunciation review
+    const pronProgress = getModuleProgress('pronunciation');
+    if (pronProgress.completedUnits.length > 0) {
+      items.push({ type: 'pronunciation', desc: 'Repaso de pronunciacion', icon: '&#127908;', count: 2 });
+    }
   }
 
   // If no previous content, provide a quick start
   if (items.length === 0) {
-    items.push({ type: 'intro', desc: 'Bienvenida y preparacion', count: 0 });
+    items.push({ type: 'intro', desc: 'Bienvenida y preparacion', icon: '&#128075;', count: 0 });
   }
 
   return items;
@@ -129,8 +165,20 @@ function completeSession() {
   if (currentSession.listening) {
     completeUnit(currentSession.listening.module, currentSession.listening.unitIndex, 100);
   }
+  if (currentSession.pronunciation) {
+    completeUnit(currentSession.pronunciation.module, currentSession.pronunciation.unitIndex, 100);
+  }
   if (currentSession.secondary) {
     completeUnit(currentSession.secondary.module, currentSession.secondary.unitIndex, 100);
+  }
+
+  // Complete any spaced repetition reviews done in warmup
+  if (currentSession.warmup) {
+    for (const item of currentSession.warmup) {
+      if (item.type === 'review' && item.module && item.unitId) {
+        completeReview(item.module, item.unitId);
+      }
+    }
   }
 
   // Check achievements
@@ -208,6 +256,9 @@ function renderSessionView() {
   } else {
     h += `<button class="btn-session-complete" data-action="completeSession">Completar sesion &#10003;</button>`;
   }
+  if (currentBlockIndex > 0) {
+    h += `<button class="btn-session-abandon" data-action="abandonSession">Salir</button>`;
+  }
   h += '</div>';
 
   h += '</div>';
@@ -219,6 +270,7 @@ function renderSessionBlock(block, session) {
   switch (block.type) {
     case 'warmup': return renderWarmupBlock(session.warmup);
     case 'listening': return renderListeningBlock(block);
+    case 'pronunciation': return renderPronunciationBlock(block);
     case 'secondary': return renderSecondaryBlock(block);
     case 'practice': return renderPracticeBlock(session);
     case 'bonus': return renderBonusBlock();
@@ -229,23 +281,46 @@ function renderSessionBlock(block, session) {
 function renderWarmupBlock(warmup) {
   let h = '<div class="block-card warmup-block">';
   h += '<h3>Warm-up</h3>';
-  h += '<p class="block-desc">Conecta con lo que ya sabes. Empieza sintiendote bien.</p>';
 
   if (warmup[0] && warmup[0].type === 'intro') {
+    h += '<p class="block-desc">Tu primera sesion. Vamos a empezar.</p>';
     h += '<div class="warmup-welcome">';
-    h += '<p>Esta es tu primera sesion. Vamos a empezar con lo basico del listening.</p>';
-    h += '<p>Recuerda: 15-20 minutos, 3-4 veces por semana. Eso es todo lo que necesitas.</p>';
+    h += '<p>Bienvenido. Cada sesion incluye listening + pronunciacion + un modulo extra.</p>';
+    h += '<p>15-20 minutos, 3-4 veces por semana. Eso es todo lo que necesitas.</p>';
     h += '</div>';
   } else {
+    const hasReview = warmup.some(i => i.type === 'review');
+    h += `<p class="block-desc">${hasReview ? 'Repaso espaciado: refuerza lo que aprendiste antes.' : 'Conecta con lo que ya sabes.'}</p>`;
     h += '<div class="warmup-items">';
     for (const item of warmup) {
       h += `<div class="warmup-item">`;
-      h += `<span class="warmup-icon">${item.type === 'vocabulary' ? '&#128218;' : '&#127911;'}</span>`;
+      h += `<span class="warmup-icon">${item.icon || '&#128218;'}</span>`;
       h += `<span>${escapeHtml(item.desc)}</span>`;
       h += '</div>';
     }
     h += '</div>';
   }
+
+  h += '</div>';
+  return h;
+}
+
+function renderPronunciationBlock(block) {
+  const unit = block.unit;
+  let h = '<div class="block-card pronunciation-block">';
+
+  if (!unit) {
+    h += '<h3>Pronunciacion completada</h3>';
+    h += '<p>Has completado todos los niveles de pronunciacion. &#127881;</p>';
+    h += '</div>';
+    return h;
+  }
+
+  h += `<div class="block-module-badge" style="background:var(--purple)">Pronunciacion ${unit.level.toUpperCase()}</div>`;
+  h += `<h3>${escapeHtml(unit.unit.title)}</h3>`;
+  h += `<p class="block-desc">${escapeHtml(unit.unit.desc)}</p>`;
+
+  h += renderUnitContent(unit);
 
   h += '</div>';
   return h;
@@ -312,6 +387,13 @@ function renderUnitContent(unitRef) {
     case 'accents':
     case 'slang':
     case 'idioms':
+    case 'pronunciation':
+    case 'activation':
+    case 'production':
+    case 'contrast':
+    case 'vocabulary':
+    case 'phrases':
+    case 'conversation':
       h += `<div class="unit-placeholder">`;
       h += `<p>Contenido de: <strong>${escapeHtml(unit.title)}</strong></p>`;
       h += `<p class="unit-placeholder-note">El contenido detallado se cargara desde los ficheros .md del modulo.</p>`;
@@ -416,7 +498,7 @@ function renderShadowingExercise(unitRef) {
 function renderPracticeBlock(session) {
   let h = '<div class="block-card practice-block">';
   h += '<h3>Practica activa</h3>';
-  h += '<p class="block-desc">Usa lo que has aprendido en este bloque.</p>';
+  h += '<p class="block-desc">Integra lo que has aprendido en esta sesion.</p>';
 
   h += '<div class="practice-exercises">';
 
@@ -426,6 +508,16 @@ function renderPracticeBlock(session) {
     h += `<span class="practice-icon">&#127911;</span>`;
     h += `<div>`;
     h += `<strong>Listening</strong>: Repite en voz alta la ultima frase que hayas escuchado, imitando la pronunciacion.`;
+    h += `</div>`;
+    h += '</div>';
+  }
+
+  // Pronunciation practice
+  if (session.pronunciation && session.pronunciation.unit) {
+    h += '<div class="practice-item">';
+    h += `<span class="practice-icon">&#127908;</span>`;
+    h += `<div>`;
+    h += `<strong>Pronunciacion</strong>: Graba tu voz diciendo 3 palabras del ejercicio anterior y comparala con el modelo.`;
     h += `</div>`;
     h += '</div>';
   }

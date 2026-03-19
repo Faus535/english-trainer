@@ -100,6 +100,12 @@ function completeUnit(moduleName, unitIndex, score) {
 
   saveModuleProgress(moduleName, progress);
 
+  // Add to spaced repetition queue
+  const config = getModuleConfig(moduleName, getModuleLevel(moduleName));
+  if (config && config.units[unitIndex]) {
+    addToReviewQueue(moduleName, config.units[unitIndex].id);
+  }
+
   // Check level-up
   checkLevelUp(moduleName);
   return progress;
@@ -180,6 +186,89 @@ function getSessionsThisWeek() {
 
 function getTotalSessions() {
   return getProfile().sessionCount || 0;
+}
+
+// ===== Spaced Repetition =====
+
+function addToReviewQueue(moduleName, unitId) {
+  const profile = getProfile();
+  const level = getModuleLevel(moduleName);
+  const key = `${moduleName}-${level}`;
+  if (!profile.moduleProgress[key]) {
+    profile.moduleProgress[key] = { currentUnit: 0, completedUnits: [], scores: {} };
+  }
+  if (!profile.moduleProgress[key].reviewQueue) {
+    profile.moduleProgress[key].reviewQueue = [];
+  }
+
+  // Don't add duplicates
+  const queue = profile.moduleProgress[key].reviewQueue;
+  if (queue.some(r => r.unitId === unitId)) return;
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  queue.push({
+    unitId: unitId,
+    nextReview: tomorrow.toISOString().slice(0, 10),
+    interval: 1,
+    reviews: 0
+  });
+
+  saveProfile(profile);
+}
+
+function getUnitsForReview(maxCount) {
+  const profile = getProfile();
+  const today = getToday();
+  const due = [];
+
+  for (const key of Object.keys(profile.moduleProgress || {})) {
+    const progress = profile.moduleProgress[key];
+    if (!progress.reviewQueue) continue;
+
+    const moduleName = key.split('-')[0];
+    for (const review of progress.reviewQueue) {
+      if (review.nextReview <= today) {
+        due.push({ ...review, module: moduleName, progressKey: key });
+      }
+    }
+  }
+
+  // Sort by oldest first
+  due.sort((a, b) => a.nextReview.localeCompare(b.nextReview));
+  return due.slice(0, maxCount || 3);
+}
+
+function completeReview(moduleName, unitId) {
+  const profile = getProfile();
+
+  for (const key of Object.keys(profile.moduleProgress || {})) {
+    if (!key.startsWith(moduleName)) continue;
+    const progress = profile.moduleProgress[key];
+    if (!progress.reviewQueue) continue;
+
+    const idx = progress.reviewQueue.findIndex(r => r.unitId === unitId);
+    if (idx === -1) continue;
+
+    const review = progress.reviewQueue[idx];
+    review.reviews++;
+
+    // Graduated after 5 reviews
+    if (review.reviews >= 5) {
+      progress.reviewQueue.splice(idx, 1);
+    } else {
+      // Increase interval: 1 → 3 → 7 → 14 → 30
+      const intervals = [1, 3, 7, 14, 30];
+      review.interval = intervals[Math.min(review.reviews, intervals.length - 1)];
+      const nextDate = new Date();
+      nextDate.setDate(nextDate.getDate() + review.interval);
+      review.nextReview = nextDate.toISOString().slice(0, 10);
+    }
+
+    saveProfile(profile);
+    return;
+  }
 }
 
 // ===== Warm-up Data =====

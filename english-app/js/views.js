@@ -36,10 +36,17 @@ function renderDashboard() {
   // Quick start card
   h += renderQuickStart(sessionsWeek);
 
-  // Module progress cards
-  h += '<h3 class="section-title">Tus modulos</h3>';
+  // Audio skills (always present in sessions)
+  h += '<h3 class="section-title">Skills de audio (en cada sesion)</h3>';
+  h += '<div class="modules-grid modules-audio">';
+  h += renderModuleCard('listening');
+  h += renderModuleCard('pronunciation');
+  h += '</div>';
+
+  // Secondary modules (rotate)
+  h += '<h3 class="section-title">Modulos secundarios (rotan)</h3>';
   h += '<div class="modules-grid">';
-  for (const modName of MODULE_NAMES) {
+  for (const modName of ['vocabulary', 'grammar', 'phrases']) {
     h += renderModuleCard(modName);
   }
   h += '</div>';
@@ -102,9 +109,9 @@ function renderQuickStart(sessionsWeek) {
     h += '<h2>Tu sesion de hoy</h2>';
     h += `<p class="quick-start-next">${escapeHtml(nextLabel)}</p>`;
     h += '<div class="quick-start-buttons">';
-    h += '<button class="btn-start-session" data-action="startSession" data-mode="full">Sesion completa <span class="btn-time">20 min</span></button>';
-    h += '<button class="btn-session-alt" data-action="startSession" data-mode="short">Sesion corta <span class="btn-time">13 min</span></button>';
-    h += '<button class="btn-session-alt" data-action="startSession" data-mode="extended">Sesion extendida <span class="btn-time">30 min</span></button>';
+    h += '<button class="btn-start-session" data-action="startSession" data-mode="full">Sesion completa <span class="btn-time">21 min</span></button>';
+    h += '<button class="btn-session-alt" data-action="startSession" data-mode="short">Sesion corta <span class="btn-time">14 min</span></button>';
+    h += '<button class="btn-session-alt" data-action="startSession" data-mode="extended">Sesion extendida <span class="btn-time">31 min</span></button>';
     h += '</div>';
   }
 
