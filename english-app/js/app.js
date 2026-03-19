@@ -1,22 +1,75 @@
 /**
  * App initialization, event delegation, and keyboard navigation.
+ * Modular system - test → dashboard → session flow.
  */
 
-let currentPage = 'plan'; // 'plan' or 'flashcards'
+let currentPage = 'plan';
+
+// ===== Theme Management =====
+
+function initTheme() {
+  const saved = localStorage.getItem('english_plan_theme');
+  if (saved === 'light') {
+    document.documentElement.classList.add('light-theme');
+    document.documentElement.classList.remove('dark-theme');
+    updateThemeMeta();
+  } else if (saved === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.remove('light-theme');
+    updateThemeMeta();
+  }
+  updateThemeIcon();
+}
+
+function toggleTheme() {
+  const isCurrentlyLight = document.documentElement.classList.contains('light-theme') ||
+    (!document.documentElement.classList.contains('dark-theme') &&
+     window.matchMedia('(prefers-color-scheme: light)').matches);
+
+  if (isCurrentlyLight) {
+    document.documentElement.classList.remove('light-theme');
+    document.documentElement.classList.add('dark-theme');
+    localStorage.setItem('english_plan_theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.add('light-theme');
+    localStorage.setItem('english_plan_theme', 'light');
+  }
+  updateThemeMeta();
+  updateThemeIcon();
+}
+
+function updateThemeMeta() {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) return;
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  meta.setAttribute('content', bg);
+}
+
+function updateThemeIcon() {
+  const btn = document.getElementById('btnTheme');
+  if (!btn) return;
+  const isLight = document.documentElement.classList.contains('light-theme') ||
+    (!document.documentElement.classList.contains('dark-theme') &&
+     window.matchMedia('(prefers-color-scheme: light)').matches);
+  btn.innerHTML = isLight ? '&#9728;' : '&#9790;';
+}
+
+// ===== Settings Panel =====
+
+function toggleSettings() {
+  const panel = document.getElementById('settingsPanel');
+  const btn = document.getElementById('btnSettings');
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (btn) btn.classList.toggle('active');
+}
+
+// ===== Init =====
 
 function initApp() {
   try {
-    // Validate critical data structures
-    if (!Array.isArray(PLAN) || !PLAN.length) {
-      throw new Error('Plan data is missing or empty');
-    }
-    if (!Array.isArray(VOCAB_DATA) || !VOCAB_DATA.length) {
-      throw new Error('Vocabulary data is missing or empty');
-    }
-    if (typeof FILES_DATA !== 'object') {
-      throw new Error('Files data is missing');
-    }
-
+    initTheme();
     initTTS();
     setupEventDelegation();
     registerServiceWorker();
@@ -41,12 +94,10 @@ function registerServiceWorker() {
 function navigateTo(page) {
   currentPage = page;
 
-  // Update tab styles
   document.querySelectorAll('.bottom-tab').forEach(t => t.classList.remove('active'));
   const tab = document.getElementById('tab-' + page);
   if (tab) tab.classList.add('active');
 
-  // Show/hide progress bar (only on plan page)
   const progressEl = document.getElementById('progressContainer');
   if (progressEl) progressEl.style.display = page === 'plan' ? '' : 'none';
 
@@ -64,7 +115,6 @@ function navigateTo(page) {
 // ===== Event Delegation =====
 
 function setupEventDelegation() {
-  // Click delegation on entire document
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-action]');
     if (!target) return;
@@ -89,19 +139,58 @@ function setupEventDelegation() {
       case 'exportProgress':
         exportProgress();
         break;
+      case 'toggleTheme':
+        toggleTheme();
+        break;
+      case 'toggleSettings':
+        toggleSettings();
+        break;
 
-      // Dashboard actions
-      case 'toggleWeek':
-        toggleWeek(parseInt(target.dataset.week));
+      // Test actions
+      case 'startTest':
+        startTest();
         break;
-      case 'openDay':
-        openDay(parseInt(target.dataset.day));
+      case 'submitVocab': {
+        const input = document.getElementById('testVocabInput');
+        if (input) submitVocabAnswer(input.value);
         break;
-      case 'toggleDay':
-        toggleDay(parseInt(target.dataset.day));
+      }
+      case 'skipVocab':
+        submitVocabAnswer('');
         break;
-      case 'toggleFileViewer':
-        toggleFileViewer(target.dataset.actId);
+      case 'submitGrammar':
+        submitGrammarAnswer(parseInt(target.dataset.option));
+        break;
+      case 'submitListening': {
+        const input = document.getElementById('testListenInput');
+        if (input) submitListeningAnswer(input.value);
+        break;
+      }
+      case 'skipListening':
+        submitListeningAnswer('');
+        break;
+      case 'playTestAudio':
+        playTestAudio(parseInt(target.dataset.q));
+        break;
+      case 'finishTest':
+        showDashboard();
+        break;
+
+      // Session actions
+      case 'startSession':
+        startSession(target.dataset.mode || 'full');
+        break;
+      case 'resumeSession':
+        resumeSession();
+        break;
+      case 'advanceBlock':
+        advanceBlock();
+        break;
+      case 'completeSession':
+        completeSession();
+        break;
+      case 'abandonSession':
+        abandonSession();
         break;
 
       // Gamification actions
@@ -165,88 +254,72 @@ function setupEventDelegation() {
       case 'playAllMd':
         playAllMd(document.getElementById(target.dataset.viewerId));
         break;
-    }
-  });
 
-  // Change delegation for checkboxes
-  document.addEventListener('change', (e) => {
-    const target = e.target.closest('[data-action]');
-    if (!target) return;
-
-    if (target.dataset.action === 'toggleMilestone') {
-      toggleMilestone(parseInt(target.dataset.index));
-    }
-  });
-
-  // Input delegation for textareas (debounced)
-  const debouncedSaveNote = debounce((dayNum, actIndex, value) => {
-    saveDictationNote(dayNum, actIndex, value);
-  }, 300);
-
-  document.addEventListener('input', (e) => {
-    const target = e.target.closest('[data-action="saveDictationNote"]');
-    if (!target) return;
-
-    debouncedSaveNote(
-      parseInt(target.dataset.day),
-      parseInt(target.dataset.actIndex),
-      target.value
-    );
-  });
-
-  // Keyboard activation for elements with role="button"
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      const target = e.target.closest('[role="button"][data-action]');
-      if (target) {
-        e.preventDefault();
-        target.click();
+      // Dictation note saving
+      case 'saveDictNote': {
+        const noteId = target.dataset.noteId;
+        if (noteId) saveDictationNote(noteId, target.value);
+        break;
       }
     }
   });
-}
 
-// Keyboard shortcuts (debounced to prevent rapid-fire)
-const handleKeyNav = debounce((key) => {
-  if (currentPage === 'flashcards') {
-    if (key === 'ArrowRight' || key === ' ') nextFlashcard();
-    if (key === 'ArrowLeft') prevFlashcard();
-    if (key === 'ArrowDown' || key === 'Enter') showTranslation();
-    if (key === 'p' || key === 'P') speakFlashcard();
-    if (key === 'Escape') navigateTo('plan');
-    return;
-  }
+  // Input delegation for textareas
+  const debouncedSaveNote = debounce((noteId, value) => {
+    saveDictationNote(noteId, value);
+  }, 300);
 
-  if (typeof currentView === 'number') {
-    if (key === 'ArrowLeft' && currentView > 1) openDay(currentView - 1);
-    if (key === 'ArrowRight' && currentView < TOTAL_DAYS) openDay(currentView + 1);
-    if (key === 'Escape') showDashboard();
-  }
-}, 100);
-
-document.addEventListener('keydown', (e) => {
-  // Ctrl+Enter in translator textarea triggers translation
-  if (e.target.id === 'translatorInput' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-    e.preventDefault();
-    doTranslate();
-    return;
-  }
-
-  // Don't handle shortcuts when typing in inputs
-  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
-    return;
-  }
-
-  // Prevent default for navigation keys
-  if (['ArrowLeft', 'ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
-    // Only prevent if not on a focusable element
-    if (!e.target.closest('button, a, [tabindex]') || e.target.closest('#main')) {
-      e.preventDefault();
+  document.addEventListener('input', (e) => {
+    const target = e.target.closest('[data-action="saveDictNote"]');
+    if (target && target.dataset.noteId) {
+      debouncedSaveNote(target.dataset.noteId, target.value);
     }
-  }
+  });
 
-  handleKeyNav(e.key);
-});
+  // Enter key in test inputs
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (e.target.id === 'testVocabInput') {
+        e.preventDefault();
+        submitVocabAnswer(e.target.value);
+        return;
+      }
+      if (e.target.id === 'testListenInput') {
+        e.preventDefault();
+        submitListeningAnswer(e.target.value);
+        return;
+      }
+    }
+
+    // Ctrl+Enter in translator
+    if (e.target.id === 'translatorInput' && e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      doTranslate();
+      return;
+    }
+
+    // Keyboard activation for role="button"
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('[role="button"][data-action]')) {
+      e.preventDefault();
+      e.target.click();
+      return;
+    }
+  });
+
+  // Keyboard shortcuts for flashcards
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+      return;
+    }
+    if (currentPage === 'flashcards') {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextFlashcard(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevFlashcard(); }
+      if (e.key === 'ArrowDown' || e.key === 'Enter') { e.preventDefault(); showTranslation(); }
+      if (e.key === 'p' || e.key === 'P') speakFlashcard();
+      if (e.key === 'Escape') navigateTo('plan');
+    }
+  });
+}
 
 // Start
 initApp();
