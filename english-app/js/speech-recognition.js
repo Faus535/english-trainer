@@ -34,28 +34,26 @@ function startPronunciationCheck(expectedText, callback) {
 
   recognitionInstance = new SpeechRecognitionAPI();
   recognitionInstance.lang = 'en-US';
-  recognitionInstance.interimResults = false;
+  recognitionInstance.interimResults = true;
   recognitionInstance.maxAlternatives = 1;
-  recognitionInstance.continuous = false;
+  recognitionInstance.continuous = true;
+
+  // Accumulate all results (interim + final)
+  let lastTranscript = '';
+  let lastConfidence = 0;
 
   recognitionInstance.onresult = function(event) {
-    clearTimeout(recognitionTimeout);
-    const transcript = event.results[0][0].transcript;
-    const confidence = event.results[0][0].confidence;
-    recognitionState = 'processing';
-
-    // Compare with expected
-    const comparison = compareTexts(recognitionExpected, transcript);
-    recognitionResult = {
-      transcript: transcript,
-      confidence: confidence,
-      expected: recognitionExpected,
-      score: comparison.score,
-      words: comparison.words
-    };
-    recognitionState = 'result';
-
-    if (recognitionCallback) recognitionCallback(recognitionResult);
+    // Collect the latest transcript from all results
+    let transcript = '';
+    let confidence = 0;
+    for (let i = 0; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        confidence = Math.max(confidence, event.results[i][0].confidence);
+      }
+    }
+    lastTranscript = transcript;
+    lastConfidence = confidence || event.results[0][0].confidence;
   };
 
   recognitionInstance.onerror = function(event) {
@@ -67,30 +65,41 @@ function startPronunciationCheck(expectedText, callback) {
 
   recognitionInstance.onend = function() {
     clearTimeout(recognitionTimeout);
-    if (recognitionState === 'recording') {
-      // Ended without result
-      recognitionState = 'idle';
-      recognitionResult = { error: 'no-speech' };
-      if (recognitionCallback) recognitionCallback(recognitionResult);
+    if (recognitionState === 'recording' || recognitionState === 'stopping') {
+      if (lastTranscript) {
+        // Process whatever was captured
+        const comparison = compareTexts(recognitionExpected, lastTranscript);
+        recognitionResult = {
+          transcript: lastTranscript,
+          confidence: lastConfidence,
+          expected: recognitionExpected,
+          score: comparison.score,
+          words: comparison.words
+        };
+        recognitionState = 'result';
+        if (recognitionCallback) recognitionCallback(recognitionResult);
+      } else {
+        recognitionState = 'idle';
+        recognitionResult = { error: 'no-speech' };
+        if (recognitionCallback) recognitionCallback(recognitionResult);
+      }
     }
   };
 
   recognitionInstance.start();
 
-  // Auto-stop after 10 seconds
+  // Auto-stop after 15 seconds
   recognitionTimeout = setTimeout(() => {
     stopPronunciationCheck();
-  }, 10000);
+  }, 15000);
 }
 
 function stopPronunciationCheck() {
   clearTimeout(recognitionTimeout);
   if (recognitionInstance) {
+    recognitionState = 'stopping';
     try { recognitionInstance.stop(); } catch (e) { /* ignore */ }
     recognitionInstance = null;
-  }
-  if (recognitionState === 'recording') {
-    recognitionState = 'idle';
   }
 }
 
@@ -178,12 +187,8 @@ function handleToggleRecording(expected, itemId) {
   }
 
   if (recognitionState === 'recording') {
+    // User pressed stop — trigger analysis via onend
     stopPronunciationCheck();
-    const btn = getBtn();
-    if (btn) {
-      btn.classList.remove('recording');
-      btn.innerHTML = '<span class="record-icon">&#127908;</span> Repite la frase';
-    }
     return;
   }
 
@@ -192,7 +197,7 @@ function handleToggleRecording(expected, itemId) {
   const resultDiv = getResultDiv();
   if (btn) {
     btn.classList.add('recording');
-    btn.innerHTML = '<span class="record-pulse"></span> Escuchando...';
+    btn.innerHTML = '<span class="record-pulse"></span> Parar y comprobar';
   }
   if (resultDiv) resultDiv.innerHTML = '';
 
