@@ -123,8 +123,7 @@ function prevSpeakPhrase() {
 
 function revealSpeakPhrase() {
   speakQuizRevealed = true;
-  const el = document.getElementById('sq-translation');
-  if (el) el.classList.add('visible');
+  renderSpeakQuiz(speakQuizHistory[speakQuizIndex]);
 }
 
 function setSpeakQuizLevel(level) {
