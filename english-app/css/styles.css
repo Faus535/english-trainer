@@ -3640,6 +3640,47 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
   font-style: italic;
   margin-top: 4px;
 }
+.pron-word-fail[data-action] {
+  cursor: pointer;
+  text-decoration: none;
+}
+.pron-word-fail[data-action]:active {
+  background: rgba(231,76,60,0.25);
+}
+.pron-practice {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(231,76,60,0.06);
+  border: 1px solid rgba(231,76,60,0.15);
+  border-radius: var(--radius-sm);
+}
+.pron-practice-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+.pron-practice-word {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pron-practice-word:last-child { margin-bottom: 0; }
+.pron-practice-listen {
+  background: none;
+  border: 1px solid rgba(231,76,60,0.3);
+  color: #e74c3c;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pron-practice-listen:active {
+  background: rgba(231,76,60,0.1);
+}
 .pron-tips {
   margin-top: 10px;
   padding: 10px 14px;

@@ -242,26 +242,39 @@ function handleToggleRecording(expected, itemId) {
 
     html += '<div class="pron-words">';
     result.words.forEach(w => {
-      const cls = w.correct ? 'pron-word-ok' : 'pron-word-fail';
-      html += `<span class="${cls}">${escapeHtml(w.word)}</span> `;
+      if (w.correct) {
+        html += `<span class="pron-word-ok">${escapeHtml(w.word)}</span> `;
+      } else {
+        html += `<span class="pron-word-fail" data-action="speakWord" data-word="${escapeHtml(w.word)}" role="button" tabindex="0">${escapeHtml(w.word)} &#128264;</span> `;
+      }
     });
     html += '</div>';
 
     html += `<div class="pron-heard">Oido: "${escapeHtml(result.transcript)}"</div>`;
 
-    if (result.score < 100) {
-      const failedWords = result.words.filter(w => !w.correct).map(w => w.word);
+    // Practice failed words individually
+    const failedWords = result.words.filter(w => !w.correct);
+    if (failedWords.length > 0) {
+      html += '<div class="pron-practice">';
+      html += '<div class="pron-practice-title">Practica estas palabras:</div>';
+      failedWords.forEach((w, i) => {
+        const wordId = itemId + '-fix-' + i;
+        html += '<div class="pron-practice-word">';
+        html += `<button class="pron-practice-listen" data-action="speakWord" data-word="${escapeHtml(w.word)}">&#128264; ${escapeHtml(w.word)}</button>`;
+        html += renderPronunciationButtonWord(w.word, wordId);
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (result.score < 100 && result.score >= 50 && result.score < 90) {
       html += '<div class="pron-tips">';
-      html += '<div class="pron-tips-title">Consejos:</div>';
-      if (result.score < 50) {
-        html += '<p>Escucha la frase primero y repite despues, imitando el ritmo y la entonacion.</p>';
-      }
-      if (failedWords.length > 0) {
-        html += `<p>Practica estas palabras: <strong>${failedWords.join(', ')}</strong></p>`;
-      }
-      if (result.score >= 50 && result.score < 90) {
-        html += '<p>Casi perfecto! Intenta hablar mas despacio y vocalizar cada palabra.</p>';
-      }
+      html += '<p>Casi perfecto! Intenta hablar mas despacio y vocalizar cada palabra.</p>';
+      html += '</div>';
+    }
+    if (result.score < 50) {
+      html += '<div class="pron-tips">';
+      html += '<p>Escucha la frase primero y repite despues, imitando el ritmo y la entonacion.</p>';
       html += '</div>';
     }
 
