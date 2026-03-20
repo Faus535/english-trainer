@@ -261,6 +261,50 @@ function setupEventDelegation() {
         playAllMd(document.getElementById(target.dataset.viewerId));
         break;
 
+      // Mini-test actions
+      case 'triggerMiniTest':
+        startMiniTest();
+        break;
+      case 'startMiniTestQuestions':
+        if (miniTestState) { miniTestState.phase = 'vocabulary'; miniTestState.currentQuestion = 0; renderMiniTest(); }
+        break;
+      case 'submitMiniVocab': {
+        const inp = document.getElementById('miniVocabInput');
+        if (inp) submitMiniVocab(inp.value);
+        break;
+      }
+      case 'skipMiniVocab':
+        submitMiniVocab('');
+        break;
+      case 'submitMiniGrammar':
+        submitMiniGrammar(parseInt(target.dataset.option));
+        break;
+      case 'submitMiniListening': {
+        const inp2 = document.getElementById('miniListenInput');
+        if (inp2) submitMiniListening(inp2.value);
+        break;
+      }
+      case 'skipMiniListening':
+        submitMiniListening('');
+        break;
+      case 'submitMiniPronunciation':
+        submitMiniPronunciation(parseInt(target.dataset.option));
+        break;
+      case 'playMiniTestAudio':
+        playMiniTestAudio(parseInt(target.dataset.q));
+        break;
+      case 'playMiniPronunciationAudio':
+        playMiniPronunciationAudio(parseInt(target.dataset.q));
+        break;
+      case 'finishMiniTest':
+        finishMiniTest();
+        break;
+
+      // Retake test
+      case 'retakeTest':
+        retakeTest();
+        break;
+
       // Dictation note saving
       case 'saveDictNote': {
         const noteId = target.dataset.noteId;
@@ -293,6 +337,16 @@ function setupEventDelegation() {
       if (e.target.id === 'testListenInput') {
         e.preventDefault();
         submitListeningAnswer(e.target.value);
+        return;
+      }
+      if (e.target.id === 'miniVocabInput') {
+        e.preventDefault();
+        submitMiniVocab(e.target.value);
+        return;
+      }
+      if (e.target.id === 'miniListenInput') {
+        e.preventDefault();
+        submitMiniListening(e.target.value);
         return;
       }
     }

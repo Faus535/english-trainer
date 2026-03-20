@@ -1,6 +1,6 @@
 # English Fast Learning PWA — Codebase Reference
 
-> Last updated: 2026-03-19 | Vanilla JS PWA | No build tools | Offline-first | Dark/Light theme
+> Last updated: 2026-03-20 | Vanilla JS PWA | No build tools | Offline-first | Dark/Light theme
 
 ## Architecture
 
@@ -26,6 +26,7 @@ english-app/
 │   ├── flashcards.js       1209-word cards with history navigation
 │   ├── translator.js       MyMemory API (es↔en)
 │   ├── markdown.js         MD→HTML parser with TTS play buttons on tables
+│   ├── mini-test.js        Bi-weekly mini-tests (15 questions), adaptive difficulty, progress chart
 │   ├── utils.js            escapeHtml, cleanForSpeech, debounce
 │   ├── plan-data.js        16-week curriculum (112 days, 4 blocks)
 │   ├── vocab-data.js       1209 entries {en, ipa, es, type, ex}
@@ -117,7 +118,15 @@ english-app/
 User click → data-action attribute → switch(action) → handler → saveState() → render()
 ```
 
-## Service Worker Strategy
+### mini-test.js — Bi-weekly Assessment
+- Question pools per CEFR level (A1→C1): vocab, grammar, listening, pronunciation
+- `shouldTriggerMiniTest()` → checks every 8 listening units
+- `startMiniTest()` → 15 questions: 5 vocab + 5 grammar + 3 listening + 2 pronunciation
+- `applyAdaptiveDifficulty(scores)` → adjusts TTS speed, vocab boost, listening slowdown
+- `renderProgressChart(history)` → bar chart with skill evolution + trend arrows
+- `getMiniTestHistory()` → returns array of all mini-test scores
+
+## Service Worker Strategy (CACHE_VERSION=5)
 - **Install**: cache all assets, skipWaiting
 - **Activate**: delete old caches, clients.claim
 - **Fetch**: cache-first, background fetch to update cache

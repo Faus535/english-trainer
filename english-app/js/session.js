@@ -371,33 +371,58 @@ function renderSecondaryBlock(block) {
 }
 
 function renderUnitContent(unitRef) {
-  // For now, render a placeholder with the unit info.
-  // This will be replaced with actual .md content once the content files are created.
   const unit = unitRef.unit;
   let h = '<div class="unit-content">';
 
   switch (unit.type) {
+    // Listening-focused interactive exercises
     case 'reduced-forms':
     case 'connected-speech':
+    case 'fillers':
+      h += renderMicroDictation(unit);
+      break;
+
     case 'rhythm':
     case 'intonation':
+      h += renderSpeedDrill(unit);
+      break;
+
     case 'numbers':
-    case 'fillers':
+      h += renderMicroDictation(unit);
+      break;
+
     case 'minimal-pairs':
+      h += renderMinimalPairDrill(unit);
+      break;
+
     case 'accents':
+      h += renderAccentExercise(unit);
+      break;
+
     case 'slang':
     case 'idioms':
+      h += renderContextListening(unit);
+      break;
+
+    // Pronunciation exercises (integrated with listening - Phase 3.4)
     case 'pronunciation':
+      h += renderIntegratedPronunciation(unit);
+      break;
+
+    // Grammar/vocab activation
     case 'activation':
     case 'production':
     case 'contrast':
+      h += renderActivationExercise(unit);
+      break;
+
     case 'vocabulary':
+      h += renderVocabExercise(unit);
+      break;
+
     case 'phrases':
     case 'conversation':
-      h += `<div class="unit-placeholder">`;
-      h += `<p>Contenido de: <strong>${escapeHtml(unit.title)}</strong></p>`;
-      h += `<p class="unit-placeholder-note">El contenido detallado se cargara desde los ficheros .md del modulo.</p>`;
-      h += `</div>`;
+      h += renderPhraseExercise(unit);
       break;
 
     case 'dictation':
@@ -428,6 +453,281 @@ function renderUnitContent(unitRef) {
       h += `</div>`;
   }
 
+  h += '</div>';
+  return h;
+}
+
+// ===== Interactive Listening Exercises (Phase 3.1) =====
+
+function renderMicroDictation(unit) {
+  const sentences = getMicroDictationSentences(unit);
+  let h = '<div class="exercise-card micro-dictation">';
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha la frase (pulsa play)</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Escribe lo que oyes</div>';
+  h += '<div class="exercise-step"><span class="step-num">3</span> Compara con la respuesta</div>';
+  h += '</div>';
+
+  sentences.forEach((s, i) => {
+    const sentenceId = `micro-dict-${i}`;
+    h += `<div class="micro-dict-item" id="mdi-${i}">`;
+    h += `<div class="micro-dict-row">`;
+    h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(s.text)}">&#9654;</button>`;
+    h += `<input type="text" class="micro-dict-input" id="${sentenceId}" placeholder="Escribe lo que oyes..." autocomplete="off" spellcheck="false">`;
+    h += `</div>`;
+    h += `<div class="micro-dict-answer" id="answer-${i}" style="display:none">`;
+    h += `<p class="answer-text">${escapeHtml(s.text)}</p>`;
+    if (s.note) h += `<p class="answer-note">${escapeHtml(s.note)}</p>`;
+    h += `</div>`;
+    h += `<button class="btn-show-answer" onclick="document.getElementById('answer-${i}').style.display='block';this.style.display='none'">Ver respuesta</button>`;
+    h += `</div>`;
+  });
+
+  h += '</div>';
+  return h;
+}
+
+function getMicroDictationSentences(unit) {
+  // Generate contextual sentences based on unit topic
+  const sentences = {
+    'reduced-forms': [
+      { text: "I'm gonna go to the store.", note: "gonna = going to" },
+      { text: "Do you wanna come with us?", note: "wanna = want to" },
+      { text: "I gotta leave now.", note: "gotta = got to / have to" },
+      { text: "She shoulda called earlier.", note: "shoulda = should have" },
+      { text: "We coulda done it better.", note: "coulda = could have" },
+    ],
+    'connected-speech': [
+      { text: "Turn it off, please.", note: "turn_it_off: las palabras se enlazan" },
+      { text: "What are you looking at?", note: "whatcha: connected speech natural" },
+      { text: "I picked it up at the store.", note: "picked_it_up: linking /t/" },
+      { text: "She's been waiting for an hour.", note: "for_an: linking /r/" },
+      { text: "Let me help you with that.", note: "lemme: let me reducido" },
+    ],
+    'fillers': [
+      { text: "Well, you know, it's kind of complicated.", note: "well, you know, kind of = fillers comunes" },
+      { text: "I mean, it's not that hard, like, basically.", note: "I mean, like, basically = muletillas" },
+      { text: "So, um, what I was saying is, right, we need more time.", note: "so, um, right = fillers" },
+    ],
+    'numbers': [
+      { text: "The meeting is at thirteen thirty.", note: "thirteen (13) vs thirty (30)" },
+      { text: "I need forty-five minutes.", note: "forty-five = 45" },
+      { text: "There are fifteen people in the room.", note: "fifteen (15) vs fifty (50)" },
+    ],
+  };
+  return sentences[unit.type] || sentences['connected-speech'];
+}
+
+function renderSpeedDrill(unit) {
+  const sentence = getSpeedDrillSentence(unit);
+  let h = '<div class="exercise-card speed-drill">';
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha la frase a velocidad lenta</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Escuchala mas rapido cada vez</div>';
+  h += '<div class="exercise-step"><span class="step-num">3</span> Intenta repetirla a velocidad normal</div>';
+  h += '</div>';
+
+  h += `<p class="speed-drill-sentence">"${escapeHtml(sentence)}"</p>`;
+  h += '<div class="speed-drill-buttons">';
+  const speeds = [0.7, 0.85, 1.0, 1.15];
+  const labels = ['Lenta', 'Media', 'Normal', 'Rapida'];
+  speeds.forEach((spd, i) => {
+    h += `<button class="btn-speed-drill" onclick="(function(){var r=speechRate;speechRate=${spd};speak('${escapeHtml(sentence).replace(/'/g, "\\'")}',function(){speechRate=r;});})()">`;
+    h += `${labels[i]} (${spd}x)`;
+    h += '</button>';
+  });
+  h += '</div>';
+  h += '</div>';
+  return h;
+}
+
+function getSpeedDrillSentence(unit) {
+  const sentences = {
+    'rhythm': "The DOGS are CHAS-ing the CATS a-ROUND the GAR-den.",
+    'intonation': "You're coming to the party tonight, aren't you?",
+  };
+  return sentences[unit.type] || "She said she was going to call me back later.";
+}
+
+function renderMinimalPairDrill(unit) {
+  const pairs = [
+    { a: 'ship', b: 'sheep', sound: '/ɪ/ vs /iː/' },
+    { a: 'cat', b: 'cut', sound: '/æ/ vs /ʌ/' },
+    { a: 'bat', b: 'bet', sound: '/æ/ vs /e/' },
+    { a: 'pull', b: 'pool', sound: '/ʊ/ vs /uː/' },
+    { a: 'bit', b: 'beat', sound: '/ɪ/ vs /iː/' },
+  ];
+
+  let h = '<div class="exercise-card minimal-pairs">';
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha las dos palabras</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Identifica la diferencia de sonido</div>';
+  h += '</div>';
+
+  pairs.forEach((p, i) => {
+    h += '<div class="minimal-pair-row">';
+    h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${p.a}">&#9654; ${escapeHtml(p.a)}</button>`;
+    h += `<span class="mp-vs">vs</span>`;
+    h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${p.b}">&#9654; ${escapeHtml(p.b)}</button>`;
+    h += `<span class="mp-sound">${escapeHtml(p.sound)}</span>`;
+    h += '</div>';
+  });
+
+  h += '</div>';
+  return h;
+}
+
+function renderAccentExercise(unit) {
+  let h = '<div class="exercise-card accent-exercise">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha las diferencias entre acentos</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Intenta identificar: ¿americano o britanico?</div>';
+  h += '</div>';
+  h += '<div class="accent-words">';
+  const words = ['water', 'tomato', 'schedule', 'better', 'can\'t', 'dance'];
+  words.forEach(w => {
+    h += `<button class="btn-exercise-play accent-word" data-action="speakWord" data-word="${escapeHtml(w)}">&#9654; ${escapeHtml(w)}</button>`;
+  });
+  h += '</div>';
+  h += '<p class="unit-tip">Escucha como cambia el sonido de la "r", la "t" entre vocales, y las vocales /æ/ vs /ɑː/.</p>';
+  h += '</div>';
+  return h;
+}
+
+function renderContextListening(unit) {
+  let h = '<div class="exercise-card context-listening">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+  h += renderMicroDictation(unit);
+  h += '</div>';
+  return h;
+}
+
+// ===== Integrated Phonetics-Listening Exercises (Phase 3.4) =====
+
+function renderIntegratedPronunciation(unit) {
+  let h = '<div class="exercise-card integrated-pronunciation">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+
+  // Step 1: Listen and identify
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha las palabras de ejemplo</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Identifica el sonido objetivo en cada frase</div>';
+  h += '<div class="exercise-step"><span class="step-num">3</span> Repite imitando la pronunciacion</div>';
+  h += '</div>';
+
+  // Example words with play buttons
+  const wordSets = getPronunciationWords(unit.title);
+  h += '<div class="pron-words">';
+  wordSets.forEach(w => {
+    h += `<button class="btn-exercise-play pron-word" data-action="speakWord" data-word="${escapeHtml(w)}">&#9654; ${escapeHtml(w)}</button>`;
+  });
+  h += '</div>';
+
+  // Listening integration: hear the sound in context
+  h += '<div class="pron-context">';
+  h += '<h5>Escucha en contexto:</h5>';
+  const contextSentences = getPronContextSentences(unit.title);
+  contextSentences.forEach(s => {
+    h += `<div class="pron-context-item">`;
+    h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(s)}">&#9654;</button>`;
+    h += `<span>${escapeHtml(s)}</span>`;
+    h += `</div>`;
+  });
+  h += '</div>';
+
+  h += '</div>';
+  return h;
+}
+
+function getPronunciationWords(title) {
+  const lower = title.toLowerCase();
+  if (lower.includes('/θ/') || lower.includes('th')) return ['think', 'three', 'bath', 'this', 'the', 'mother'];
+  if (lower.includes('/v/') || lower.includes('/b/')) return ['very', 'berry', 'vine', 'wine', 'vest', 'best'];
+  if (lower.includes('vocal')) return ['ship', 'sheep', 'cat', 'cut', 'pull', 'pool'];
+  if (lower.includes('/ɪ/') || lower.includes('ship')) return ['ship', 'sheep', 'bit', 'beat', 'sit', 'seat'];
+  if (lower.includes('/h/')) return ['have', 'hello', 'behind', 'who', 'how', 'hear'];
+  if (lower.includes('-ed')) return ['worked', 'played', 'wanted', 'kissed', 'loved', 'needed'];
+  if (lower.includes('stress')) return ['record', 'present', 'object', 'contract', 'permit', 'rebel'];
+  if (lower.includes('linking')) return ['turn it off', 'pick it up', 'far away', 'go on'];
+  if (lower.includes('/ʃ/') || lower.includes('/tʃ/')) return ['she', 'cheese', 'ship', 'chip', 'share', 'chair'];
+  if (lower.includes('/r/')) return ['red', 'wrong', 'world', 'right', 'around', 'car'];
+  return ['about', 'banana', 'camera', 'better', 'letter', 'water'];
+}
+
+function getPronContextSentences(title) {
+  const lower = title.toLowerCase();
+  if (lower.includes('/θ/') || lower.includes('th')) return ['I think three thousand is too much.', 'Thank you for everything.', 'This is the best thing.'];
+  if (lower.includes('/v/') || lower.includes('/b/')) return ['I have a very big bag.', 'They gave us a brave victory.', 'The van blocked the view.'];
+  if (lower.includes('vocal')) return ['The ship sailed past the sheep.', 'She cut the cat\'s food.'];
+  if (lower.includes('stress')) return ['Can you RECORD the record?', 'I PRESENT you this present.'];
+  if (lower.includes('linking')) return ['Turn it off right now.', 'Pick it up from the floor.', 'She went out and about.'];
+  return ['I\'m about to leave.', 'Can you pass me the water?', 'The weather is better today.'];
+}
+
+// ===== Activation & Vocab Exercises =====
+
+function renderActivationExercise(unit) {
+  let h = '<div class="exercise-card activation-exercise">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Lee la regla o estructura</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Escribe 3 frases propias usando la estructura</div>';
+  h += '<div class="exercise-step"><span class="step-num">3</span> Leelas en voz alta</div>';
+  h += '</div>';
+  h += '<textarea class="activation-textarea" placeholder="Escribe tus frases aqui..." rows="4"></textarea>';
+  h += '</div>';
+  return h;
+}
+
+function renderVocabExercise(unit) {
+  let h = '<div class="exercise-card vocab-exercise">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+
+  // Show random vocab words from VOCAB_DATA with TTS
+  if (typeof VOCAB_DATA !== 'undefined' && VOCAB_DATA.length > 0) {
+    const words = [];
+    const used = new Set();
+    while (words.length < 8 && words.length < VOCAB_DATA.length) {
+      const idx = Math.floor(Math.random() * VOCAB_DATA.length);
+      if (!used.has(idx)) {
+        used.add(idx);
+        words.push(VOCAB_DATA[idx]);
+      }
+    }
+
+    h += '<div class="vocab-cards">';
+    words.forEach(w => {
+      h += '<div class="vocab-mini-card">';
+      h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(w.en)}">&#9654;</button>`;
+      h += `<div class="vocab-mini-word">${escapeHtml(w.en)}</div>`;
+      if (w.ipa) h += `<div class="vocab-mini-ipa">${escapeHtml(w.ipa)}</div>`;
+      h += `<div class="vocab-mini-es" style="display:none">${escapeHtml(w.es)}</div>`;
+      h += `<button class="btn-show-answer" onclick="this.previousElementSibling.style.display='block';this.style.display='none'">Ver</button>`;
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  h += '</div>';
+  return h;
+}
+
+function renderPhraseExercise(unit) {
+  let h = '<div class="exercise-card phrase-exercise">';
+  h += `<h4>${escapeHtml(unit.title)}</h4>`;
+  h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
+  h += '<div class="exercise-instructions">';
+  h += '<div class="exercise-step"><span class="step-num">1</span> Lee las frases y escucha la pronunciacion</div>';
+  h += '<div class="exercise-step"><span class="step-num">2</span> Practica diciendo cada frase en voz alta</div>';
+  h += '<div class="exercise-step"><span class="step-num">3</span> Intenta usar una frase en una conversacion imaginaria</div>';
+  h += '</div>';
+  h += '<textarea class="activation-textarea" placeholder="Practica aqui: escribe un dialogo usando las frases..." rows="4"></textarea>';
   h += '</div>';
   return h;
 }

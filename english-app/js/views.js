@@ -51,6 +51,21 @@ function renderDashboard() {
   }
   h += '</div>';
 
+  // Mini-test prompt (if due)
+  if (typeof shouldTriggerMiniTest === 'function' && shouldTriggerMiniTest()) {
+    h += '<div class="mini-test-prompt">';
+    h += '<h3>Mini-test disponible</h3>';
+    h += '<p>Es hora de medir tu progreso. 15 preguntas, ~5 minutos.</p>';
+    h += '<button class="btn-start-test" data-action="triggerMiniTest">Hacer mini-test</button>';
+    h += '</div>';
+  }
+
+  // Test results summary
+  h += renderTestResultsSummary();
+
+  // Progress chart from mini-tests
+  h += renderDashboardProgressChart();
+
   // Widgets
   h += '<div class="dashboard-widgets">';
   h += renderSoundOfTheDay();
@@ -189,4 +204,85 @@ function resumeSession() {
     currentSession = session;
     renderSessionView();
   }
+}
+
+// ===== Test Results Summary =====
+
+function renderTestResultsSummary() {
+  const profile = getProfile();
+  if (!profile.testCompleted || !profile.levels) return '';
+  const levels = profile.levels;
+
+  const adaptive = typeof getAdaptiveDifficulty === 'function' ? getAdaptiveDifficulty() : {};
+
+  let h = '<div class="test-summary-card">';
+  h += '<h3>Tu nivel actual</h3>';
+  h += '<div class="test-summary-levels">';
+  for (const mod of MODULE_NAMES) {
+    const lvl = (levels[mod] || 'a1').toUpperCase();
+    h += `<div class="test-summary-level"><span class="tsl-module">${getModuleLabel(mod)}</span><span class="tsl-value">${lvl}</span></div>`;
+  }
+  h += '</div>';
+
+  if (adaptive.ttsSpeedAdjust) {
+    const dir = adaptive.ttsSpeedAdjust > 0 ? '+' : '';
+    h += `<div class="test-summary-adaptive">Ajuste de velocidad: ${dir}${adaptive.ttsSpeedAdjust.toFixed(1)}x</div>`;
+  }
+
+  h += '</div>';
+  return h;
+}
+
+// ===== Dashboard Progress Chart =====
+
+function renderDashboardProgressChart() {
+  if (typeof getMiniTestHistory !== 'function') return '';
+  const history = getMiniTestHistory();
+  if (history.length === 0) return '';
+
+  const skills = ['vocabulary', 'grammar', 'listening', 'pronunciation'];
+  const colors = { vocabulary: 'var(--green)', grammar: 'var(--accent2)', listening: 'var(--accent)', pronunciation: 'var(--purple, var(--accent2))' };
+  const labels = { vocabulary: 'Vocab', grammar: 'Gram', listening: 'List', pronunciation: 'Pron' };
+
+  let h = '<div class="dashboard-chart">';
+  h += '<h3>Progreso en mini-tests</h3>';
+
+  // Legend
+  h += '<div class="chart-legend">';
+  for (const skill of skills) {
+    h += `<span class="chart-legend-item"><span class="chart-legend-color" style="background:${colors[skill]}"></span>${labels[skill]}</span>`;
+  }
+  h += '</div>';
+
+  // Chart
+  const maxBars = 8;
+  const recent = history.slice(-maxBars);
+  h += '<div class="chart-bars">';
+  recent.forEach((entry, idx) => {
+    h += '<div class="chart-bar-group">';
+    for (const skill of skills) {
+      const pct = Math.round((entry.scores[skill] || 0) * 100);
+      h += `<div class="chart-bar" style="height:${pct}%; background:${colors[skill]}" title="${labels[skill]}: ${pct}%"></div>`;
+    }
+    h += `<div class="chart-bar-label">#${idx + 1}</div>`;
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // Trend
+  if (recent.length >= 2) {
+    const prev = recent[recent.length - 2].scores;
+    const last = recent[recent.length - 1].scores;
+    h += '<div class="chart-trends">';
+    for (const skill of skills) {
+      const diff = (last[skill] || 0) - (prev[skill] || 0);
+      const arrow = diff > 0.05 ? '&#9650;' : diff < -0.05 ? '&#9660;' : '&#9644;';
+      const cls = diff > 0.05 ? 'trend-up' : diff < -0.05 ? 'trend-down' : 'trend-stable';
+      h += `<span class="chart-trend ${cls}">${labels[skill]} ${arrow}</span>`;
+    }
+    h += '</div>';
+  }
+
+  h += '</div>';
+  return h;
 }

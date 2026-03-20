@@ -2920,4 +2920,344 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
   :root:not(.dark-theme) .btn-session-complete { color: #fff; }
   :root:not(.dark-theme) .btn-start-test { color: #fff; }
   :root:not(.dark-theme) .btn-start-learning { color: #fff; }
+  :root:not(.dark-theme) .mini-test-prompt { background: rgba(214,49,80,0.05); border-color: rgba(214,49,80,0.15); }
+  :root:not(.dark-theme) .test-summary-card { background: rgba(0,0,0,0.02); }
+  :root:not(.dark-theme) .dashboard-chart { background: rgba(0,0,0,0.02); }
+  :root:not(.dark-theme) .exercise-card { background: rgba(0,0,0,0.02); }
+  :root:not(.dark-theme) .micro-dict-input { background: var(--bg2); border-color: var(--bg3); color: var(--text); }
+  :root:not(.dark-theme) .vocab-mini-card { background: rgba(0,0,0,0.02); }
 }
+
+/* ===== Mini-Test Prompt ===== */
+.mini-test-prompt {
+  background: rgba(233,69,96,0.08);
+  border: 1px solid rgba(233,69,96,0.2);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+  text-align: center;
+}
+.mini-test-prompt h3 { margin: 0 0 8px; color: var(--accent); font-size: 1rem; }
+.mini-test-prompt p { margin: 0 0 12px; color: var(--text2); font-size: 0.88rem; }
+
+/* ===== Test Summary Card ===== */
+.test-summary-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.test-summary-card h3 { margin: 0 0 12px; font-size: 0.95rem; color: var(--text2); }
+.test-summary-levels {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.test-summary-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.tsl-module { font-size: 0.72rem; color: var(--muted); }
+.tsl-value { font-size: 1.1rem; font-weight: 700; color: var(--green); }
+.test-summary-adaptive { margin-top: 10px; font-size: 0.8rem; color: var(--muted); text-align: center; }
+
+/* ===== Dashboard Progress Chart ===== */
+.dashboard-chart {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.dashboard-chart h3 { margin: 0 0 12px; font-size: 0.95rem; color: var(--text2); }
+
+/* ===== Progress Chart (shared) ===== */
+.progress-chart { margin: 16px 0; }
+.progress-chart h3 { margin: 0 0 12px; font-size: 0.95rem; }
+.chart-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--text2);
+}
+.chart-legend-color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.chart-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 100px;
+  padding: 0 4px;
+}
+.chart-bar-group {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 100%;
+  position: relative;
+}
+.chart-bar {
+  flex: 1;
+  min-height: 4px;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+}
+.chart-bar-label {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+.chart-trends {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.chart-trend {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.trend-up { color: var(--green); background: rgba(78,204,163,0.1); }
+.trend-down { color: var(--accent); background: rgba(233,69,96,0.1); }
+.trend-stable { color: var(--text2); background: rgba(255,255,255,0.05); }
+
+/* ===== Mini-Test Results ===== */
+.mini-test-overall { text-align: center; margin: 20px 0; }
+.mini-test-score-big {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+.mini-test-recommendation {
+  font-size: 0.88rem;
+  color: var(--text2);
+  margin-top: 8px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.mini-score-bar {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.mini-score-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.mini-test-adaptive {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+.mini-test-adaptive h3 { margin: 0 0 8px; font-size: 0.88rem; color: var(--text2); }
+.mini-test-adaptive ul { margin: 0; padding-left: 20px; }
+.mini-test-adaptive li { font-size: 0.82rem; color: var(--text2); margin: 4px 0; }
+
+/* ===== Interactive Exercise Cards ===== */
+.exercise-card {
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 12px 0;
+}
+.exercise-instructions {
+  margin-bottom: 16px;
+}
+.exercise-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: var(--text2);
+}
+.btn-exercise-play {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.btn-exercise-play:active { transform: scale(0.92); }
+
+/* Micro-dictation */
+.micro-dict-item {
+  margin: 12px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.micro-dict-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.micro-dict-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  font-size: 0.88rem;
+}
+.micro-dict-input:focus { border-color: var(--accent); outline: none; }
+.micro-dict-answer {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(78,204,163,0.08);
+  border-radius: var(--radius-sm);
+}
+.answer-text { color: var(--green); font-size: 0.88rem; margin: 0; }
+.answer-note { color: var(--text2); font-size: 0.78rem; margin: 4px 0 0; font-style: italic; }
+.btn-show-answer {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text2);
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.btn-show-answer:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Speed drill */
+.speed-drill-sentence {
+  font-size: 1.1rem;
+  color: var(--text);
+  text-align: center;
+  margin: 16px 0;
+  font-style: italic;
+}
+.speed-drill-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-speed-drill {
+  background: var(--bg3);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-speed-drill:hover { background: var(--accent); color: #fff; }
+
+/* Minimal pairs */
+.minimal-pair-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+.mp-vs { color: var(--muted); font-size: 0.8rem; }
+.mp-sound { color: var(--ipa-color); font-size: 0.82rem; margin-left: auto; }
+
+/* Pronunciation integration */
+.pron-words {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.pron-word {
+  border-radius: var(--radius-sm);
+  width: auto;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  gap: 6px;
+}
+.pron-context { margin-top: 16px; }
+.pron-context h5 { margin: 0 0 8px; color: var(--text2); font-size: 0.85rem; }
+.pron-context-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+/* Accent exercise */
+.accent-words {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.accent-word {
+  border-radius: var(--radius-sm);
+  width: auto;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+/* Vocab exercise */
+.vocab-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+.vocab-mini-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  text-align: center;
+}
+.vocab-mini-word { font-size: 1rem; font-weight: 600; margin: 6px 0 2px; }
+.vocab-mini-ipa { font-size: 0.78rem; color: var(--ipa-color); }
+.vocab-mini-es { font-size: 0.82rem; color: var(--green); margin: 4px 0; }
+
+/* Activation textarea */
+.activation-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  font-size: 0.88rem;
+  resize: vertical;
+  font-family: inherit;
+}
+.activation-textarea:focus { border-color: var(--accent); outline: none; }

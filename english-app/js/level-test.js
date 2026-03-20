@@ -536,6 +536,16 @@ function estimateSessions(levels) {
   return `${estimate - 8}–${estimate + 8}`;
 }
 
+function retakeTest() {
+  if (!confirm('¿Repetir el test de nivel? Tu progreso en modulos se mantendra, pero se recalcularan tus niveles.')) return;
+  const profile = getProfile();
+  profile.testCompleted = false;
+  profile.levels = {};
+  saveProfile(profile);
+  testState.phase = 'intro';
+  renderTest();
+}
+
 function playTestAudio(questionIndex) {
   const q = TEST_LISTENING[questionIndex];
   if (q && typeof speak === 'function') {
