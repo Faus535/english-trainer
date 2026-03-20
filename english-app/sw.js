@@ -3,7 +3,7 @@
  * Change CACHE_VERSION on each deploy to trigger update.
  */
 
-const CACHE_VERSION = 7;
+const CACHE_VERSION = 8;
 const CACHE_NAME = 'english-trainer-v' + CACHE_VERSION;
 
 const ASSETS = [
