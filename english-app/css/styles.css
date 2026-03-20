@@ -3640,12 +3640,20 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
   font-style: italic;
   margin-top: 4px;
 }
-.pron-word-fail[data-action] {
+.pron-words [data-action] {
   cursor: pointer;
-  text-decoration: none;
+}
+.pron-word-ok[data-action]:active {
+  background: rgba(78,204,163,0.3);
 }
 .pron-word-fail[data-action]:active {
   background: rgba(231,76,60,0.25);
+}
+.pron-words-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: center;
 }
 .pron-practice {
   margin-top: 12px;

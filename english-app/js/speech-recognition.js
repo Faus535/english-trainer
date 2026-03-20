@@ -58,6 +58,11 @@ function startPronunciationCheck(expectedText, callback) {
 
   recognitionInstance.onerror = function(event) {
     clearTimeout(recognitionTimeout);
+    // Ignore aborted — user cancelled intentionally
+    if (event.error === 'aborted') {
+      recognitionState = 'idle';
+      return;
+    }
     recognitionState = 'idle';
     recognitionResult = { error: event.error };
     if (recognitionCallback) recognitionCallback(recognitionResult);
@@ -194,8 +199,15 @@ function handleToggleRecording(expected, itemId) {
   }
 
   if (recognitionState === 'recording') {
-    // If user clicks record again while recording, also stop
+    // User cancelled — reset UI without error
     stopPronunciationCheck();
+    const btn = getBtn();
+    const checkBtn = getCheckBtn();
+    if (btn) {
+      btn.classList.remove('recording');
+      btn.innerHTML = '<span class="record-icon">&#127908;</span> Grabar';
+    }
+    if (checkBtn) checkBtn.style.display = 'none';
     return;
   }
 
@@ -240,19 +252,18 @@ function handleToggleRecording(expected, itemId) {
     html += `<div class="pron-msg">${escapeHtml(feedback.msg)}</div>`;
     html += `</div>`;
 
+    // Word-by-word: all tappable to hear pronunciation
     html += '<div class="pron-words">';
     result.words.forEach(w => {
-      if (w.correct) {
-        html += `<span class="pron-word-ok">${escapeHtml(w.word)}</span> `;
-      } else {
-        html += `<span class="pron-word-fail" data-action="speakWord" data-word="${escapeHtml(w.word)}" role="button" tabindex="0">${escapeHtml(w.word)} &#128264;</span> `;
-      }
+      const cls = w.correct ? 'pron-word-ok' : 'pron-word-fail';
+      html += `<span class="${cls}" data-action="speakWord" data-word="${escapeHtml(w.word)}" role="button" tabindex="0">${escapeHtml(w.word)}</span> `;
     });
     html += '</div>';
+    html += '<div class="pron-words-hint">Pulsa cualquier palabra para escucharla</div>';
 
     html += `<div class="pron-heard">Oido: "${escapeHtml(result.transcript)}"</div>`;
 
-    // Practice failed words individually
+    // Practice failed words with mic
     const failedWords = result.words.filter(w => !w.correct);
     if (failedWords.length > 0) {
       html += '<div class="pron-practice">';
@@ -264,17 +275,6 @@ function handleToggleRecording(expected, itemId) {
         html += renderPronunciationButtonWord(w.word, wordId);
         html += '</div>';
       });
-      html += '</div>';
-    }
-
-    if (result.score < 100 && result.score >= 50 && result.score < 90) {
-      html += '<div class="pron-tips">';
-      html += '<p>Casi perfecto! Intenta hablar mas despacio y vocalizar cada palabra.</p>';
-      html += '</div>';
-    }
-    if (result.score < 50) {
-      html += '<div class="pron-tips">';
-      html += '<p>Escucha la frase primero y repite despues, imitando el ritmo y la entonacion.</p>';
       html += '</div>';
     }
 
