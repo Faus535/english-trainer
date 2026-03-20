@@ -234,6 +234,9 @@ function setupEventDelegation() {
       case 'toggleRecording':
         handleToggleRecording(target.dataset.expected, target.dataset.item);
         break;
+      case 'checkRecording':
+        handleCheckRecording();
+        break;
 
       // Speak quiz actions
       case 'nextSpeakPhrase':

@@ -158,7 +158,10 @@ function renderPronunciationButton(expectedText, itemId) {
 
   let h = `<div class="pronunciation-check" id="pron-check-${itemId}">`;
   h += `<button class="btn-record" data-action="toggleRecording" data-expected="${escapeHtml(expectedText)}" data-item="${itemId}">`;
-  h += `<span class="record-icon">&#127908;</span> Repite la frase`;
+  h += `<span class="record-icon">&#127908;</span> Grabar`;
+  h += `</button>`;
+  h += `<button class="btn-check-pron" data-action="checkRecording" data-item="${itemId}" style="display:none">`;
+  h += `&#9989; Comprobar`;
   h += `</button>`;
   h += `<div class="pron-result" id="pron-result-${itemId}"></div>`;
   h += `</div>`;
@@ -182,34 +185,41 @@ function handleToggleRecording(expected, itemId) {
     const container = document.getElementById('pron-check-' + itemId);
     return container ? container.querySelector('.btn-record') : null;
   }
+  function getCheckBtn() {
+    const container = document.getElementById('pron-check-' + itemId);
+    return container ? container.querySelector('.btn-check-pron') : null;
+  }
   function getResultDiv() {
     return document.getElementById('pron-result-' + itemId);
   }
 
   if (recognitionState === 'recording') {
-    // User pressed stop — trigger analysis via onend
+    // If user clicks record again while recording, also stop
     stopPronunciationCheck();
     return;
   }
 
   // Start recording
   const btn = getBtn();
+  const checkBtn = getCheckBtn();
   const resultDiv = getResultDiv();
   if (btn) {
     btn.classList.add('recording');
-    btn.innerHTML = '<span class="record-pulse"></span> Parar y comprobar';
+    btn.innerHTML = '<span class="record-pulse"></span> Grabando...';
   }
+  if (checkBtn) checkBtn.style.display = '';
   if (resultDiv) resultDiv.innerHTML = '';
 
   startPronunciationCheck(expected, function(result) {
-    // Re-query DOM elements — the original references may be stale (especially on iOS)
     const cbBtn = getBtn();
+    const cbCheckBtn = getCheckBtn();
     const cbResultDiv = getResultDiv();
 
     if (cbBtn) {
       cbBtn.classList.remove('recording');
-      cbBtn.innerHTML = '<span class="record-icon">&#127908;</span> Intentar de nuevo';
+      cbBtn.innerHTML = '<span class="record-icon">&#127908;</span> Grabar de nuevo';
     }
+    if (cbCheckBtn) cbCheckBtn.style.display = 'none';
 
     if (!cbResultDiv) return;
 
@@ -230,7 +240,6 @@ function handleToggleRecording(expected, itemId) {
     html += `<div class="pron-msg">${escapeHtml(feedback.msg)}</div>`;
     html += `</div>`;
 
-    // Word-by-word comparison
     html += '<div class="pron-words">';
     result.words.forEach(w => {
       const cls = w.correct ? 'pron-word-ok' : 'pron-word-fail';
@@ -238,10 +247,8 @@ function handleToggleRecording(expected, itemId) {
     });
     html += '</div>';
 
-    // Show what was heard
     html += `<div class="pron-heard">Oido: "${escapeHtml(result.transcript)}"</div>`;
 
-    // Tips for improvement
     if (result.score < 100) {
       const failedWords = result.words.filter(w => !w.correct).map(w => w.word);
       html += '<div class="pron-tips">';
@@ -260,4 +267,10 @@ function handleToggleRecording(expected, itemId) {
 
     cbResultDiv.innerHTML = html;
   });
+}
+
+function handleCheckRecording() {
+  if (recognitionState === 'recording') {
+    stopPronunciationCheck();
+  }
 }
