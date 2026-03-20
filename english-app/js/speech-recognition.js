@@ -169,12 +169,17 @@ function renderPronunciationButtonWord(expectedWord, itemId) {
 }
 
 function handleToggleRecording(expected, itemId) {
-  const container = document.getElementById('pron-check-' + itemId);
-  const btn = container ? container.querySelector('.btn-record') : null;
-  const resultDiv = document.getElementById('pron-result-' + itemId);
+  function getBtn() {
+    const container = document.getElementById('pron-check-' + itemId);
+    return container ? container.querySelector('.btn-record') : null;
+  }
+  function getResultDiv() {
+    return document.getElementById('pron-result-' + itemId);
+  }
 
   if (recognitionState === 'recording') {
     stopPronunciationCheck();
+    const btn = getBtn();
     if (btn) {
       btn.classList.remove('recording');
       btn.innerHTML = '<span class="record-icon">&#127908;</span> Repite la frase';
@@ -183,6 +188,8 @@ function handleToggleRecording(expected, itemId) {
   }
 
   // Start recording
+  const btn = getBtn();
+  const resultDiv = getResultDiv();
   if (btn) {
     btn.classList.add('recording');
     btn.innerHTML = '<span class="record-pulse"></span> Escuchando...';
@@ -190,12 +197,16 @@ function handleToggleRecording(expected, itemId) {
   if (resultDiv) resultDiv.innerHTML = '';
 
   startPronunciationCheck(expected, function(result) {
-    if (btn) {
-      btn.classList.remove('recording');
-      btn.innerHTML = '<span class="record-icon">&#127908;</span> Intentar de nuevo';
+    // Re-query DOM elements — the original references may be stale (especially on iOS)
+    const cbBtn = getBtn();
+    const cbResultDiv = getResultDiv();
+
+    if (cbBtn) {
+      cbBtn.classList.remove('recording');
+      cbBtn.innerHTML = '<span class="record-icon">&#127908;</span> Intentar de nuevo';
     }
 
-    if (!resultDiv) return;
+    if (!cbResultDiv) return;
 
     if (result.error) {
       const errorMsg = result.error === 'no-speech'
@@ -203,7 +214,7 @@ function handleToggleRecording(expected, itemId) {
         : result.error === 'not-allowed'
           ? 'Permiso de microfono denegado. Activalo en ajustes del navegador.'
           : 'Error: ' + result.error;
-      resultDiv.innerHTML = `<div class="pron-feedback feedback-retry">${escapeHtml(errorMsg)}</div>`;
+      cbResultDiv.innerHTML = `<div class="pron-feedback feedback-retry">${escapeHtml(errorMsg)}</div>`;
       return;
     }
 
@@ -225,6 +236,23 @@ function handleToggleRecording(expected, itemId) {
     // Show what was heard
     html += `<div class="pron-heard">Oido: "${escapeHtml(result.transcript)}"</div>`;
 
-    resultDiv.innerHTML = html;
+    // Tips for improvement
+    if (result.score < 100) {
+      const failedWords = result.words.filter(w => !w.correct).map(w => w.word);
+      html += '<div class="pron-tips">';
+      html += '<div class="pron-tips-title">Consejos:</div>';
+      if (result.score < 50) {
+        html += '<p>Escucha la frase primero y repite despues, imitando el ritmo y la entonacion.</p>';
+      }
+      if (failedWords.length > 0) {
+        html += `<p>Practica estas palabras: <strong>${failedWords.join(', ')}</strong></p>`;
+      }
+      if (result.score >= 50 && result.score < 90) {
+        html += '<p>Casi perfecto! Intenta hablar mas despacio y vocalizar cada palabra.</p>';
+      }
+      html += '</div>';
+    }
+
+    cbResultDiv.innerHTML = html;
   });
 }

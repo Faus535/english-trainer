@@ -35,10 +35,7 @@ function prevFlashcard() {
 
 function showTranslation() {
   translationVisible = true;
-  const el = document.getElementById('fc-translation');
-  if (el) {
-    el.classList.add('visible');
-  }
+  renderFlashcard(flashcardHistory[flashcardIndex]);
 }
 
 function speakFlashcard() {
