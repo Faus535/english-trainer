@@ -105,6 +105,8 @@ function navigateTo(page) {
     render();
   } else if (page === 'flashcards') {
     renderFlashcardsView();
+  } else if (page === 'speak') {
+    renderSpeakQuizView();
   } else if (page === 'translator') {
     renderTranslatorView();
   } else if (page === 'achievements') {
@@ -181,6 +183,9 @@ function setupEventDelegation() {
       case 'finishTest':
         showDashboard();
         break;
+      case 'selectLevel':
+        skipTestWithLevel(target.dataset.level);
+        break;
 
       // Session actions
       case 'startSession':
@@ -192,11 +197,56 @@ function setupEventDelegation() {
       case 'advanceBlock':
         advanceBlock();
         break;
+      case 'goBackBlock':
+        goBackBlock();
+        break;
+      case 'goToBlock':
+        goToBlock(parseInt(target.dataset.block));
+        break;
       case 'completeSession':
         completeSession();
         break;
       case 'abandonSession':
         abandonSession();
+        break;
+
+      // Exercise item-by-item actions
+      case 'showExerciseAnswer':
+        showExerciseAnswer(parseInt(target.dataset.idx));
+        break;
+      case 'nextExerciseItem':
+        nextExerciseItem();
+        break;
+      case 'prevExerciseItem':
+        prevExerciseItem();
+        break;
+      case 'revealVocabWord':
+        revealVocabWord(parseInt(target.dataset.idx));
+        break;
+      case 'nextVocabWord':
+        nextVocabWord();
+        break;
+      case 'prevVocabWord':
+        prevVocabWord();
+        break;
+
+      // Speech recognition actions
+      case 'toggleRecording':
+        handleToggleRecording(target.dataset.expected, target.dataset.item);
+        break;
+
+      // Speak quiz actions
+      case 'nextSpeakPhrase':
+        nextSpeakPhrase();
+        break;
+      case 'prevSpeakPhrase':
+        prevSpeakPhrase();
+        break;
+      case 'revealSpeakPhrase':
+        revealSpeakPhrase();
+        break;
+      case 'setSpeakLevel':
+        setSpeakQuizLevel(target.dataset.level);
         break;
 
       // Gamification actions

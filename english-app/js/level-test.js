@@ -318,6 +318,37 @@ function renderTestIntro() {
         </div>
         <p class="test-note">No te preocupes si no sabes algo — el test sirve para NO hacerte repetir lo que ya sabes.</p>
         <button class="btn-start-test" data-action="startTest">Empezar Test</button>
+
+        <div class="test-skip-divider">
+          <span>o</span>
+        </div>
+
+        <div class="test-skip-section">
+          <p class="test-skip-title">Ya se mi nivel</p>
+          <p class="test-skip-desc">Si ya conoces tu nivel de ingles, puedes saltarte el test y empezar directamente.</p>
+          <div class="test-level-selector">
+            <button class="btn-select-level" data-action="selectLevel" data-level="a1">
+              <span class="level-name">A1</span>
+              <span class="level-desc">Principiante</span>
+            </button>
+            <button class="btn-select-level" data-action="selectLevel" data-level="a2">
+              <span class="level-name">A2</span>
+              <span class="level-desc">Basico</span>
+            </button>
+            <button class="btn-select-level" data-action="selectLevel" data-level="b1">
+              <span class="level-name">B1</span>
+              <span class="level-desc">Intermedio</span>
+            </button>
+            <button class="btn-select-level" data-action="selectLevel" data-level="b2">
+              <span class="level-name">B2</span>
+              <span class="level-desc">Intermedio alto</span>
+            </button>
+            <button class="btn-select-level" data-action="selectLevel" data-level="c1">
+              <span class="level-name">C1</span>
+              <span class="level-desc">Avanzado</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>`;
 }
@@ -534,6 +565,18 @@ function estimateSessions(levels) {
   // ~15-18 sessions per level for listening (more content now)
   const estimate = remaining * 16;
   return `${estimate - 8}–${estimate + 8}`;
+}
+
+function skipTestWithLevel(level) {
+  const profile = getProfile();
+  for (const mod of MODULE_NAMES) {
+    profile.levels[mod] = level;
+  }
+  profile.testCompleted = true;
+  profile.testSkipped = true;
+  profile.selectedLevel = level;
+  saveProfile(profile);
+  showDashboard();
 }
 
 function retakeTest() {

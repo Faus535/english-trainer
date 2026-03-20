@@ -130,10 +130,12 @@ function buildWarmup() {
 
 let currentSession = null;
 let currentBlockIndex = 0;
+let completedBlocks = new Set(); // Track which blocks have been completed
 
 function startSession(mode) {
   currentSession = generateSession(mode);
   currentBlockIndex = 0;
+  completedBlocks = new Set();
   saveState('currentSession', currentSession);
   renderSessionView();
 }
@@ -145,14 +147,46 @@ function getCurrentSession() {
   return currentSession;
 }
 
+function resetExerciseState() {
+  exerciseItemIndex = 0;
+  exerciseItems = [];
+  exerciseItemsCompleted = new Set();
+  vocabExerciseWords = [];
+  vocabExerciseIndex = 0;
+  vocabExerciseRevealed = new Set();
+  // Stop any active recording
+  if (typeof stopPronunciationCheck === 'function') stopPronunciationCheck();
+}
+
 function advanceBlock() {
   if (!currentSession) return;
+  // Mark current block as completed before advancing
+  completedBlocks.add(currentBlockIndex);
+  resetExerciseState();
   currentBlockIndex++;
   if (currentBlockIndex >= currentSession.blocks.length) {
     completeSession();
     return;
   }
   renderSessionView();
+}
+
+function goBackBlock() {
+  if (!currentSession || currentBlockIndex <= 0) return;
+  resetExerciseState();
+  currentBlockIndex--;
+  renderSessionView();
+}
+
+function goToBlock(index) {
+  if (!currentSession) return;
+  // Only allow going to completed blocks or current
+  if (index < 0 || index >= currentSession.blocks.length) return;
+  if (index <= currentBlockIndex || completedBlocks.has(index)) {
+    resetExerciseState();
+    currentBlockIndex = index;
+    renderSessionView();
+  }
 }
 
 function completeSession() {
@@ -231,14 +265,21 @@ function renderSessionView() {
   h += `<div class="session-progress-fill" style="width:${progress}%"></div>`;
   h += '</div>';
 
-  // Block indicator pills
+  // Block indicator pills (clickable for completed blocks)
   h += '<div class="session-pills">';
   session.blocks.forEach((b, i) => {
     let cls = 'session-pill';
-    if (i < currentBlockIndex) cls += ' done';
+    const isDone = completedBlocks.has(i);
+    if (isDone) cls += ' done';
     if (i === currentBlockIndex) cls += ' active';
-    h += `<div class="${cls}">`;
-    h += `<span class="pill-label">${escapeHtml(b.label)}</span>`;
+    if (i > currentBlockIndex && !isDone) cls += ' locked';
+    const clickable = isDone || i === currentBlockIndex;
+    if (clickable) {
+      h += `<div class="${cls}" data-action="goToBlock" data-block="${i}" style="cursor:pointer">`;
+    } else {
+      h += `<div class="${cls}">`;
+    }
+    h += `<span class="pill-label">${isDone ? '&#10003; ' : ''}${escapeHtml(b.label)}</span>`;
     h += `<span class="pill-time">${b.duration} min</span>`;
     h += '</div>';
   });
@@ -251,14 +292,20 @@ function renderSessionView() {
 
   // Navigation
   h += '<div class="session-nav">';
+  // Back button (only if not first block)
+  if (currentBlockIndex > 0) {
+    h += `<button class="btn-session-back" data-action="goBackBlock">&larr; Bloque anterior</button>`;
+  }
+  // Next / Complete button
   if (currentBlockIndex < session.blocks.length - 1) {
     h += `<button class="btn-session-next" data-action="advanceBlock">Siguiente bloque &rarr;</button>`;
   } else {
     h += `<button class="btn-session-complete" data-action="completeSession">Completar sesion &#10003;</button>`;
   }
-  if (currentBlockIndex > 0) {
-    h += `<button class="btn-session-abandon" data-action="abandonSession">Salir</button>`;
-  }
+  h += '</div>';
+  // Abandon button separate
+  h += '<div class="session-nav-secondary">';
+  h += `<button class="btn-session-abandon" data-action="abandonSession">Salir de la sesion</button>`;
   h += '</div>';
 
   h += '</div>';
@@ -457,62 +504,134 @@ function renderUnitContent(unitRef) {
   return h;
 }
 
-// ===== Interactive Listening Exercises (Phase 3.1) =====
+// ===== Interactive Listening Exercises (Phase 3.1 + Mejoras Fase 3) =====
+
+// State for item-by-item exercises
+let exerciseItemIndex = 0;
+let exerciseItems = [];
+let exerciseItemsCompleted = new Set();
+
+function initExerciseItems(items) {
+  exerciseItems = items;
+  exerciseItemIndex = 0;
+  exerciseItemsCompleted = new Set();
+}
 
 function renderMicroDictation(unit) {
   const sentences = getMicroDictationSentences(unit);
-  let h = '<div class="exercise-card micro-dictation">';
-  h += '<div class="exercise-instructions">';
-  h += '<div class="exercise-step"><span class="step-num">1</span> Escucha la frase (pulsa play)</div>';
-  h += '<div class="exercise-step"><span class="step-num">2</span> Escribe lo que oyes</div>';
-  h += '<div class="exercise-step"><span class="step-num">3</span> Compara con la respuesta</div>';
-  h += '</div>';
+  // Initialize step-by-step state if needed
+  if (exerciseItems.length === 0 || exerciseItems[0]?.text !== sentences[0]?.text) {
+    initExerciseItems(sentences);
+  }
 
-  sentences.forEach((s, i) => {
-    const sentenceId = `micro-dict-${i}`;
-    h += `<div class="micro-dict-item" id="mdi-${i}">`;
-    h += `<div class="micro-dict-row">`;
-    h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(s.text)}">&#9654;</button>`;
-    h += `<input type="text" class="micro-dict-input" id="${sentenceId}" placeholder="Escribe lo que oyes..." autocomplete="off" spellcheck="false">`;
-    h += `</div>`;
-    h += `<div class="micro-dict-answer" id="answer-${i}" style="display:none">`;
-    h += `<p class="answer-text">${escapeHtml(s.text)}</p>`;
-    if (s.note) h += `<p class="answer-note">${escapeHtml(s.note)}</p>`;
-    h += `</div>`;
-    h += `<button class="btn-show-answer" onclick="document.getElementById('answer-${i}').style.display='block';this.style.display='none'">Ver respuesta</button>`;
-    h += `</div>`;
-  });
+  const total = sentences.length;
+  const current = exerciseItemIndex;
+  const s = sentences[current];
+
+  let h = '<div class="exercise-card micro-dictation">';
+
+  // Progress indicator
+  h += `<div class="exercise-progress-bar">`;
+  h += `<span class="exercise-progress-text">Ejercicio ${current + 1} de ${total}</span>`;
+  h += `<div class="exercise-progress-track"><div class="exercise-progress-fill" style="width:${((current + 1) / total) * 100}%"></div></div>`;
+  h += `</div>`;
+
+  // Instructions (only on first item)
+  if (current === 0) {
+    h += '<div class="exercise-instructions">';
+    h += '<div class="exercise-step"><span class="step-num">1</span> Escucha la frase (pulsa play)</div>';
+    h += '<div class="exercise-step"><span class="step-num">2</span> Escribe lo que oyes</div>';
+    h += '<div class="exercise-step"><span class="step-num">3</span> Compara con la respuesta</div>';
+    h += '</div>';
+  }
+
+  // Single item
+  h += `<div class="micro-dict-item micro-dict-single" id="mdi-${current}">`;
+  h += `<div class="micro-dict-row">`;
+  h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(s.text)}">&#9654;</button>`;
+  h += `<input type="text" class="micro-dict-input" id="micro-dict-${current}" placeholder="Escribe lo que oyes..." autocomplete="off" spellcheck="false">`;
+  h += `</div>`;
+  h += `<div class="micro-dict-answer" id="answer-${current}" style="display:none">`;
+  h += `<p class="answer-text">${escapeHtml(s.text)}</p>`;
+  if (s.es) h += `<p class="answer-translation">${escapeHtml(s.es)}</p>`;
+  if (s.note) h += `<p class="answer-note">${escapeHtml(s.note)}</p>`;
+  h += renderPronunciationButton(s.text, 'dict-' + current);
+  h += `</div>`;
+  h += `<button class="btn-show-answer" data-action="showExerciseAnswer" data-idx="${current}">Ver respuesta</button>`;
+  h += `</div>`;
+
+  // Item navigation
+  h += '<div class="exercise-item-nav">';
+  if (current > 0) {
+    h += `<button class="btn-exercise-prev" data-action="prevExerciseItem">&larr; Anterior</button>`;
+  }
+  if (exerciseItemsCompleted.has(current) && current < total - 1) {
+    h += `<button class="btn-exercise-next" data-action="nextExerciseItem">Siguiente &rarr;</button>`;
+  }
+  h += '</div>';
 
   h += '</div>';
   return h;
 }
 
+function showExerciseAnswer(idx) {
+  const answerEl = document.getElementById('answer-' + idx);
+  const btnEl = document.querySelector(`[data-action="showExerciseAnswer"][data-idx="${idx}"]`);
+  if (answerEl) answerEl.style.display = 'block';
+  if (btnEl) btnEl.style.display = 'none';
+  exerciseItemsCompleted.add(idx);
+
+  // Show "Siguiente" button without full re-render (preserves recording state)
+  const navContainer = document.querySelector('.exercise-item-nav');
+  if (navContainer && idx < exerciseItems.length - 1 && !navContainer.querySelector('[data-action="nextExerciseItem"]')) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn-exercise-next';
+    nextBtn.setAttribute('data-action', 'nextExerciseItem');
+    nextBtn.innerHTML = 'Siguiente &rarr;';
+    navContainer.appendChild(nextBtn);
+  }
+}
+
+function nextExerciseItem() {
+  if (exerciseItemIndex < exerciseItems.length - 1) {
+    exerciseItemIndex++;
+    renderSessionView();
+  }
+}
+
+function prevExerciseItem() {
+  if (exerciseItemIndex > 0) {
+    exerciseItemIndex--;
+    renderSessionView();
+  }
+}
+
 function getMicroDictationSentences(unit) {
-  // Generate contextual sentences based on unit topic
+  // Generate contextual sentences based on unit topic (with Spanish translations)
   const sentences = {
     'reduced-forms': [
-      { text: "I'm gonna go to the store.", note: "gonna = going to" },
-      { text: "Do you wanna come with us?", note: "wanna = want to" },
-      { text: "I gotta leave now.", note: "gotta = got to / have to" },
-      { text: "She shoulda called earlier.", note: "shoulda = should have" },
-      { text: "We coulda done it better.", note: "coulda = could have" },
+      { text: "I'm gonna go to the store.", es: "Voy a ir a la tienda.", note: "gonna = going to" },
+      { text: "Do you wanna come with us?", es: "Quieres venir con nosotros?", note: "wanna = want to" },
+      { text: "I gotta leave now.", es: "Tengo que irme ahora.", note: "gotta = got to / have to" },
+      { text: "She shoulda called earlier.", es: "Deberia haber llamado antes.", note: "shoulda = should have" },
+      { text: "We coulda done it better.", es: "Podriamos haberlo hecho mejor.", note: "coulda = could have" },
     ],
     'connected-speech': [
-      { text: "Turn it off, please.", note: "turn_it_off: las palabras se enlazan" },
-      { text: "What are you looking at?", note: "whatcha: connected speech natural" },
-      { text: "I picked it up at the store.", note: "picked_it_up: linking /t/" },
-      { text: "She's been waiting for an hour.", note: "for_an: linking /r/" },
-      { text: "Let me help you with that.", note: "lemme: let me reducido" },
+      { text: "Turn it off, please.", es: "Apagalo, por favor.", note: "turn_it_off: las palabras se enlazan" },
+      { text: "What are you looking at?", es: "Que estas mirando?", note: "whatcha: connected speech natural" },
+      { text: "I picked it up at the store.", es: "Lo recogi en la tienda.", note: "picked_it_up: linking /t/" },
+      { text: "She's been waiting for an hour.", es: "Lleva esperando una hora.", note: "for_an: linking /r/" },
+      { text: "Let me help you with that.", es: "Dejame ayudarte con eso.", note: "lemme: let me reducido" },
     ],
     'fillers': [
-      { text: "Well, you know, it's kind of complicated.", note: "well, you know, kind of = fillers comunes" },
-      { text: "I mean, it's not that hard, like, basically.", note: "I mean, like, basically = muletillas" },
-      { text: "So, um, what I was saying is, right, we need more time.", note: "so, um, right = fillers" },
+      { text: "Well, you know, it's kind of complicated.", es: "Bueno, ya sabes, es algo complicado.", note: "well, you know, kind of = fillers comunes" },
+      { text: "I mean, it's not that hard, like, basically.", es: "O sea, no es tan dificil, basicamente.", note: "I mean, like, basically = muletillas" },
+      { text: "So, um, what I was saying is, right, we need more time.", es: "Entonces, lo que decia es que necesitamos mas tiempo.", note: "so, um, right = fillers" },
     ],
     'numbers': [
-      { text: "The meeting is at thirteen thirty.", note: "thirteen (13) vs thirty (30)" },
-      { text: "I need forty-five minutes.", note: "forty-five = 45" },
-      { text: "There are fifteen people in the room.", note: "fifteen (15) vs fifty (50)" },
+      { text: "The meeting is at thirteen thirty.", es: "La reunion es a la una y media.", note: "thirteen (13) vs thirty (30)" },
+      { text: "I need forty-five minutes.", es: "Necesito cuarenta y cinco minutos.", note: "forty-five = 45" },
+      { text: "There are fifteen people in the room.", es: "Hay quince personas en la sala.", note: "fifteen (15) vs fifty (50)" },
     ],
   };
   return sentences[unit.type] || sentences['connected-speech'];
@@ -619,23 +738,27 @@ function renderIntegratedPronunciation(unit) {
   h += '<div class="exercise-step"><span class="step-num">3</span> Repite imitando la pronunciacion</div>';
   h += '</div>';
 
-  // Example words with play buttons
+  // Example words with play buttons + pronunciation check
   const wordSets = getPronunciationWords(unit.title);
-  h += '<div class="pron-words">';
-  wordSets.forEach(w => {
+  h += '<div class="pron-words-list">';
+  wordSets.forEach((w, i) => {
+    h += `<div class="pron-word-row">`;
     h += `<button class="btn-exercise-play pron-word" data-action="speakWord" data-word="${escapeHtml(w)}">&#9654; ${escapeHtml(w)}</button>`;
+    h += renderPronunciationButtonWord(w, 'pron-w-' + i);
+    h += `</div>`;
   });
   h += '</div>';
 
-  // Listening integration: hear the sound in context
+  // Listening integration: hear the sound in context + practice
   h += '<div class="pron-context">';
-  h += '<h5>Escucha en contexto:</h5>';
+  h += '<h5>Escucha en contexto y repite:</h5>';
   const contextSentences = getPronContextSentences(unit.title);
-  contextSentences.forEach(s => {
+  contextSentences.forEach((s, i) => {
     h += `<div class="pron-context-item">`;
     h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(s)}">&#9654;</button>`;
     h += `<span>${escapeHtml(s)}</span>`;
     h += `</div>`;
+    h += renderPronunciationButton(s, 'pron-ctx-' + i);
   });
   h += '</div>';
 
@@ -684,38 +807,99 @@ function renderActivationExercise(unit) {
   return h;
 }
 
+// Vocab exercise state
+let vocabExerciseWords = [];
+let vocabExerciseIndex = 0;
+let vocabExerciseRevealed = new Set();
+
 function renderVocabExercise(unit) {
   let h = '<div class="exercise-card vocab-exercise">';
   h += `<h4>${escapeHtml(unit.title)}</h4>`;
   h += `<p class="block-desc">${escapeHtml(unit.desc)}</p>`;
 
-  // Show random vocab words from VOCAB_DATA with TTS
+  // Show vocab words one by one
   if (typeof VOCAB_DATA !== 'undefined' && VOCAB_DATA.length > 0) {
-    const words = [];
-    const used = new Set();
-    while (words.length < 8 && words.length < VOCAB_DATA.length) {
-      const idx = Math.floor(Math.random() * VOCAB_DATA.length);
-      if (!used.has(idx)) {
-        used.add(idx);
-        words.push(VOCAB_DATA[idx]);
+    // Initialize words if needed
+    if (vocabExerciseWords.length === 0) {
+      const words = [];
+      const used = new Set();
+      while (words.length < 8 && words.length < VOCAB_DATA.length) {
+        const idx = Math.floor(Math.random() * VOCAB_DATA.length);
+        if (!used.has(idx)) {
+          used.add(idx);
+          words.push(VOCAB_DATA[idx]);
+        }
       }
+      vocabExerciseWords = words;
+      vocabExerciseIndex = 0;
+      vocabExerciseRevealed = new Set();
     }
 
-    h += '<div class="vocab-cards">';
-    words.forEach(w => {
-      h += '<div class="vocab-mini-card">';
-      h += `<button class="btn-exercise-play" data-action="speakWord" data-word="${escapeHtml(w.en)}">&#9654;</button>`;
-      h += `<div class="vocab-mini-word">${escapeHtml(w.en)}</div>`;
-      if (w.ipa) h += `<div class="vocab-mini-ipa">${escapeHtml(w.ipa)}</div>`;
-      h += `<div class="vocab-mini-es" style="display:none">${escapeHtml(w.es)}</div>`;
-      h += `<button class="btn-show-answer" onclick="this.previousElementSibling.style.display='block';this.style.display='none'">Ver</button>`;
-      h += '</div>';
-    });
+    const total = vocabExerciseWords.length;
+    const current = vocabExerciseIndex;
+    const w = vocabExerciseWords[current];
+
+    // Progress
+    h += `<div class="exercise-progress-bar">`;
+    h += `<span class="exercise-progress-text">Palabra ${current + 1} de ${total}</span>`;
+    h += `<div class="exercise-progress-track"><div class="exercise-progress-fill" style="width:${((current + 1) / total) * 100}%"></div></div>`;
+    h += `</div>`;
+
+    // Single word card
+    h += '<div class="vocab-single-card">';
+    h += `<button class="btn-exercise-play vocab-play-big" data-action="speakWord" data-word="${escapeHtml(w.en)}">&#9654;</button>`;
+    h += `<div class="vocab-single-word">${escapeHtml(w.en)}</div>`;
+    if (w.ipa) h += `<div class="vocab-single-ipa">${escapeHtml(w.ipa)}</div>`;
+    if (w.type) h += `<div class="vocab-single-type">${escapeHtml(w.type)}</div>`;
+    h += renderPronunciationButtonWord(w.en, 'vocab-' + current);
+    if (w.example) {
+      h += `<div class="vocab-single-example">`;
+      h += `<button class="btn-exercise-play btn-small" data-action="speakWord" data-word="${escapeHtml(w.example)}">&#9654;</button>`;
+      h += `<span>"${escapeHtml(w.example)}"</span>`;
+      h += `</div>`;
+    }
+
+    // Translation (hidden until revealed)
+    const revealed = vocabExerciseRevealed.has(current);
+    if (revealed) {
+      h += `<div class="vocab-single-es">${escapeHtml(w.es)}</div>`;
+    } else {
+      h += `<button class="btn-show-answer" data-action="revealVocabWord" data-idx="${current}">Ver traduccion</button>`;
+    }
+    h += '</div>';
+
+    // Navigation
+    h += '<div class="exercise-item-nav">';
+    if (current > 0) {
+      h += `<button class="btn-exercise-prev" data-action="prevVocabWord">&larr; Anterior</button>`;
+    }
+    if (revealed && current < total - 1) {
+      h += `<button class="btn-exercise-next" data-action="nextVocabWord">Siguiente &rarr;</button>`;
+    }
     h += '</div>';
   }
 
   h += '</div>';
   return h;
+}
+
+function revealVocabWord(idx) {
+  vocabExerciseRevealed.add(idx);
+  renderSessionView();
+}
+
+function nextVocabWord() {
+  if (vocabExerciseIndex < vocabExerciseWords.length - 1) {
+    vocabExerciseIndex++;
+    renderSessionView();
+  }
+}
+
+function prevVocabWord() {
+  if (vocabExerciseIndex > 0) {
+    vocabExerciseIndex--;
+    renderSessionView();
+  }
 }
 
 function renderPhraseExercise(unit) {

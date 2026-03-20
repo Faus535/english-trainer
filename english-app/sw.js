@@ -3,7 +3,7 @@
  * Change CACHE_VERSION on each deploy to trigger update.
  */
 
-const CACHE_VERSION = 5;
+const CACHE_VERSION = 7;
 const CACHE_NAME = 'english-trainer-v' + CACHE_VERSION;
 
 const ASSETS = [
@@ -14,6 +14,7 @@ const ASSETS = [
   './js/vocab-data.js',
   './js/plan-data.js',
   './js/state.js',
+  './js/speech-recognition.js',
   './js/tts.js',
   './js/markdown.js',
   './js/mini-test.js',
@@ -21,6 +22,7 @@ const ASSETS = [
   './js/views.js',
   './js/flashcards.js',
   './js/translator.js',
+  './js/speak-quiz.js',
   './js/app.js',
   './manifest.json',
 ];
