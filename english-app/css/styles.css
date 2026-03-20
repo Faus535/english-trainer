@@ -3823,6 +3823,27 @@ tr:hover td { background: rgba(255, 255, 255, 0.03); }
   background: rgba(255,255,255,0.03);
   border-radius: var(--radius-sm);
   border: 1px dashed var(--bg3);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.sq-word {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.sq-word:active {
+  background: rgba(168,85,247,0.15);
+  border-color: var(--accent);
+}
+.sq-phrase-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 4px;
 }
 
 /* Translation */

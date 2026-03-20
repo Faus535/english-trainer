@@ -195,10 +195,15 @@ function renderSpeakQuiz(phrase) {
   h += renderPronunciationButton(phrase.en, 'sq-phrase');
   h += '</div>';
 
-  // Step 3: See the text
+  // Step 3: See the text — each word is tappable to hear it
   h += '<div class="sq-section">';
   h += '<div class="sq-step-label">3. Comprueba</div>';
-  h += `<div class="sq-phrase-text">${escapeHtml(phrase.en)}</div>`;
+  h += '<div class="sq-phrase-text">';
+  phrase.en.split(/\s+/).forEach(word => {
+    h += `<span class="sq-word" data-action="speakWord" data-word="${escapeHtml(word)}" role="button" tabindex="0">${escapeHtml(word)}</span> `;
+  });
+  h += '</div>';
+  h += '<div class="sq-phrase-hint">Pulsa una palabra para escucharla</div>';
   h += '</div>';
 
   // Translation
